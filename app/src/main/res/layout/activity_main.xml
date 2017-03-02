@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -10,8 +11,79 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.pearadox.yg_alliance.MainActivity">
 
+    /* ======================================================*/
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/first_logo"
+        android:id="@+id/imgView_FIRST"
+        android:layout_alignBottom="@+id/imgView_YG_Alliance"
+        android:layout_alignParentStart="true" />
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+    <Spinner
+        android:id="@+id/spinner_Event"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:prompt="@string/event_prompt"
+        android:layout_marginLeft="21dp"
+        android:layout_alignTop="@+id/lbl_Event"
+        android:layout_toEndOf="@+id/lbl_Event"
+        android:layout_marginStart="14dp"
+        tools:ignore="RtlHardcoded" />
+
     <TextView
+        android:id="@+id/lbl_Event"
+        android:layout_width="50sp"
+        android:layout_height="35sp"
+        android:textSize="18sp"
+        android:textColor="@color/darkgreen"
+        android:text="Event"
+        android:layout_marginTop="60dp"
+        tools:ignore="HardcodedText"
+        android:layout_below="@+id/imgView_FIRST" />
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+    <Button
+        android:text="  Team  List  "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_marginTop="171dp"
+        android:id="@+id/btn_Teams"
+        android:layout_below="@+id/spinner_Event"
+        android:layout_alignEnd="@+id/imgView_FIRST" />
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/blue_alliance"
+        android:id="@+id/imgView_BLUE"
+        android:layout_alignBottom="@+id/imgView_YG_Alliance"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="Match Schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_Match_Sched"
+        android:layout_marginStart="84dp"
+        android:layout_alignBottom="@+id/btn_Teams"
+        android:layout_toEndOf="@+id/btn_Teams" />
+
+    <ImageView
+        android:id="@+id/imgView_YG_Alliance"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="Pearadox logo"
+        android:src="@drawable/yg_alliance"
+        tools:ignore="HardcodedText"
+        android:layout_marginStart="55dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/btn_Match_Sched" />
+
+
 </RelativeLayout>

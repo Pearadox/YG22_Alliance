@@ -2,23 +2,30 @@ package com.pearadox.yg_alliance;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+// === DEBUG  ===
+import android.util.Log;
 import android.widget.Toast;
+
+import com.cpjd.main.Settings;
+import com.cpjd.main.TBA;
+import com.cpjd.models.Event;
 
 public class MainActivity extends AppCompatActivity {
 
     String TAG = "MainActivity";        // This CLASS name
     Spinner spinner_Device, spinner_Event;
     ArrayAdapter<String> adapter_Event;
+    Button btn_Teams, btn_Match_Sched;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_main);
+        setContentView(R.layout.activity_main);
         Log.i(TAG, "******* Starting Yellow-Green Alliance  *******");
 
         Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
@@ -29,11 +36,46 @@ public class MainActivity extends AppCompatActivity {
         spinner_Event.setSelection(0, false);
         spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
 
+        btn_Teams = (Button) findViewById(R.id.btn_Teams);
+        btn_Match_Sched = (Button) findViewById(R.id.btn_Match_Sched);
+
+        btn_Teams.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            Log.i(TAG, "  btn_Teams setOnClickListener  ");
+            TBA.setID("Pearadox", "YG_Alliance", "V1");
+            TBA tba = new TBA();
+            Settings.FIND_TEAM_RANKINGS = true;
+
+//            Event e = tba.getEvent(Pearadox.FRC_Event, 2017);
+            Event e = tba.getEvent("txlu", 2017);
+            // Print general event info
+            System.out.println(e.name);
+            System.out.println(e.location);
+            System.out.println(e.start_date);
+            System.out.println("\n");
+
+            // Display top three teams name + rank + score
+            for(int i = 0; i < 3; i++) {
+                System.out.println("Name: "+e.teams[i].name+" Rank: "+e.teams[i].rank+" Score: "+e.teams[i].rankingScore);
+            }
+            System.out.println("\n");
+
+
+            }
+        });
+
+        btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.i(TAG, "  btn_Teams setOnClickListener  ");
+                Toast.makeText(getBaseContext(), "*** Not QUITE implemented just yet  ***", Toast.LENGTH_LONG).show();
+
+            }
+        });
 
     }
 
 
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 private class event_OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
     public void onItemSelected(AdapterView<?> parent,
                                View view, int pos, long id) {
