@@ -1,5 +1,6 @@
 package com.pearadox.yg_alliance;
 
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.i(TAG, "******* Starting Yellow-Green Alliance  *******");
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+        StrictMode.setThreadPolicy(policy);
+
         Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
         String[] events = getResources().getStringArray(R.array.event_array);
         adapter_Event = new ArrayAdapter<String>(this, R.layout.list_layout, events);
@@ -46,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
             TBA tba = new TBA();
             Settings.FIND_TEAM_RANKINGS = true;
 
-//            Event e = tba.getEvent(Pearadox.FRC_Event, 2017);
-            Event e = tba.getEvent("txlu", 2017);
+            Event e = tba.getEvent(Pearadox.FRC_Event, 2017);
             // Print general event info
             System.out.println(e.name);
             System.out.println(e.location);
@@ -121,7 +124,7 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "OnDestroy key-> ");
+        Log.v(TAG, "OnDestroy ");
     }
 
 }
