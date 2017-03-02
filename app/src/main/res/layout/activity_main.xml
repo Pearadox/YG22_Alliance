@@ -81,7 +81,7 @@
         android:contentDescription="Pearadox logo"
         android:src="@drawable/yg_alliance"
         tools:ignore="HardcodedText"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="16dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/btn_Match_Sched" />
 
