@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.cpjd.main.Settings;
 import com.cpjd.main.TBA;
 import com.cpjd.models.Event;
+import com.cpjd.models.Match;
+import com.cpjd.models.Team;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +51,12 @@ public class MainActivity extends AppCompatActivity {
             TBA.setID("Pearadox", "YG_Alliance", "V1");
             TBA tba = new TBA();
             Settings.FIND_TEAM_RANKINGS = true;
+            Settings.GET_EVENT_TEAMS = true;
+            Settings.GET_EVENT_MATCHES = true;
+            Settings.GET_EVENT_ALLIANCES = true;
+            Settings.GET_EVENT_AWARDS = true;
 
+            Log.d(TAG, "*** Event ***");
             Event e = tba.getEvent(Pearadox.FRC_Event, 2017);
             // Print general event info
             System.out.println(e.name);
@@ -58,11 +65,23 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("\n");
 
             // Display top three teams name + rank + score
-            for(int i = 0; i < 3; i++) {
-                System.out.println("Name: "+e.teams[i].name+" Rank: "+e.teams[i].rank+" Score: "+e.teams[i].rankingScore);
-            }
-            System.out.println("\n");
+//            for(int i = 0; i < 3; i++) {
+//                System.out.println("Name: "+e.teams[i].name+" Rank: "+e.teams[i].rank+" Score: "+e.teams[i].rankingScore);
+//            }
+//            System.out.println("\n");
 
+            Log.d(TAG, "*** Team ***");
+            Team[] teams = tba.getTeams(Pearadox.FRC_Event, 2017);
+
+            Log.d(TAG, "*** Match ***");
+            Event event = new TBA().getEvent("2016" + Pearadox.FRC_Event);
+            Match[] matches = event.matches;
+            Log.d(TAG, " array size = " + matches.length);
+            for(int i = 0; i < matches.length; i++) {
+                // The comp level variable should include an indentifier for whether it's practice, qualifying, or playoff, let me know if you need more help on this
+                // Just print some general information, you can add more variables if you want, just use matches[i].var
+                System.out.println("Match name: "+matches[i].comp_level + " Set number: "+matches[i].set_number+" Time (in ms): "+matches[i].time);
+            }
 
             }
         });
