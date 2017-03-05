@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 // === DEBUG  ===
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cpjd.main.Settings;
@@ -18,10 +19,13 @@ import com.cpjd.models.Event;
 import com.cpjd.models.Match;
 import com.cpjd.models.Team;
 
+import static android.icu.lang.UCharacter.toUpperCase;
+
 public class MainActivity extends AppCompatActivity {
 
     String TAG = "MainActivity";        // This CLASS name
     Spinner spinner_Device, spinner_Event;
+    TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
     Button btn_Teams, btn_Match_Sched;
 
@@ -44,25 +48,26 @@ public class MainActivity extends AppCompatActivity {
 
         btn_Teams = (Button) findViewById(R.id.btn_Teams);
         btn_Match_Sched = (Button) findViewById(R.id.btn_Match_Sched);
+        txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
+        txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
+        txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
+        txt_EvntCod.setText("");   // Event Code
+        txt_EvntDat.setText("");                      // Event Date
+        txt_EvntPlace.setText("");                      // Event Location
+
+        TBA.setID("Pearadox", "YG_Alliance", "V1");
+        final TBA tba = new TBA();
+        Settings.FIND_TEAM_RANKINGS = true;
+        Settings.GET_EVENT_TEAMS = true;
+        Settings.GET_EVENT_MATCHES = true;
+        Settings.GET_EVENT_ALLIANCES = true;
+        Settings.GET_EVENT_AWARDS = true;
+
+        Event e = tba.getEvent("txwa", 2017);
 
         btn_Teams.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             Log.i(TAG, "  btn_Teams setOnClickListener  ");
-            TBA.setID("Pearadox", "YG_Alliance", "V1");
-            TBA tba = new TBA();
-            Settings.FIND_TEAM_RANKINGS = true;
-            Settings.GET_EVENT_TEAMS = true;
-            Settings.GET_EVENT_MATCHES = true;
-            Settings.GET_EVENT_ALLIANCES = true;
-            Settings.GET_EVENT_AWARDS = true;
-
-            Log.d(TAG, "*** Event ***");
-            Event e = tba.getEvent(Pearadox.FRC_Event, 2017);
-            // Print general event info
-            System.out.println(e.name);
-            System.out.println(e.location);
-            System.out.println(e.start_date);
-            System.out.println("\n");
 
             // Display top three teams name + rank + score
 //            for(int i = 0; i < 3; i++) {
@@ -72,16 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d(TAG, "*** Team ***");
             Team[] teams = tba.getTeams(Pearadox.FRC_Event, 2017);
-
-            Log.d(TAG, "*** Match ***");
-            Event event = new TBA().getEvent("2016" + Pearadox.FRC_Event);
-            Match[] matches = event.matches;
-            Log.d(TAG, " array size = " + matches.length);
-            for(int i = 0; i < matches.length; i++) {
-                // The comp level variable should include an indentifier for whether it's practice, qualifying, or playoff, let me know if you need more help on this
-                // Just print some general information, you can add more variables if you want, just use matches[i].var
-                System.out.println("Match name: "+matches[i].comp_level + " Set number: "+matches[i].set_number+" Time (in ms): "+matches[i].time);
-            }
+            Log.d(TAG, " Team array size = " + teams.length);
 
             }
         });
@@ -91,7 +87,17 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "  btn_Teams setOnClickListener  ");
                 Toast.makeText(getBaseContext(), "*** Not QUITE implemented just yet  ***", Toast.LENGTH_LONG).show();
 
-            }
+                Log.d(TAG, "*** Match ***");
+                Event event = new TBA().getEvent("2017" + Pearadox.FRC_Event);
+                Match[] matches = event.matches;
+                Log.d(TAG, " array size = " + matches.length);
+                if (matches.length > 0)
+                    for (int i = 0; i < matches.length; i++) {
+                        // The comp level variable should include an indentifier for whether it's practice, qualifying, or playoff, let me know if you need more help on this
+                        // Just print some general information, you can add more variables if you want, just use matches[i].var
+                        System.out.println("Match name: " + matches[i].comp_level + " Set number: " + matches[i].set_number + " Time (in ms): " + matches[i].time);
+                    }
+                }
         });
 
     }
@@ -119,6 +125,21 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                 Pearadox.FRC_Event = "zzzz";
         }
         Log.d(TAG, " Event code = '" + Pearadox.FRC_Event + "'");
+        Log.d(TAG, "*** Event ***");
+        Event e = new TBA().getEvent("2017" + Pearadox.FRC_Event);
+        // Print general event info
+        System.out.println(e.name);
+        System.out.println(e.location);
+        System.out.println(e.start_date);
+        System.out.println("\n");
+        txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
+        txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
+        txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
+        txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
+        txt_EvntDat.setText(e.start_date);                      // Event Date
+        txt_EvntPlace.setText(e.location);                      // Event Location
+
+
     }
     public void onNothingSelected(AdapterView<?> parent) {
         // Do nothing.

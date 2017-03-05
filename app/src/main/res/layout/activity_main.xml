@@ -14,6 +14,18 @@
     /* ======================================================*/
 
     <ImageView
+        android:id="@+id/imgView_YG_Alliance"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="Pearadox logo"
+        android:src="@drawable/yg_alliance"
+        tools:ignore="HardcodedText"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/btn_Match_Sched" />
+
+    <ImageView
         android:layout_width="100sp"
         android:layout_height="100sp"
         app:srcCompat="@drawable/first_logo"
@@ -21,11 +33,20 @@
         android:layout_alignBottom="@+id/imgView_YG_Alliance"
         android:layout_alignParentStart="true" />
 
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/blue_alliance"
+        android:id="@+id/imgView_BLUE"
+        android:layout_alignBottom="@+id/imgView_YG_Alliance"
+        android:layout_alignParentEnd="true" />
+
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
     <Spinner
         android:id="@+id/spinner_Event"
-        android:layout_width="200dp"
+        android:layout_width="240dp"
         android:layout_height="35dp"
         android:prompt="@string/event_prompt"
         android:layout_marginLeft="21dp"
@@ -47,22 +68,37 @@
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
+    <TextView
+        android:id="@+id/txt_EvntCod"
+        android:text="TXLU"
+        android:layout_width="50sp"
+        android:layout_height="35sp"
+        android:textSize="16sp"
+        android:textColor="@color/green"
+        android:layout_below="@+id/lbl_Event"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_EvntDat"
+        android:text="date that the Event happens"
+        android:layout_width="180sp"
+        android:layout_height="35sp"
+        android:textSize="16sp"
+        android:textColor="@color/green"
+        android:layout_below="@+id/spinner_Event"
+        android:layout_alignStart="@+id/spinner_Event"
+        android:layout_toStartOf="@+id/txt_EvntPlace"
+        android:layout_alignEnd="@+id/spinner_Event" />
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
     <Button
         android:text="  Team  List  "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="171dp"
         android:id="@+id/btn_Teams"
-        android:layout_below="@+id/spinner_Event"
-        android:layout_alignEnd="@+id/imgView_FIRST" />
-
-    <ImageView
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        app:srcCompat="@drawable/blue_alliance"
-        android:id="@+id/imgView_BLUE"
-        android:layout_alignBottom="@+id/imgView_YG_Alliance"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/spinner_Event" />
 
     <Button
         android:text="Match Schedule"
@@ -73,17 +109,17 @@
         android:layout_alignBottom="@+id/btn_Teams"
         android:layout_toEndOf="@+id/btn_Teams" />
 
-    <ImageView
-        android:id="@+id/imgView_YG_Alliance"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="Pearadox logo"
-        android:src="@drawable/yg_alliance"
-        tools:ignore="HardcodedText"
-        android:layout_marginStart="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/btn_Match_Sched" />
+    <TextView
+        android:id="@+id/txt_EvntPlace"
+        android:text="Waco, TX , USA"
+        android:layout_width="240sp"
+        android:layout_height="35sp"
+        android:textSize="16sp"
+        android:textColor="@color/green"
+        android:layout_marginStart="20dp"
+        android:layout_alignBaseline="@+id/txt_EvntDat"
+        android:layout_alignBottom="@+id/txt_EvntDat"
+        android:layout_toEndOf="@+id/spinner_Event" />
 
 
 </RelativeLayout>
