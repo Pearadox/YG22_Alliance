@@ -1,8 +1,10 @@
 package com.pearadox.yg_alliance;
 
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +20,12 @@ import com.cpjd.main.TBA;
 import com.cpjd.models.Event;
 import com.cpjd.models.Match;
 import com.cpjd.models.Team;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import static android.icu.lang.UCharacter.toUpperCase;
 
@@ -37,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
+
+        preReqs(); 				        // Check for pre-requisites
 
         Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
         String[] events = getResources().getStringArray(R.array.event_array);
@@ -65,23 +75,58 @@ public class MainActivity extends AppCompatActivity {
 
         Event e = tba.getEvent("txwa", 2017);
 
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Teams.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            Log.i(TAG, "  btn_Teams setOnClickListener  ");
+                Log.i(TAG, "  btn_Teams setOnClickListener  ");
 
-            // Display top three teams name + rank + score
+                // Display top three teams name + rank + score
 //            for(int i = 0; i < 3; i++) {
 //                System.out.println("Name: "+e.teams[i].name+" Rank: "+e.teams[i].rank+" Score: "+e.teams[i].rankingScore);
 //            }
 //            System.out.println("\n");
 
-            Log.d(TAG, "*** Team ***");
-            Team[] teams = tba.getTeams(Pearadox.FRC_Event, 2017);
-            Log.d(TAG, " Team array size = " + teams.length);
+                Log.d(TAG, "*** Team ***");
+                Team[] teams = tba.getTeams(Pearadox.FRC_Event, 2017);
+                Log.d(TAG, " Team array size = " + teams.length);
+                String destFile = Pearadox.FRC_Event + "_Teams" + ".json";
+                try {
+                    File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+                    BufferedWriter bW;
+                    bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+                    bW.write("[" + "\n");
+                    for (int i = 0; i < teams.length; i++) {
+                        String tnum = String.format("%1$4s",teams[i].team_number);
+                        Log.d(TAG, " Team = " + tnum);
+                        bW.write("    {    \"team_num\":\"" +  tnum + "\", " + "\n");
+                        bW.write("         \"team_name\":\"" +  teams[i].nickname + "\", " + "\n");
+                        bW.write("         \"team_loc\":\"" +  teams[i].location + "\" " + "\n");
 
+                        if (i == teams.length -1) {       // Last one?
+                            bW.write("    } " + "\n");
+                        }  else {
+                            bW.write("    }," + "\n");
+                        }
+                    } // end For # teams
+                    //=====================================================================
+
+                    bW.write("]" + "\n");
+                    bW.write(" " + "\n");
+                    bW.flush();
+                    bW.close();
+                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file written to SD card ***" , Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } catch (FileNotFoundException ex) {
+                    System.out.println(ex.getMessage() + " not found in the specified directory.");
+                    System.exit(0);
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         });
 
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.i(TAG, "  btn_Teams setOnClickListener  ");
@@ -102,8 +147,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void preReqs() {
+        boolean isSdPresent;
+        isSdPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+        Log.d(TAG, "SD card: " + isSdPresent);
+        if (isSdPresent) {        // Make sure FRC directory is there
+            File extStore = Environment.getExternalStorageDirectory();
+            File directFRC = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414");
+            if (!directFRC.exists()) {
+                if (directFRC.mkdir()) {
+                }        //directory is created;
+            }
+            Log.i(TAG, "FRC files created");
+//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Files initialied ***" , Toast.LENGTH_LONG);
+//        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//        toast.show();
+        }  else {
+            Toast.makeText(getBaseContext(), "There is no SD card available", Toast.LENGTH_LONG).show();
+        }
+    }
 
-    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 private class event_OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
     public void onItemSelected(AdapterView<?> parent,
                                View view, int pos, long id) {
