@@ -46,13 +46,13 @@
 
     <Spinner
         android:id="@+id/spinner_Event"
-        android:layout_width="240dp"
+        android:layout_width="260dp"
         android:layout_height="35dp"
-        android:prompt="@string/event_prompt"
-        android:layout_marginLeft="21dp"
         android:layout_alignTop="@+id/lbl_Event"
-        android:layout_toEndOf="@+id/lbl_Event"
+        android:layout_marginLeft="21dp"
         android:layout_marginStart="14dp"
+        android:layout_toEndOf="@+id/lbl_Event"
+        android:prompt="@string/event_prompt"
         tools:ignore="RtlHardcoded" />
 
     <TextView
@@ -116,10 +116,8 @@
         android:layout_height="35sp"
         android:textSize="16sp"
         android:textColor="@color/green"
-        android:layout_marginStart="20dp"
-        android:layout_alignBaseline="@+id/txt_EvntDat"
-        android:layout_alignBottom="@+id/txt_EvntDat"
-        android:layout_toEndOf="@+id/spinner_Event" />
+        android:layout_below="@+id/txt_EvntCod"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
