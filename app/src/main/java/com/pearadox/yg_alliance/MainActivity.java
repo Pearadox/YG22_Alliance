@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 
 import static android.icu.lang.UCharacter.toUpperCase;
 
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
     Button btn_Teams, btn_Match_Sched;
+    public String[] teamsRed;
+    public String[] teamsBlue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +83,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(TAG, "  btn_Teams setOnClickListener  ");
 
-                // Display top three teams name + rank + score
-//            for(int i = 0; i < 3; i++) {
-//                System.out.println("Name: "+e.teams[i].name+" Rank: "+e.teams[i].rank+" Score: "+e.teams[i].rankingScore);
-//            }
-//            System.out.println("\n");
-
-                Log.d(TAG, "*** Team ***");
                 Team[] teams = tba.getTeams(Pearadox.FRC_Event, 2017);
                 Log.d(TAG, " Team array size = " + teams.length);
                 String destFile = Pearadox.FRC_Event + "_Teams" + ".json";
@@ -130,20 +126,62 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.i(TAG, "  btn_Teams setOnClickListener  ");
-                Toast.makeText(getBaseContext(), "*** Not QUITE implemented just yet  ***", Toast.LENGTH_LONG).show();
-
-                Log.d(TAG, "*** Match ***");
                 Event event = new TBA().getEvent("2017" + Pearadox.FRC_Event);
                 Match[] matches = event.matches;
-                Log.d(TAG, " array size = " + matches.length);
+                Log.d(TAG, " Matches size = " + matches.length);
+                int qm;
+                String mn, r1, r2, r3, b1, b2, b3;
+                String matchFile = Pearadox.FRC_Event + "_Match-Sched" + ".json";
                 if (matches.length > 0)
-                    for (int i = 0; i < matches.length; i++) {
-                        // The comp level variable should include an indentifier for whether it's practice, qualifying, or playoff, let me know if you need more help on this
-                        // Just print some general information, you can add more variables if you want, just use matches[i].var
-                        System.out.println("Match name: " + matches[i].comp_level + " Set number: " + matches[i].set_number + " Time (in ms): " + matches[i].time);
+                    // The comp level variable includes an indentifier for whether it's practice, qualifying, or playoff
+                    try {
+                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + matchFile);
+                        BufferedWriter bW;
+                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+                        bW.write("[" + "\n");
+                        for (int i = 0; i < matches.length; i++) {
+                            if (matches[i].comp_level == "qm") {
+                                bW.write(" {\"time\":\"" + matches[i].time_string + "\", ");
+                                mn = String.valueOf(matches[i].match_number);
+                                qm = mn.indexOf("_qm");
+                                bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn.substring(qm+3, mn.length()) + "\", ");
+                                teamsRed = matches[i].redTeams.clone();
+                                r1 = teamsRed[0].substring(3, teamsRed[0].length());
+                                if (r1.length() < 4) {r1 = " " + r1;}
+                                r2 = teamsRed[1].substring(3, teamsRed[1].length());
+                                if (r2.length() < 4) {r2 = " " + r2;}
+                                r3 = teamsRed[2].substring(3, teamsRed[2].length());
+                                if (r3.length() < 4) {r3 = " " + r3;}
+                                bW.write("  \"r1\":\"" + r1 + "\",  \"r2\": \"" + r2 + "\", \"r3\":\"" + r3 + "\", ");
+                                teamsBlue = matches[i].blueTeams.clone();
+                                b1 = teamsBlue[0].substring(3, teamsBlue[0].length());
+                                if (b1.length() < 4) {b1 = " " + b1;}
+                                b2 = teamsBlue[1].substring(3, teamsBlue[1].length());
+                                if (b2.length() < 4) {b2 = " " + b2;}
+                                b3 = teamsBlue[2].substring(3, teamsBlue[2].length());
+                                if (b3.length() < 4) {b3 = " " + b3;}
+                                bW.write("  \"b1\":\"" + b1 + "\",  \"b2\": \"" + b2 + "\", \"b3\":\"" + b3 + "\"");
+                                bW.write("}" + "\n");
+                            }
+                        }
+                        //=====================================================================
+
+                        bW.write("]" + "\n");
+                        bW.write(" " + "\n");
+                        bW.flush();
+                        bW.close();
+                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Matches file written to SD card ***" , Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    } catch (FileNotFoundException ex) {
+                        System.out.println(ex.getMessage() + " not found in the specified directory.");
+                        System.exit(0);
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
                     }
                 }
-        });
+        }
+        );
 
     }
 
