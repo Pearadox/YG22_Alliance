@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 int qm;
                 String mn, r1, r2, r3, b1, b2, b3;
                 String matchFile = Pearadox.FRC_Event + "_Match-Sched" + ".json";
-                if (matches.length > 0)
+                if (matches.length > 0) {
                     // The comp level variable includes an indentifier for whether it's practice, qualifying, or playoff
                     try {
                         File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + matchFile);
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println(matches[i].time_string);
                                 System.out.println(matches[i].key);
                             }
-                        }
+                        }  // end For # matches
                         //=====================================================================
 
                         bW.write("]" + "\n");
@@ -192,11 +192,14 @@ public class MainActivity extends AppCompatActivity {
                         System.exit(0);
                     } catch (IOException e) {
                         System.out.println(e.getMessage());
-                    }
+                    }  // end Try/Catch
+                }  else {
+                    Toast toast = Toast.makeText(getBaseContext(), "☆☆☆ No Match data exists for this event yet (too early!)  ☆☆☆" , Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
                 }
-        }
-        );
-
+            }
+        });
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
