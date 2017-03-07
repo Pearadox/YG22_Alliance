@@ -140,19 +140,22 @@ public class MainActivity extends AppCompatActivity {
                         bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
                         bW.write("[" + "\n");
                         for (int i = 0; i < matches.length; i++) {
-                            if (matches[i].comp_level == "qm") {
+                            Log.d(TAG, " Comp = " + matches[i].comp_level);
+                            if (matches[i].comp_level.matches("qm")) {
                                 bW.write(" {\"time\":\"" + matches[i].time_string + "\", ");
                                 mn = String.valueOf(matches[i].match_number);
-                                qm = mn.indexOf("_qm");
-                                bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn.substring(qm+3, mn.length()) + "\", ");
+                                if (mn.length() < 2) {mn = "0" + mn;}   // make it at least 2-digits
+                                Log.d(TAG, " match# = " + mn);
+                                bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn + "\", ");
                                 teamsRed = matches[i].redTeams.clone();
                                 r1 = teamsRed[0].substring(3, teamsRed[0].length());
                                 if (r1.length() < 4) {r1 = " " + r1;}
+                                Log.d(TAG, " R1 = " + r1);
                                 r2 = teamsRed[1].substring(3, teamsRed[1].length());
                                 if (r2.length() < 4) {r2 = " " + r2;}
                                 r3 = teamsRed[2].substring(3, teamsRed[2].length());
                                 if (r3.length() < 4) {r3 = " " + r3;}
-                                bW.write("  \"r1\":\"" + r1 + "\",  \"r2\": \"" + r2 + "\", \"r3\":\"" + r3 + "\", ");
+                                bW.write(" \"r1\":\"" + r1 + "\",  \"r2\": \"" + r2 + "\", \"r3\":\"" + r3 + "\",");
                                 teamsBlue = matches[i].blueTeams.clone();
                                 b1 = teamsBlue[0].substring(3, teamsBlue[0].length());
                                 if (b1.length() < 4) {b1 = " " + b1;}
@@ -160,8 +163,19 @@ public class MainActivity extends AppCompatActivity {
                                 if (b2.length() < 4) {b2 = " " + b2;}
                                 b3 = teamsBlue[2].substring(3, teamsBlue[2].length());
                                 if (b3.length() < 4) {b3 = " " + b3;}
-                                bW.write("  \"b1\":\"" + b1 + "\",  \"b2\": \"" + b2 + "\", \"b3\":\"" + b3 + "\"");
-                                bW.write("}" + "\n");
+                                bW.write(" \"b1\":\"" + b1 + "\",  \"b2\": \"" + b2 + "\", \"b3\":\"" + b3 + "\"");
+
+                                if (i == matches.length -1) {       // Last one?
+                                    bW.write("} " + "\n");
+                                }  else {
+                                    bW.write("}," + "\n");
+                                }
+                            }  else {
+                                Log.d(TAG, "******* NOT 'qm' ********* " );
+                                System.out.println(matches[i].set_number);
+                                System.out.println(matches[i].event_key);
+                                System.out.println(matches[i].time_string);
+                                System.out.println(matches[i].key);
                             }
                         }
                         //=====================================================================
