@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.icu.lang.UCharacter.toUpperCase;
@@ -125,10 +127,23 @@ public class MainActivity extends AppCompatActivity {
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i(TAG, "  btn_Teams setOnClickListener  ");
+                Log.i(TAG, "  btn_Match_Sched setOnClickListener  ");
                 Event event = new TBA().getEvent("2017" + Pearadox.FRC_Event);
                 Match[] matches = event.matches;
                 Log.d(TAG, " Matches size = " + matches.length);
+
+                //----------------------------------------
+                System.out.println("Match name: "+matches[0].comp_level + " Time: "+matches[0].time_string + " Time (long in ms): " +matches[0].time);
+                Date date1 = new Date(matches[0].time);
+                DateFormat formatter1 = new SimpleDateFormat("HH:mm:ss:SSS");
+                String dateFormatted = formatter1.format(date1);
+                Log.e(TAG, " Time = "  + dateFormatted);
+                System.out.println("Match name: "+matches[3].comp_level + " Time: "+matches[3].time_string + " Time (long in ms): " +matches[3].time);
+                Date date2 = new Date(matches[3].time);
+                DateFormat formatter2 = new SimpleDateFormat("HH:mm");
+                String dateFormatted2 = formatter2.format(date2);
+                Log.e(TAG, " Time = "  + dateFormatted2);
+                //----------------------------------------
                 int qm;
                 String mn, r1, r2, r3, b1, b2, b3;
                 String matchFile = Pearadox.FRC_Event + "_Match-Sched" + ".json";
