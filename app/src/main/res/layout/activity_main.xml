@@ -13,111 +13,157 @@
 
     /* ======================================================*/
 
-    <ImageView
-        android:id="@+id/imgView_YG_Alliance"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="Pearadox logo"
-        android:src="@drawable/yg_alliance"
-        tools:ignore="HardcodedText"
-        android:layout_marginStart="16dp"
+    <LinearLayout
+        android:id="@+id/layout_logos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/btn_Match_Sched" />
+        android:layout_alignParentStart="true">
 
-    <ImageView
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        app:srcCompat="@drawable/first_logo"
-        android:id="@+id/imgView_FIRST"
-        android:layout_alignBottom="@+id/imgView_YG_Alliance"
-        android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/imgView_FIRST"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:layout_alignBottom="@+id/imgView_YG_Alliance"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="left|start"
+            android:textAlignment="textStart"
+            app:srcCompat="@drawable/first_logo"
+            tools:layout_weight=".1" />
 
 
-    <ImageView
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        app:srcCompat="@drawable/blue_alliance"
-        android:id="@+id/imgView_BLUE"
-        android:layout_alignBottom="@+id/imgView_YG_Alliance"
-        android:layout_alignParentEnd="true" />
+        <ImageView
+            android:id="@+id/imgView_YG_Alliance"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="fill_horizontal"
+            android:layout_toEndOf="@+id/txt_EvntPlace"
+            android:contentDescription="Pearadox logo"
+            android:src="@drawable/yg_alliance"
+            tools:ignore="HardcodedText"
+            tools:layout_weight="1" />
 
-    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-
-    <Spinner
-        android:id="@+id/spinner_Event"
-        android:layout_width="260dp"
-        android:layout_height="35dp"
-        android:layout_alignTop="@+id/lbl_Event"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="14dp"
-        android:layout_toEndOf="@+id/lbl_Event"
-        android:prompt="@string/event_prompt"
-        tools:ignore="RtlHardcoded" />
-
-    <TextView
-        android:id="@+id/lbl_Event"
-        android:layout_width="50sp"
-        android:layout_height="35sp"
-        android:textSize="18sp"
-        android:textColor="@color/darkgreen"
-        android:text="Event"
-        android:layout_marginTop="60dp"
-        tools:ignore="HardcodedText"
-        android:layout_below="@+id/imgView_FIRST" />
+        <ImageView
+            android:id="@+id/imgView_BLUE"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:layout_alignBottom="@+id/imgView_YG_Alliance"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="right|end"
+            tools:layout_weight=".1"
+            app:srcCompat="@drawable/blue_alliance" />
+    </LinearLayout>
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
-    <TextView
-        android:id="@+id/txt_EvntCod"
-        android:text="TXLU"
-        android:layout_width="50sp"
-        android:layout_height="35sp"
-        android:textSize="16sp"
-        android:textColor="@color/green"
-        android:layout_below="@+id/lbl_Event"
-        android:layout_alignParentStart="true" />
+    <!--<LinearLayout-->
+        <!--android:id="@+id/layout_event"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_marginTop="13dp"-->
+        <!--android:layout_below="@+id/layout_logos"-->
+        <!--android:layout_alignParentStart="true">-->
 
-    <TextView
-        android:id="@+id/txt_EvntDat"
-        android:text="date that the Event happens"
-        android:layout_width="180sp"
-        android:layout_height="35sp"
-        android:textSize="16sp"
-        android:textColor="@color/green"
-        android:layout_below="@+id/spinner_Event"
-        android:layout_alignStart="@+id/spinner_Event"
-        android:layout_toStartOf="@+id/txt_EvntPlace"
-        android:layout_alignEnd="@+id/spinner_Event" />
+        <Spinner
+            android:id="@+id/spinner_Event"
+            android:layout_width="260dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="21dp"
+            android:prompt="@string/event_prompt"
+            tools:ignore="RtlHardcoded"
+            android:layout_below="@+id/layout_logos"
+            android:layout_toEndOf="@+id/txt_EvntCod"
+            android:layout_marginStart="28dp" />
+
+        <TextView
+            android:id="@+id/lbl_Event"
+            android:layout_width="50sp"
+            android:layout_height="35sp"
+            android:text="Event"
+            android:textColor="@color/darkgreen"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText"
+            android:layout_below="@+id/layout_logos"
+            android:layout_alignParentStart="true" />
+
+        /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+        <TextView
+            android:id="@+id/txt_EvntCod"
+            android:layout_width="50sp"
+            android:layout_height="35sp"
+            android:text="TXLU"
+            android:textColor="@color/green"
+            android:textSize="16sp"
+            android:layout_below="@+id/lbl_Event"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/txt_EvntPlace"
+            android:layout_width="240sp"
+            android:layout_height="35sp"
+            android:layout_weight="1"
+            android:text="Waco, TX , USA"
+            android:textColor="@color/green"
+            android:textSize="16sp"
+            android:layout_below="@+id/txt_EvntCod"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/txt_EvntDat"
+            android:layout_width="180sp"
+            android:layout_height="35sp"
+            android:text="date that the Event happens"
+            android:textColor="@color/green"
+            android:textSize="16sp"
+            android:layout_below="@+id/spinner_Event"
+            android:layout_alignStart="@+id/spinner_Event" />
+
+    <!--</LinearLayout>-->
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100sp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_marginBottom="89dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentStart="true">-->
 
     <Button
-        android:text="  Team  List  "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="171dp"
         android:id="@+id/btn_Teams"
-        android:layout_below="@+id/spinner_Event" />
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="left|start"
+        android:layout_marginBottom="37dp"
+        android:text="  Team \n   List  " />
 
     <Button
-        android:text="Match Schedule"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/btn_Match_Sched"
-        android:layout_marginStart="84dp"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_Teams"
         android:layout_alignBottom="@+id/btn_Teams"
-        android:layout_toEndOf="@+id/btn_Teams" />
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:text="Match Schedule" />
 
-    <TextView
-        android:id="@+id/txt_EvntPlace"
-        android:text="Waco, TX , USA"
-        android:layout_width="240sp"
-        android:layout_height="35sp"
-        android:textSize="16sp"
-        android:textColor="@color/green"
-        android:layout_below="@+id/txt_EvntCod"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/btn_Spreadsheet"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            android:text="Match Data Spreadsheet"
+            android:layout_alignBottom="@+id/btn_Match_Sched"
+            android:layout_alignParentEnd="true" />
+
+    <!--</LinearLayout>-->
 
 
 </RelativeLayout>
