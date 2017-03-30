@@ -70,7 +70,7 @@
         <Spinner
             android:id="@+id/spinner_Event"
             android:layout_width="260dp"
-            android:layout_height="35dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="21dp"
             android:prompt="@string/event_prompt"
             tools:ignore="RtlHardcoded"
@@ -81,7 +81,7 @@
         <TextView
             android:id="@+id/lbl_Event"
             android:layout_width="50sp"
-            android:layout_height="35sp"
+            android:layout_height="25sp"
             android:text="Event"
             android:textColor="@color/darkgreen"
             android:textSize="18sp"
@@ -94,7 +94,7 @@
         <TextView
             android:id="@+id/txt_EvntCod"
             android:layout_width="50sp"
-            android:layout_height="35sp"
+            android:layout_height="25sp"
             android:text="TXLU"
             android:textColor="@color/green"
             android:textSize="16sp"
@@ -104,7 +104,7 @@
         <TextView
             android:id="@+id/txt_EvntPlace"
             android:layout_width="240sp"
-            android:layout_height="35sp"
+            android:layout_height="25sp"
             android:layout_weight="1"
             android:text="Waco, TX , USA"
             android:textColor="@color/green"
@@ -115,7 +115,7 @@
         <TextView
             android:id="@+id/txt_EvntDat"
             android:layout_width="180sp"
-            android:layout_height="35sp"
+            android:layout_height="25sp"
             android:text="date that the Event happens"
             android:textColor="@color/green"
             android:textSize="16sp"

@@ -245,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
         Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
         toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast1.show();
+        String new_comm="";
 
         String destFile = Pearadox.FRC_Event + "_MatchData" + ".csv";
         try {
@@ -271,13 +272,18 @@ public class MainActivity extends AppCompatActivity {
                 //----- Auto -----
                 bW.write(match_inst.isAuto_mode() + "," + match_inst.isAuto_rope() + "," + match_inst.isAuto_carry_fuel() + "," + match_inst.getAuto_fuel_amount() + "," + match_inst.isAuto_gear() + "," + match_inst.getAuto_start() + "," );
                 bW.write(match_inst.isAuto_baseline() + "," + match_inst.getAuto_gears_placed() + "," + match_inst.getAuto_gears_attempt() + "," + match_inst.getAuto_gear_pos() + "," + match_inst.isAuto_hg() + "," + match_inst.getAuto_hg_percent() + "," + match_inst.isAuto_lg() + "," + match_inst.getAuto_lg_percent() + "," );
-                bW.write(match_inst.isAuto_act_hopper() + "," + match_inst.getAuto_fuel_collected() + "," + match_inst.getAuto_stop() + "," + match_inst.getAuto_comment() + "," + "|" + "," );
+                new_comm = removeLine(match_inst.getAuto_comment());
+                bW.write(match_inst.isAuto_act_hopper() + "," + match_inst.getAuto_fuel_collected() + "," + match_inst.getAuto_stop() + "," + new_comm + "," + "|" + "," );
                 //----- Tele -----
                 bW.write(match_inst.isTele_gear_pickup() + "," + match_inst.getTele_gears_placed() + "," + match_inst.getTele_gears_attempt() + "," + match_inst.getTele_cycles() + "," + match_inst.isTele_hg() + "," + match_inst.getTele_hg_percent() + "," + match_inst.isTele_lg() + "," + match_inst.getTele_lg_percent() +",");
-                bW.write(match_inst.isTele_climb_attempt() + "," + match_inst.isTele_touch_act() + "," + match_inst.isTele_climb_success() + "," + match_inst.getTele_comment() + "," + "|" + "," );
+                String y = match_inst.getTele_comment();
+                new_comm = removeLine(match_inst.getTele_comment());
+                bW.write(match_inst.isTele_climb_attempt() + "," + match_inst.isTele_touch_act() + "," + match_inst.isTele_climb_success() + "," + new_comm + "," + "|" + "," );
                 //----- Final -----
                 bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms()+ "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_Hopper()+ "," + match_inst.isFinal_def_Gear() +",");
-                bW.write(match_inst.getFinal_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + match_inst.getFinal_comment() + "," + "||" + "," + match_inst.getFinal_studID());
+                String x = match_inst.getFinal_comment();
+                new_comm = removeLine(match_inst.getFinal_comment());
+                bW.write(match_inst.getFinal_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + new_comm + "," + "||" + "," + match_inst.getFinal_studID());
                 //-----------------
                 bW.write(" " + "\n");
             } // End For
@@ -300,12 +306,24 @@ public class MainActivity extends AppCompatActivity {
     });
 }
 
+    private String removeLine(String comment) {
+        String x = "";
+        if (comment.contains(",")) {
+//            Log.w(TAG, " %$^&#!! COMMA  " + match_inst.getMatch() + "," + match_inst.getTeam_num() + "[" + comment + "]");
+//            int Comma = comment.indexOf(",");
+            x = comment.replaceAll(",", ";");
+//            x = comment.substring(0, Comma) +"•"+  comment.substring(Comma + 1);
+//            Log.w(TAG, "X: '" + x + "'");
+        }
+        return x;
+    }
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void preReqs() {
         boolean isSdPresent;
         isSdPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-        Log.d(TAG, "SD card: " + isSdPresent);
+        Log.w(TAG, "SD card: " + isSdPresent);
         if (isSdPresent) {        // Make sure FRC directory is there
             File extStore = Environment.getExternalStorageDirectory();
             File directFRC = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414");
