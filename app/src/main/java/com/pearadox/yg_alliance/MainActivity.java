@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     bW.write(" " + "\n");
                     bW.flush();
                     bW.close();
-                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file written to SD card ***" , Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to SD card ***" , Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 } catch (FileNotFoundException ex) {
@@ -348,6 +348,9 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         Pearadox.FRC_EventName = ev;
         Log.d(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
         switch (ev) {
+            case "FIRST Championship (Houston)":          // txwa
+                Pearadox.FRC_Event = "cmptx";
+                break;
             case "Brazos Valley Regional":          // txwa
                 Pearadox.FRC_Event = "txwa";
                 break;
