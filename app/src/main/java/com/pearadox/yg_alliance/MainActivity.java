@@ -1,5 +1,6 @@
 package com.pearadox.yg_alliance;
 
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Environment;
@@ -43,6 +44,7 @@ import static android.icu.lang.UCharacter.toUpperCase;
 public class MainActivity extends AppCompatActivity {
 
     String TAG = "MainActivity";        // This CLASS name
+    String Pearadox_Version = " ";      // initialize
     Spinner spinner_Device, spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
@@ -58,6 +60,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i(TAG, "******* Starting Yellow-Green Alliance  *******");
+
+        try {
+            Pearadox_Version = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, e.getMessage());
+        }
+        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2017  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
@@ -97,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(TAG, "  btn_Teams setOnClickListener  ");
 
-                Team[] teams = tba.getTeams(Pearadox.FRC_Event, 2017);
+                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2017);
                 Log.d(TAG, " Team array size = " + teams.length);
-                String destFile = Pearadox.FRC_Event + "_Teams" + ".json";
+                String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
                 try {
                     File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
                     BufferedWriter bW;
@@ -140,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.i(TAG, "  btn_Match_Sched setOnClickListener  ");
-                Event event = new TBA().getEvent("2017" + Pearadox.FRC_Event);
+                Event event = new TBA().getEvent("2017" + Pearadox.FRC_ChampDiv);       // GLF 4/12
                 Match[] matches = event.matches;
                 Log.d(TAG, " Matches size = " + matches.length);
 
@@ -166,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 //----------------------------------------
                 int qm;
                 String mn, r1, r2, r3, b1, b2, b3;
-                String matchFile = Pearadox.FRC_Event + "_Match-Sched" + ".json";
+                String matchFile = Pearadox.FRC_ChampDiv + "_Match-Sched" + ".json";
                 if (matches.length > 0) {
                     // The comp level variable includes an indentifier for whether it's practice, qualifying, or playoff
                     try {
@@ -348,17 +359,21 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         Pearadox.FRC_EventName = ev;
         Log.d(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
         switch (ev) {
-            case "FIRST Championship (Houston)":          // txwa
+            case "FIRST Championship (Houston)":          // cmptx
                 Pearadox.FRC_Event = "cmptx";
+                Pearadox.FRC_ChampDiv = "gal";         // Galileo Division
                 break;
             case "Brazos Valley Regional":          // txwa
                 Pearadox.FRC_Event = "txwa";
+                Pearadox.FRC_ChampDiv = "txwa";         // Galileo Division
                 break;
             case ("Lone Star Central Regional"):    // txho
                 Pearadox.FRC_Event = "txho";
+                Pearadox.FRC_ChampDiv = "txho";         // Galileo Division
                 break;
             case ("Hub City Regional"):             // txlu
                 Pearadox.FRC_Event = "txlu";
+                Pearadox.FRC_ChampDiv = "txlu";         // Galileo Division
                 break;
             default:                // ?????
                 Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();

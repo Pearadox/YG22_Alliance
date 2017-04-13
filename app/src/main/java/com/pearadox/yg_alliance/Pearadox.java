@@ -9,6 +9,7 @@ public class Pearadox {
 
     public static String FRC_Event;                                 // FIRST Event Code (e.g., txwa)
     public static String FRC_EventName;                             // FIRST Event Code (e.g., 'Hub City')
+    public static String FRC_ChampDiv;                              // FIRST Championshio Division (e.g., 'Hub City')
 
 
 // -----  Array of Match Data Objects
