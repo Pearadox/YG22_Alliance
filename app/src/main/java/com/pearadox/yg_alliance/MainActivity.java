@@ -56,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfMatchData_DBReference;
     matchData match_inst = new matchData();
+    String destFile;
+    String prevTeam ="";
+    int startRow = 3; int lastRow = 0;
+    BufferedWriter bW;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,10 +268,10 @@ public class MainActivity extends AppCompatActivity {
         toast1.show();
         String new_comm="";
 
-        String destFile = Pearadox.FRC_Event + "_MatchData" + ".csv";
+        destFile = Pearadox.FRC_Event + "_MatchData" + ".csv";
         try {
             File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
-            BufferedWriter bW;
+//            BufferedWriter bW;
             bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
             bW.write(Pearadox.FRC_Event.toUpperCase() + " - " + Pearadox.FRC_EventName +"  \n");
             // Write Excel/Spreadsheet Header for each column
@@ -281,29 +286,14 @@ public class MainActivity extends AppCompatActivity {
             bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Last, First,Weighted");
 
             bW.write(" " + "\n");
-            String prevTeam ="";
-            int startRow = 3; int lastRow = 0;
+            prevTeam ="";
             //=====================================================================
             for (int i = 0; i < Pearadox.Matches_Data.size(); i++) {
                 match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
                 if (!match_inst.getTeam_num().matches(prevTeam)) {      // Same team?
                     if (i > 0) {
 //                        Log.w(TAG, "Prev: " + prevTeam + "  New: " + match_inst.getTeam_num() + "  Start: " + startRow + "  i=" + i);
-                        bW.write(prevTeam + ",'***,");
-                        bW.write(",,,,,,'TOTAL >,=SUM($J" + startRow + ":$J" + lastRow + "),=SUM($K" + startRow + ":$K" + lastRow + ") ");
-                        String escJK = StringEscapeUtils.escapeCsv("=IF($K" + (lastRow+1) +">0,$J" + (lastRow+1) + "/$K" + (lastRow+1) + ",0)");
-                        bW.write(",'RATIO >," +  escJK);
-                        bW.write(",,,,,,,,|,'TOTAL >,=SUM($W" + startRow + ":$W" + lastRow + "),=SUM($X" + startRow + ":$X" + lastRow + ")");
-                        bW.write(",'RATIO >,=$W" + (lastRow+1) + "/$X" + (lastRow+1) );
-                        String esc$AD = StringEscapeUtils.escapeCsv("=(COUNTIF($AD" + startRow + ":$AD" + lastRow + ",TRUE))");
-                        String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
-                        String escAD$AF = StringEscapeUtils.escapeCsv("=IF($AD" + (lastRow+1) +">0,$AF" + (lastRow+1) + "/$AD" + (lastRow+1) + ",0)");
-                        bW.write(",,,'TOTAL >,"+ esc$AD + ",," + esc$AF + ","+ escAD$AF + ",|");
-                        bW.write(",,,,,,,,,,,||,\'----,\'---");
-                        bW.write(",=($AG" + (lastRow+1) +"*2 + $Z" + (lastRow+1) + " + $J" + (lastRow+1) +") / 3");
-                        bW.write(" " + "\n");
-                        prevTeam = match_inst.getTeam_num();
-                        startRow = (lastRow) + 2;              // Start row for new team
+                        wrtHdr();
                     }  else {
                         prevTeam = match_inst.getTeam_num();
                     }
@@ -329,6 +319,9 @@ public class MainActivity extends AppCompatActivity {
                 bW.write(" " + "\n");
                 lastRow = lastRow + 1;
 //                Log.w(TAG, match_inst.getTeam_num() + "  Last: " + lastRow);
+                if (i == Pearadox.Matches_Data.size() -1) {       // Last one?
+                    wrtHdr();
+                }
             } // End For
 
             //=====================================================================
@@ -348,6 +341,33 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 }
+
+    private void wrtHdr() {
+        Log.i(TAG, " wrtHdr  " + prevTeam);
+        try {
+//            destFile = Pearadox.FRC_Event + "_MatchData" + ".csv";
+//            File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+//            bW = new BufferedWriter(new FileWriter(prt, true));    // true = Append to existing file
+            bW.write(prevTeam + ",'***,");
+            bW.write(",,,,,,'TOTAL >,=SUM($J" + startRow + ":$J" + lastRow + "),=SUM($K" + startRow + ":$K" + lastRow + ") ");
+            String escJK = StringEscapeUtils.escapeCsv("=IF($K" + (lastRow+1) +">0,$J" + (lastRow+1) + "/$K" + (lastRow+1) + ",0)");
+            bW.write(",'RATIO >," +  escJK);
+            bW.write(",,,,,,,,|,'TOTAL >,=SUM($W" + startRow + ":$W" + lastRow + "),=SUM($X" + startRow + ":$X" + lastRow + ")");
+            bW.write(",'RATIO >,=$W" + (lastRow+1) + "/$X" + (lastRow+1) );
+            String esc$AD = StringEscapeUtils.escapeCsv("=(COUNTIF($AD" + startRow + ":$AD" + lastRow + ",TRUE))");
+            String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
+            String escAD$AF = StringEscapeUtils.escapeCsv("=IF($AD" + (lastRow+1) +">0,$AF" + (lastRow+1) + "/$AD" + (lastRow+1) + ",0)");
+            bW.write(",,,'TOTAL >,"+ esc$AD + ",," + esc$AF + ","+ escAD$AF + ",|");
+            bW.write(",,,,,,,,,,,||,\'----,\'---");
+            bW.write(",=($AG" + (lastRow+1) +"*2 + $Z" + (lastRow+1) + " + $J" + (lastRow+1) +") / 3");
+            bW.write(" " + "\n");
+            prevTeam = match_inst.getTeam_num();
+            startRow = (lastRow) + 2;              // Start row for new team
+            Log.w(TAG,"  Last: " + lastRow);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private String removeLine(String comment) {
         String x = "";
@@ -397,15 +417,15 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                 break;
             case "Brazos Valley Regional":          // txwa
                 Pearadox.FRC_Event = "txwa";
-                Pearadox.FRC_ChampDiv = "txwa";         // Galileo Division
+                Pearadox.FRC_ChampDiv = "txwa";
                 break;
             case ("Lone Star Central Regional"):    // txho
                 Pearadox.FRC_Event = "txho";
-                Pearadox.FRC_ChampDiv = "txho";         // Galileo Division
+                Pearadox.FRC_ChampDiv = "txho";
                 break;
             case ("Hub City Regional"):             // txlu
                 Pearadox.FRC_Event = "txlu";
-                Pearadox.FRC_ChampDiv = "txlu";         // Galileo Division
+                Pearadox.FRC_ChampDiv = "txlu";
                 break;
             default:                // ?????
                 Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();
