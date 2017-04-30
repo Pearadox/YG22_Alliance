@@ -1,5 +1,6 @@
 package com.pearadox.yg_alliance;
 
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
     Button btn_Teams, btn_Match_Sched, btn_Spreadsheet;
+    Team[] BAteams;
+    public static int BAnumTeams = 0;                      // # of teams from Blue Alliance
     public String[] teamsRed;
     public String[] teamsBlue;
     private FirebaseDatabase pfDatabase;
@@ -60,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
     String prevTeam ="";
     int startRow = 3; int lastRow = 0;
     BufferedWriter bW;
-
+    String tmName=""; String tmRank=""; String tmWLT=""; String tmOPR=""; String tmKPa=""; String tmTPts="";
+    Event BAe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
         Settings.FIND_TEAM_RANKINGS = true;
         Settings.GET_EVENT_TEAMS = true;
         Settings.GET_EVENT_MATCHES = true;
-        Settings.GET_EVENT_ALLIANCES = true;
-        Settings.GET_EVENT_AWARDS = true;
+//        Settings.GET_EVENT_ALLIANCES = true;
+//        Settings.GET_EVENT_AWARDS = true;
 
         Event e = tba.getEvent("txlu", 2017);
 
@@ -263,15 +267,14 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View v) {
         Log.i(TAG, "  btn_Spreadsheet setOnClickListener  ");
         Log.e(TAG, "***** Matches # = "  + Pearadox.Matches_Data.size());   // Done in Event Click Listner
-        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
-        toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast1.show();
+//        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
+//        toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//        toast1.show();
         String new_comm="";
 
         destFile = Pearadox.FRC_Event + "_MatchData" + ".csv";
         try {
             File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
-//            BufferedWriter bW;
             bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
             bW.write(Pearadox.FRC_Event.toUpperCase() + " - " + Pearadox.FRC_EventName +"  \n");
             // Write Excel/Spreadsheet Header for each column
@@ -283,7 +286,9 @@ public class MainActivity extends AppCompatActivity {
             bW.write("Climb Attempt?,Touchpad Activated?,Climb Success?,Tele Comment,|,");
 
             bW.write("Lost Parts?,Lost Comms?,Good Def?,Lane?,Blocking?,Hopper Dump?,Gear Block?,");
-            bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Last, First,Weighted");
+            bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Last, First");
+            bW.write(",|,Team,Rank,W-L-T,OPR,kPa,Touch Pts,|");
+            bW.write(",Weighted ALL,Weighted Last-3,Auto Gear ALL,Auto Gear Last-3,Tele Gear ALL,Tele Gear Last-3,Climbs ALL,Climbs Last-3,Auto Gear Center,Auto Gear Left-Side,Auto Gear Right-Side, TOTAL Auto Sides");
 
             bW.write(" " + "\n");
             prevTeam ="";
@@ -314,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                 bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms() + "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_Hopper() + "," + match_inst.isFinal_def_Gear() + ",");
                 String x = match_inst.getFinal_comment();
                 new_comm = StringEscapeUtils.escapeCsv(match_inst.getFinal_comment());
-                bW.write(match_inst.getFinal_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + new_comm + "," + "||" + "," + match_inst.getFinal_studID());
+                bW.write(match_inst.getFinal_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + new_comm + "," + "||" + "," + match_inst.getFinal_studID() + ",|,,,,,,,|");
                 //-----------------
                 bW.write(" " + "\n");
                 lastRow = lastRow + 1;
@@ -331,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event.toUpperCase() + "' Match Data Spreadsheet written to SD card ***" , Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
+            btn_Spreadsheet.setEnabled(false);      // turn off button (done)
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage() + " not found in the specified directory.");
             System.exit(0);
@@ -343,34 +349,68 @@ public class MainActivity extends AppCompatActivity {
 }
 
     private void wrtHdr() {
-        Log.i(TAG, " wrtHdr  " + prevTeam);
+//        Log.i(TAG, " wrtHdr  " + prevTeam);
         try {
-//            destFile = Pearadox.FRC_Event + "_MatchData" + ".csv";
-//            File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
-//            bW = new BufferedWriter(new FileWriter(prt, true));    // true = Append to existing file
             bW.write(prevTeam + ",'***,");
             bW.write(",,,,,,'TOTAL >,=SUM($J" + startRow + ":$J" + lastRow + "),=SUM($K" + startRow + ":$K" + lastRow + ") ");
             String escJK = StringEscapeUtils.escapeCsv("=IF($K" + (lastRow+1) +">0,$J" + (lastRow+1) + "/$K" + (lastRow+1) + ",0)");
             bW.write(",'RATIO >," +  escJK);
-            bW.write(",,,,,,,,|,'TOTAL >,=SUM($W" + startRow + ":$W" + lastRow + "),=SUM($X" + startRow + ":$X" + lastRow + ")");
-            bW.write(",'RATIO >,=$W" + (lastRow+1) + "/$X" + (lastRow+1) );
+            String escL3 = StringEscapeUtils.escapeCsv("=AVERAGE(OFFSET(INDIRECT(\"J\"&ROW()),-3,0,3,1))");
+            bW.write(",'ALL>,=($J" + (lastRow+1) + "/" + ((lastRow-startRow)+1) + "),'LAST 3>," + escL3);
+            bW.write(",,,,|,'TOTAL >,=SUM($W" + startRow + ":$W" + lastRow + "),=SUM($X" + startRow + ":$X" + lastRow + ")");
+            bW.write(",'RATIO >,=$W" + (lastRow+1) + "/" + ((lastRow-startRow)+1) );
+            bW.write(",'Last 3>,=Sum($W" + (lastRow-2) + ":$W" + (lastRow) + ")/3" );    // Tele Gears Last 3
+
             String esc$AD = StringEscapeUtils.escapeCsv("=(COUNTIF($AD" + startRow + ":$AD" + lastRow + ",TRUE))");
             String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
-            String escAD$AF = StringEscapeUtils.escapeCsv("=IF($AD" + (lastRow+1) +">0,$AF" + (lastRow+1) + "/$AD" + (lastRow+1) + ",0)");
-            bW.write(",,,'TOTAL >,"+ esc$AD + ",," + esc$AF + ","+ escAD$AF + ",|");
-            bW.write(",,,,,,,,,,,||,\'----,\'---");
-            bW.write(",=($AG" + (lastRow+1) +"*2 + $Z" + (lastRow+1) + " + $J" + (lastRow+1) +") / 3");
-            bW.write(" " + "\n");
+            String escAD$AF = StringEscapeUtils.escapeCsv("=IF($AD" + (lastRow+1) +">0,$AE" + (lastRow+1) + "/" + ((lastRow-startRow)+1) + ",0)");
+            String esc$AD3 = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + (lastRow-2) + ":$AF" + (lastRow) + ",TRUE))");
+            bW.write(",'TOTAL >,"+ esc$AD + "," + esc$AF + "," + escAD$AF + "," + esc$AD3 + "/3,,,,,,,,,,,,||,,,|,");
+            gatherBA(prevTeam);
+            bW.write(tmName + "," + tmRank + ",'"+tmWLT + ","+tmOPR + ","+tmKPa + ","+tmTPts + ",|");
+
+            bW.write(",=(($AF" + (lastRow+1) +"*2) + $Z" + (lastRow+1) + " + $O" + (lastRow+1) +") / 3");   // Weighted ALL
+            bW.write(",=(($AG" + (lastRow+1) +"*2) + $AB" + (lastRow+1) + " + $Q" + (lastRow+1) +") / 3,");  // Weighted Last 3
+            bW.write("=$O$" + (lastRow+1) + ",=$Q$" + (lastRow+1) + ",");          // Auto Gears (ALL & Last 3)
+            bW.write("=$Z$" + (lastRow+1) + ",=$AB$" + (lastRow+1) + ",");         // Tele Gears (ALL & Last 3)
+            bW.write("=$AF$" + (lastRow+1) + ",=$AG$" + (lastRow+1) + ",");        // Climbs (ALL & Last 3)
+            String escL = StringEscapeUtils.escapeCsv("=COUNTIF($L$" + startRow  + ":$L$" + (lastRow) + ",\"2\")");
+            bW.write(escL + ",");           // Auto Center Gears
+            String escS1 = StringEscapeUtils.escapeCsv("=COUNTIF($L$" + startRow  + ":$L$" + (lastRow) + ",\"1\")");
+            bW.write(escS1 + ",");           // Auto Left-Side Gears
+            String escS3 = StringEscapeUtils.escapeCsv("=COUNTIF($L$" + startRow  + ":$L$" + (lastRow) + ",\"3\")");
+            bW.write(escS3 + ",=$BM$" + (lastRow+1) + "+ $BN$" + (lastRow+1) + ",");      // TOTAL Auto Side Gears
+            //=============================
+            bW.write(" " + "\n");   // End-of-Line
             prevTeam = match_inst.getTeam_num();
             startRow = (lastRow) + 2;              // Start row for new team
-            Log.w(TAG,"  Last: " + lastRow);
+//            Log.w(TAG,"  Last: " + lastRow);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private void gatherBA(String teamNo) {
+//        Log.i(TAG, " gatherBA  " + teamNo);
+        for (int i = 0; i < BAnumTeams; i++) {
+            if (BAe.teams[i].team_number == Long.parseLong(teamNo.trim())) {
+                tmName = BAe.teams[i].nickname;
+                tmRank = String.valueOf(BAe.teams[i].rank);
+                tmWLT = BAe.teams[i].record;
+                tmOPR = String.format("%3.3f",((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
+//                Log.w(TAG,"  OPR: " + BAe.teams[i].opr);
+//                tmOPR = String.format("%3.3f",(BAe.teams[i].opr));
+                tmKPa = String.valueOf(BAe.teams[i].pressure);
+                tmTPts = String.valueOf(BAe.teams[i].touchpad);
+//                System.out.println(tmName+" "+tmRank+" "+ tmWLT+" "+tmOPR+" "+tmKPa+" "+tmTPts + " \n");
+                break;      // exit For - found team
+            }
+        }
+    }
+
     private String removeLine(String comment) {
         String x = "";
+//        ToDo - Carriage return
         if (comment.contains(",")) {
 //            Log.w(TAG, " %$^&#!! COMMA  " + match_inst.getMatch() + "," + match_inst.getTeam_num() + "[" + comment + "]");
 //            int Comma = comment.indexOf(",");
@@ -475,6 +515,16 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                     Pearadox.Matches_Data.add(mdobj);
                 }
                 Log.w(TAG, "***** Matches Loaded from Firebase. # = "  + Pearadox.Matches_Data.size());
+                Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
+                toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast1.show();
+// ----------  Blue Alliance  -----------
+                Settings.GET_EVENT_STATS = false;
+                TBA t = new TBA();
+                BAe = new TBA().getEvent("2017" + Pearadox.FRC_ChampDiv);
+                BAteams = BAe.teams.clone();
+                BAnumTeams = BAteams.length;
+
                 btn_Spreadsheet.setEnabled(true);
             }
             @Override
