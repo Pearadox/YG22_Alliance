@@ -451,15 +451,19 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         Pearadox.FRC_EventName = ev;
         Log.d(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
         switch (ev) {
-            case "FIRST Championship (Houston)":          // cmptx
-                Pearadox.FRC_Event = "cmptx";
-                Pearadox.FRC_ChampDiv = "gal";         // Galileo Division
+            case "UIL State Championship (Austin)":     // uila
+                Pearadox.FRC_Event = "uila";
+                Pearadox.FRC_ChampDiv = "uila";
                 break;
-            case "Brazos Valley Regional":          // txwa
+            case "FIRST Championship (Houston)":        // cmptx
+                Pearadox.FRC_Event = "cmptx";
+                Pearadox.FRC_ChampDiv = "gal";          // Galileo Division
+                break;
+            case "Brazos Valley Regional":              // txwa
                 Pearadox.FRC_Event = "txwa";
                 Pearadox.FRC_ChampDiv = "txwa";
                 break;
-            case ("Lone Star Central Regional"):    // txho
+            case ("Lone Star Central Regional"):        // txho
                 Pearadox.FRC_Event = "txho";
                 Pearadox.FRC_ChampDiv = "txho";
                 break;
