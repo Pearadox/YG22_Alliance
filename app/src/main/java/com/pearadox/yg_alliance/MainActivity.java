@@ -115,48 +115,56 @@ public class MainActivity extends AppCompatActivity {
 //        Settings.GET_EVENT_ALLIANCES = true;
 //        Settings.GET_EVENT_AWARDS = true;
 
-        Event e = tba.getEvent("txlu", 2017);
+//        Event e = tba.getEvent("txlu", 2017);
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Teams.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i(TAG, "  btn_Teams setOnClickListener  ");
+                Log.i(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
                 Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2017);
                 Log.d(TAG, " Team array size = " + teams.length);
-                String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
-                try {
-                    File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
-                    BufferedWriter bW;
-                    bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                    bW.write("[" + "\n");
-                    for (int i = 0; i < teams.length; i++) {
-                        String tnum = String.format("%1$4s",teams[i].team_number);
-                        Log.d(TAG, " Team = " + tnum);
-                        bW.write("    {    \"team_num\":\"" +  tnum + "\", " + "\n");
-                        bW.write("         \"team_name\":\"" +  teams[i].nickname + "\", " + "\n");
-                        bW.write("         \"team_loc\":\"" +  teams[i].location + "\" " + "\n");
+                if (teams.length > 0) {
+                    String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
+                    try {
+                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+                        BufferedWriter bW;
+                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+                        bW.write("[" + "\n");
+                        for (int i = 0; i < teams.length; i++) {
+                            String tnum = String.format("%1$4s", teams[i].team_number);
+                            Log.d(TAG, " Team = " + tnum);
+                            bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
+                            bW.write("         \"team_name\":\"" + teams[i].nickname + "\", " + "\n");
+                            bW.write("         \"team_loc\":\"" + teams[i].location + "\" " + "\n");
 
-                        if (i == teams.length -1) {       // Last one?
-                            bW.write("    } " + "\n");
-                        }  else {
-                            bW.write("    }," + "\n");
-                        }
-                    } // end For # teams
-                    //=====================================================================
+                            if (i == teams.length - 1) {       // Last one?
+                                bW.write("    } " + "\n");
+                            } else {
+                                bW.write("    }," + "\n");
+                            }
+                        } // end For # teams
+                        //=====================================================================
 
-                    bW.write("]" + "\n");
-                    bW.write(" " + "\n");
-                    bW.flush();
-                    bW.close();
-                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to SD card ***" , Toast.LENGTH_LONG);
+                        bW.write("]" + "\n");
+                        bW.write(" " + "\n");
+                        bW.flush();
+                        bW.close();
+                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to SD card ***", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    } catch (FileNotFoundException ex) {
+                        System.out.println(ex.getMessage() + " not found in the specified directory.");
+                        System.exit(0);
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }else {
+                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                    Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
-                } catch (FileNotFoundException ex) {
-                    System.out.println(ex.getMessage() + " not found in the specified directory.");
-                    System.exit(0);
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
                 }
             }
         });
@@ -451,6 +459,10 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         Pearadox.FRC_EventName = ev;
         Log.d(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
         switch (ev) {
+            case "The Remix 2017 (Woodlands)":     // txsc
+                Pearadox.FRC_Event = "txrm";
+                Pearadox.FRC_ChampDiv = "txrm";
+                break;
             case "UIL State Championship (Austin)":     // txsc
                 Pearadox.FRC_Event = "txsc";
                 Pearadox.FRC_ChampDiv = "txsc";
