@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
         }
-        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
 
@@ -91,12 +91,6 @@ public class MainActivity extends AppCompatActivity {
         preReqs(); 				        // Check for pre-requisites
 
         Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
-//        String[] events = getResources().getStringArray(R.array.event_array);
-//        adapter_Event = new ArrayAdapter<String>(this, R.layout.list_layout, events);
-//        adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner_Event.setAdapter(adapter_Event);
-//        spinner_Event.setSelection(0, false);
-//        spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
 
         btn_Teams = (Button) findViewById(R.id.btn_Teams);
         btn_Match_Sched = (Button) findViewById(R.id.btn_Match_Sched);
@@ -107,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
         txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
         txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
-        txt_EvntCod.setText("");   // Event Code
-        txt_EvntDat.setText("");                      // Event Date
-        txt_EvntPlace.setText("");                      // Event Location
+        txt_EvntCod.setText("");            // Event Code
+        txt_EvntDat.setText("");            // Event Date
+        txt_EvntPlace.setText("");          // Event Location
 
         TBA.setID("Pearadox", "YG_Alliance", "V1");
         final TBA tba = new TBA();
@@ -119,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
 //        Settings.GET_EVENT_ALLIANCES = true;
 //        Settings.GET_EVENT_AWARDS = true;
 
-//        Event e = tba.getEvent("txlu", 2018);
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Teams.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
-                Event event = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);       // GLF 4/12
+//                Event event = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);       // GLF 4/12
+                Event event = new TBA().getEvent("2017" + "txlu");       // **DEBUG testing **
                 Match[] matches = event.matches;
                 Log.w(TAG, " Matches size = " + matches.length);
 
@@ -203,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                     toast.show();
                 }
                 //----------------------------------------
-                int qm;
+                int qm = 0;
                 String mn, r1, r2, r3, b1, b2, b3;
                 String matchFile = Pearadox.FRC_ChampDiv + "_Match-Sched" + ".json";
                 if (matches.length > 0) {
@@ -214,11 +208,13 @@ public class MainActivity extends AppCompatActivity {
                         bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
                         bW.write("[" + "\n");
                         for (int i = 0; i < matches.length; i++) {
-                            Log.w(TAG, " Comp = " + matches[i].comp_level);
+//                            Log.w(TAG, " Comp = " + matches[i].comp_level);
                             if (matches[i].comp_level.matches("qm")) {
+                                qm ++;
                                 bW.write(" {\"time\":\"" + matches[i].time_string + "\", ");
                                 mn = String.valueOf(matches[i].match_number);
-                                if (mn.length() < 2) {mn = "0" + mn;}   // make it at least 2-digits
+                                if (mn.length() < 2) {mn = "00" + mn;}      // make it at least 3-digits
+                                if (mn.length() < 3) {mn = "0" + mn;}       // make it at least 3-digits
                                 Log.w(TAG, " match# = " + mn);
                                 bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn + "\", ");
                                 teamsRed = matches[i].redTeams.clone();
@@ -245,11 +241,11 @@ public class MainActivity extends AppCompatActivity {
                                     bW.write("}," + "\n");
                                 }
                             }  else {
-                                Log.w(TAG, "******* NOT 'qm' ********* " );
-                                System.out.println(matches[i].set_number);
-                                System.out.println(matches[i].event_key);
-                                System.out.println(matches[i].time_string);
-                                System.out.println(matches[i].key);
+                                Log.e(TAG, "******* NOT 'qm' ********* " );
+//                                System.out.println(matches[i].set_number);
+//                                System.out.println(matches[i].event_key);
+//                                System.out.println(matches[i].time_string);
+//                                System.out.println(matches[i].key);
                             }
                         }  // end For # matches
                         //=====================================================================
@@ -258,7 +254,8 @@ public class MainActivity extends AppCompatActivity {
                         bW.write(" " + "\n");
                         bW.flush();
                         bW.close();
-                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Matches file written to SD card ***" , Toast.LENGTH_LONG);
+                        Log.w(TAG, qm + " *** '" + Pearadox.FRC_Event + "' Matches written to SD card ***");
+                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Matches file written to SD card *** " + qm , Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
                     } catch (FileNotFoundException ex) {
@@ -517,18 +514,36 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                     mdobj = iterator.next().getValue(matchData.class);
                     Pearadox.Matches_Data.add(mdobj);
                 }
-                Log.w(TAG, "***** Matches Loaded from Firebase. # = "  + Pearadox.Matches_Data.size());
-                Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
-                toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                toast1.show();
+                Log.w(TAG, "***** Matches Loaded from Firebase. # = " + Pearadox.Matches_Data.size());
+                if (Pearadox.Matches_Data.size() > 0) {
+                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
+                    toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast1.show();
+                } else {
+                    btn_Spreadsheet.setEnabled(false);
+                }
 // ----------  Blue Alliance  -----------
                 Settings.GET_EVENT_STATS = false;
                 TBA t = new TBA();
                 BAe = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);
-                BAteams = BAe.teams.clone();
-                BAnumTeams = BAteams.length;
+                if (BAe.name == null) {
+                    Log.e(TAG,"### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###");
+                    Toast toast2 = Toast.makeText(getBaseContext(), "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###", Toast.LENGTH_LONG);
+                    toast2.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast2.show();
+                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                    btn_Teams.setEnabled(false);
+                    btn_Match_Sched.setEnabled(false);
+                    btn_Spreadsheet.setEnabled(false);
+                } else {
+                    BAteams = BAe.teams.clone();
+                    BAnumTeams = BAteams.length;
 
-                btn_Spreadsheet.setEnabled(true);
+                    btn_Teams.setEnabled(true);
+                    btn_Match_Sched.setEnabled(true);
+//                    btn_Spreadsheet.setEnabled(true);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -543,7 +558,6 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         pfDatabase = FirebaseDatabase.getInstance();
         pfEvent_DBReference = pfDatabase.getReference("competitions");      // Get list of Events/Competitions
         addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
-//        addEvents_VE_Listener(pfEvent_DBReference);
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -590,7 +604,7 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
 
 
 
-    //###################################################################
+//###################################################################
 //###################################################################
 //###################################################################
 @Override

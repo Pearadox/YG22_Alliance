@@ -3,18 +3,6 @@
     <string name="event_prompt">Event?</string>
 
 
-    <!-- ##### Events ##### -->
-    <string-array name="event_array">
-        <item> </item>
-        <item>The Remix 2017 (Woodlands)</item>
-        <item>UIL State Championship (Austin)</item>
-        <item>FIRST Championship (Houston)</item>
-        <item>Brazos Valley Regional</item>
-        <item>Lone Star Central Regional</item>
-        <item>Hub City Regional</item>
-    </string-array>
-
-
 
     <!-- -->
     <!-- @@@@@ COLORS @@@@@ -->
