@@ -40,8 +40,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+
+import static android.util.Log.w;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public String[] teamsRed;
     public String[] teamsBlue;
     private FirebaseDatabase pfDatabase;
+    private DatabaseReference pfEvent_DBReference;
     private DatabaseReference pfMatchData_DBReference;
     matchData match_inst = new matchData();
     String destFile;
@@ -70,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i(TAG, "******* Starting Yellow-Green Alliance  *******");
+        Log.w(TAG, "******* Starting Yellow-Green Alliance  *******");
 
         try {
             Pearadox_Version = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
         }
-        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2017  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
 
@@ -87,12 +91,12 @@ public class MainActivity extends AppCompatActivity {
         preReqs(); 				        // Check for pre-requisites
 
         Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
-        String[] events = getResources().getStringArray(R.array.event_array);
-        adapter_Event = new ArrayAdapter<String>(this, R.layout.list_layout, events);
-        adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_Event.setAdapter(adapter_Event);
-        spinner_Event.setSelection(0, false);
-        spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
+//        String[] events = getResources().getStringArray(R.array.event_array);
+//        adapter_Event = new ArrayAdapter<String>(this, R.layout.list_layout, events);
+//        adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner_Event.setAdapter(adapter_Event);
+//        spinner_Event.setSelection(0, false);
+//        spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
 
         btn_Teams = (Button) findViewById(R.id.btn_Teams);
         btn_Match_Sched = (Button) findViewById(R.id.btn_Match_Sched);
@@ -115,25 +119,27 @@ public class MainActivity extends AppCompatActivity {
 //        Settings.GET_EVENT_ALLIANCES = true;
 //        Settings.GET_EVENT_AWARDS = true;
 
-//        Event e = tba.getEvent("txlu", 2017);
+//        Event e = tba.getEvent("txlu", 2018);
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Teams.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
+                Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2017);
-                Log.d(TAG, " Team array size = " + teams.length);
+                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2018);
+                Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
                     String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
+                    Log.w(TAG, " filename = " + destFile);
                     try {
                         File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+                        Log.e(TAG, " path = " + prt);
                         BufferedWriter bW;
                         bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
                         bW.write("[" + "\n");
                         for (int i = 0; i < teams.length; i++) {
                             String tnum = String.format("%1$4s", teams[i].team_number);
-                            Log.d(TAG, " Team = " + tnum);
+                            Log.w(TAG, " Team = " + tnum);
                             bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
                             bW.write("         \"team_name\":\"" + teams[i].nickname + "\", " + "\n");
                             bW.write("         \"team_loc\":\"" + teams[i].location + "\" " + "\n");
@@ -172,10 +178,10 @@ public class MainActivity extends AppCompatActivity {
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i(TAG, "  btn_Match_Sched setOnClickListener  ");
-                Event event = new TBA().getEvent("2017" + Pearadox.FRC_ChampDiv);       // GLF 4/12
+                Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
+                Event event = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);       // GLF 4/12
                 Match[] matches = event.matches;
-                Log.d(TAG, " Matches size = " + matches.length);
+                Log.w(TAG, " Matches size = " + matches.length);
 
                 //----------------------------------------
                 if (matches.length > 0) {
@@ -208,17 +214,17 @@ public class MainActivity extends AppCompatActivity {
                         bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
                         bW.write("[" + "\n");
                         for (int i = 0; i < matches.length; i++) {
-                            Log.d(TAG, " Comp = " + matches[i].comp_level);
+                            Log.w(TAG, " Comp = " + matches[i].comp_level);
                             if (matches[i].comp_level.matches("qm")) {
                                 bW.write(" {\"time\":\"" + matches[i].time_string + "\", ");
                                 mn = String.valueOf(matches[i].match_number);
                                 if (mn.length() < 2) {mn = "0" + mn;}   // make it at least 2-digits
-                                Log.d(TAG, " match# = " + mn);
+                                Log.w(TAG, " match# = " + mn);
                                 bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn + "\", ");
                                 teamsRed = matches[i].redTeams.clone();
                                 r1 = teamsRed[0].substring(3, teamsRed[0].length());
                                 if (r1.length() < 4) {r1 = " " + r1;}
-                                Log.d(TAG, " R1 = " + r1);
+                                Log.w(TAG, " R1 = " + r1);
                                 r2 = teamsRed[1].substring(3, teamsRed[1].length());
                                 if (r2.length() < 4) {r2 = " " + r2;}
                                 r3 = teamsRed[2].substring(3, teamsRed[2].length());
@@ -239,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                                     bW.write("}," + "\n");
                                 }
                             }  else {
-                                Log.d(TAG, "******* NOT 'qm' ********* " );
+                                Log.w(TAG, "******* NOT 'qm' ********* " );
                                 System.out.println(matches[i].set_number);
                                 System.out.println(matches[i].event_key);
                                 System.out.println(matches[i].time_string);
@@ -273,9 +279,9 @@ public class MainActivity extends AppCompatActivity {
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     btn_Spreadsheet.setOnClickListener(new View.OnClickListener() {
     public void onClick(View v) {
-        Log.i(TAG, "  btn_Spreadsheet setOnClickListener  ");
+        Log.w(TAG, "  btn_Spreadsheet setOnClickListener  ");
         Log.e(TAG, "***** Matches # = "  + Pearadox.Matches_Data.size());   // Done in Event Click Listner
-//        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
+//        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
 //        toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //        toast1.show();
         String new_comm="";
@@ -357,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
 }
 
     private void wrtHdr() {
-//        Log.i(TAG, " wrtHdr  " + prevTeam);
+//        Log.w(TAG, " wrtHdr  " + prevTeam);
         try {
             bW.write(prevTeam + ",'***,");
             bW.write(",,,,,,'TOTAL >,=SUM($J" + startRow + ":$J" + lastRow + "),=SUM($K" + startRow + ":$K" + lastRow + ") ");
@@ -399,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void gatherBA(String teamNo) {
-//        Log.i(TAG, " gatherBA  " + teamNo);
+//        Log.w(TAG, " gatherBA  " + teamNo);
         for (int i = 0; i < BAnumTeams; i++) {
             if (BAe.teams[i].team_number == Long.parseLong(teamNo.trim())) {
                 tmName = BAe.teams[i].nickname;
@@ -442,8 +448,8 @@ public class MainActivity extends AppCompatActivity {
                 if (directFRC.mkdir()) {
                 }        //directory is created;
             }
-            Log.i(TAG, "FRC files created");
-//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Files initialied ***" , Toast.LENGTH_LONG);
+            Log.w(TAG, "FRC files created");
+//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Files initialied ***" , Toast.LENGTH_LONG);
 //        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //        toast.show();
         }  else {
@@ -457,39 +463,20 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                                View view, int pos, long id) {
         String ev = parent.getItemAtPosition(pos).toString();
         Pearadox.FRC_EventName = ev;
-        Log.d(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
-        switch (ev) {
-            case "The Remix 2017 (Woodlands)":     // txsc
-                Pearadox.FRC_Event = "txrm";
-                Pearadox.FRC_ChampDiv = "txrm";
-                break;
-            case "UIL State Championship (Austin)":     // txsc
-                Pearadox.FRC_Event = "txsc";
-                Pearadox.FRC_ChampDiv = "txsc";
-                break;
-            case "FIRST Championship (Houston)":        // cmptx
-                Pearadox.FRC_Event = "cmptx";
-                Pearadox.FRC_ChampDiv = "gal";          // Galileo Division
-                break;
-            case "Brazos Valley Regional":              // txwa
-                Pearadox.FRC_Event = "txwa";
-                Pearadox.FRC_ChampDiv = "txwa";
-                break;
-            case ("Lone Star Central Regional"):        // txho
-                Pearadox.FRC_Event = "txho";
-                Pearadox.FRC_ChampDiv = "txho";
-                break;
-            case ("Hub City Regional"):             // txlu
-                Pearadox.FRC_Event = "txlu";
-                Pearadox.FRC_ChampDiv = "txlu";
-                break;
-            default:                // ?????
-                Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();
-                Pearadox.FRC_Event = "zzzz";
+        Log.w(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
+        p_Firebase.eventObj event_inst = new p_Firebase.eventObj();
+        for(int i=0 ; i < Pearadox.eventList.size() ; i++)
+        {
+            event_inst = Pearadox.eventList.get(i);
+            if (event_inst.getcomp_name().equals(ev)) {
+                Pearadox.FRC_Event = event_inst.getComp_code();
+                Pearadox.FRC_ChampDiv = event_inst.getcomp_div();
+            }
         }
-        Log.d(TAG, " Event code = '" + Pearadox.FRC_Event + "'");
-        Log.d(TAG, "*** Event ***");
-        Event e = new TBA().getEvent("2017" + Pearadox.FRC_Event);
+        Log.w(TAG, "** Event code '" + Pearadox.FRC_Event + "' " + Pearadox.FRC_ChampDiv + "  \n ");
+
+        Log.w(TAG, "*** TBA Event ***");
+        Event e = new TBA().getEvent("2018" + Pearadox.FRC_Event);
         // Print general event info
         System.out.println(e.name);
         System.out.println(e.location);
@@ -521,7 +508,7 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "<<<< addMD_VE_Listener >>>>     Match Data ");
+                Log.w(TAG, "<<<< addMD_VE_Listener >>>>     Match Data ");
                 Pearadox.Matches_Data.clear();
                 matchData mdobj = new matchData();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
@@ -531,13 +518,13 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                     Pearadox.Matches_Data.add(mdobj);
                 }
                 Log.w(TAG, "***** Matches Loaded from Firebase. # = "  + Pearadox.Matches_Data.size());
-                Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
+                Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
                 toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 toast1.show();
 // ----------  Blue Alliance  -----------
                 Settings.GET_EVENT_STATS = false;
                 TBA t = new TBA();
-                BAe = new TBA().getEvent("2017" + Pearadox.FRC_ChampDiv);
+                BAe = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);
                 BAteams = BAe.teams.clone();
                 BAnumTeams = BAteams.length;
 
@@ -550,14 +537,67 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         });
     }
 
+    private void loadEvents() {
+        Log.w(TAG, "###  loadEvents  ###");
 
-//###################################################################
+        pfDatabase = FirebaseDatabase.getInstance();
+        pfEvent_DBReference = pfDatabase.getReference("competitions");      // Get list of Events/Competitions
+        addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
+//        addEvents_VE_Listener(pfEvent_DBReference);
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void addEvents_VE_Listener(final Query pfEvent_DBReference) {
+        pfEvent_DBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.w(TAG, "******* Firebase retrieve Competitions  *******");
+                Pearadox.eventList.clear();
+                Pearadox.num_Events = 0;
+                p_Firebase.eventObj event_inst = new p_Firebase.eventObj();
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
+                    event_inst = iterator.next().getValue(p_Firebase.eventObj.class);
+                    Log.w(TAG,"      " + event_inst.getcomp_name() + " - " + event_inst.getComp_code());
+                    Pearadox.eventList.add(event_inst);
+                }
+                Log.w(TAG,"### Events ###  : " + Pearadox.eventList.size());
+                Pearadox.num_Events = Pearadox.eventList.size() +1;     // account for 1st blank
+                Pearadox.comp_List = new String[Pearadox.num_Events];  // Re-size for spinner
+                Arrays.fill(Pearadox.comp_List, null );
+                Pearadox.comp_List[0] = " ";       // make it so 1st Drop-Down entry is blank
+                for(int i=0 ; i < Pearadox.eventList.size() ; i++)
+                {
+                    event_inst = Pearadox.eventList.get(i);
+                    Pearadox.comp_List[i + 1] = event_inst.getcomp_name();
+                }
+                Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
+                adapter_Event = new ArrayAdapter<String>(MainActivity.this, R.layout.list_layout, Pearadox.comp_List);
+                adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner_Event.setAdapter(adapter_Event);
+                spinner_Event.setSelection(0, false);
+                spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                /*listener failed or was removed for security reasons*/
+                throw databaseError.toException();
+            }
+        });
+    }
+
+
+
+    //###################################################################
 //###################################################################
 //###################################################################
 @Override
 public void onStart() {
     super.onStart();
     Log.v(TAG, ">>>>  yg_alliance onStart  <<<<");
+    loadEvents();
 
 }
     @Override
