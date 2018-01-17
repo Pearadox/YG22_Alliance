@@ -172,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
-//                Event event = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);       // GLF 4/12
-                Event event = new TBA().getEvent("2017" + "txlu");       // **DEBUG testing **
+                Event event = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);       // GLF 4/12
+//                Event event = new TBA().getEvent("2017" + "txlu");       // **DEBUG testing **  hard coded yr/event
                 Match[] matches = event.matches;
                 Log.w(TAG, " Matches size = " + matches.length);
 
