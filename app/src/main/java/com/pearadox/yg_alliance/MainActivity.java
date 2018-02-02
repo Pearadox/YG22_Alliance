@@ -7,6 +7,7 @@ import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -24,18 +25,24 @@ import com.cpjd.main.TBA;
 import com.cpjd.models.Event;
 import com.cpjd.models.Match;
 import com.cpjd.models.Team;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     String TAG = "MainActivity";        // This CLASS name
     String Pearadox_Version = " ";      // initialize
+    Boolean FB_logon = false;           // indicator for Firebas logon success
     Spinner spinner_Device, spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
@@ -62,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfEvent_DBReference;
     private DatabaseReference pfMatchData_DBReference;
+    private FirebaseAuth mAuth;
     matchData match_inst = new matchData();
     String destFile;
     String prevTeam ="";
@@ -87,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
+        mAuth = FirebaseAuth.getInstance();
 
         preReqs(); 				        // Check for pre-requisites
 
@@ -317,17 +327,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 bW.write(match_inst.getTeam_num() + "," + match_inst.getMatch() + ",");
                 //----- Auto -----
-                bW.write(match_inst.isAuto_mode() + "," + match_inst.isAuto_rope() + "," + match_inst.isAuto_carry_fuel() + "," + match_inst.getAuto_fuel_amount() + "," + match_inst.isAuto_gear() + "," + match_inst.getAuto_start() + ",");
-                bW.write(match_inst.isAuto_baseline() + "," + match_inst.getAuto_gears_placed() + "," + match_inst.getAuto_gears_attempt() + "," + match_inst.getAuto_gear_pos() + "," + match_inst.isAuto_hg() + "," + match_inst.getAuto_hg_percent() + "," + match_inst.isAuto_lg() + "," + match_inst.getAuto_lg_percent() + ",");
+//                bW.write(match_inst.isAuto_mode() + "," + match_inst.isAuto_rope() + "," + match_inst.isAuto_carry_fuel() + "," + match_inst.getAuto_fuel_amount() + "," + match_inst.isAuto_gear() + "," + match_inst.getAuto_start() + ",");
+//                bW.write(match_inst.isAuto_baseline() + "," + match_inst.getAuto_gears_placed() + "," + match_inst.getAuto_gears_attempt() + "," + match_inst.getAuto_gear_pos() + "," + match_inst.isAuto_hg() + "," + match_inst.getAuto_hg_percent() + "," + match_inst.isAuto_lg() + "," + match_inst.getAuto_lg_percent() + ",");
                 new_comm = StringEscapeUtils.escapeCsv(match_inst.getAuto_comment());
-                bW.write(match_inst.isAuto_act_hopper() + "," + match_inst.getAuto_fuel_collected() + "," + match_inst.getAuto_stop() + "," + new_comm + "," + "|" + ",");
+//                bW.write(match_inst.isAuto_act_hopper() + "," + match_inst.getAuto_fuel_collected() + "," + match_inst.getAuto_stop() + "," + new_comm + "," + "|" + ",");
                 //----- Tele -----
-                bW.write(match_inst.isTele_gear_pickup() + "," + match_inst.getTele_gears_placed() + "," + match_inst.getTele_gears_attempt() + "," + match_inst.getTele_cycles() + "," + match_inst.isTele_hg() + "," + match_inst.getTele_hg_percent() + "," + match_inst.isTele_lg() + "," + match_inst.getTele_lg_percent() + ",");
+//                bW.write(match_inst.isTele_gear_pickup() + "," + match_inst.getTele_gears_placed() + "," + match_inst.getTele_gears_attempt() + "," + match_inst.getTele_cycles() + "," + match_inst.isTele_hg() + "," + match_inst.getTele_hg_percent() + "," + match_inst.isTele_lg() + "," + match_inst.getTele_lg_percent() + ",");
                 String y = match_inst.getTele_comment();
                 new_comm = StringEscapeUtils.escapeCsv(match_inst.getTele_comment());
-                bW.write(match_inst.isTele_climb_attempt() + "," + match_inst.isTele_touch_act() + "," + match_inst.isTele_climb_success() + "," + new_comm + "," + "|" + ",");
+//                bW.write(match_inst.isTele_climb_attempt() + "," + match_inst.isTele_touch_act() + "," + match_inst.isTele_climb_success() + "," + new_comm + "," + "|" + ",");
                 //----- Final -----
-                bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms() + "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_Hopper() + "," + match_inst.isFinal_def_Gear() + ",");
+//                bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms() + "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_Hopper() + "," + match_inst.isFinal_def_Gear() + ",");
                 String x = match_inst.getFinal_comment();
                 new_comm = StringEscapeUtils.escapeCsv(match_inst.getFinal_comment());
                 bW.write(match_inst.getFinal_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + new_comm + "," + "||" + "," + match_inst.getFinal_studID() + ",|,,,,,,,|");
@@ -603,6 +613,57 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
     }
 
 
+    //______________________________________
+    private void Fb_Auth() {
+        Log.w(TAG, "===Fb_Auth===");
+        FB_logon = false;
+        String pw = " "; String eMail="scout.5414@gmail.com";
+        try {
+            File directFRC = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/Pearadox");
+            FileReader fileReader = new FileReader(directFRC);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
+            }
+            fileReader.close();
+            pw = (stringBuffer.toString());
+            pw = pw.substring(0,11);    //Remove CR/LF
+//            Log.e(TAG, "Peardox = '" + pw + "'");
+        } catch (IOException e) {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
+            Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication - Password required", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+            e.printStackTrace();
+        }
+//        Log.e(TAG, "Sign-In " + eMail + "  '" + pw + "'");
+
+        mAuth.signInWithEmailAndPassword(eMail, pw)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success
+                            Log.d(TAG, "signInWithEmail:success ");
+                            FB_logon = true;    // show success
+//                        FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                            Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication failed.", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
+                        }
+                    }
+                });
+    }
+
 
 //###################################################################
 //###################################################################
@@ -611,6 +672,7 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
 public void onStart() {
     super.onStart();
     Log.v(TAG, ">>>>  yg_alliance onStart  <<<<");
+    Fb_Auth();      // Authenticate with Firebase
     loadEvents();
 
 }

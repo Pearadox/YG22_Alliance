@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "372598341053-rlbvnvc9sica8c3snv7hrrdi642u9vkm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pearadox.scout_5414",
+            "certificate_hash": "88791dacc66b775cb88df7f88865e4ae4784efd7"
+          }
+        },
+        {
           "client_id": "372598341053-k6vag6jv2f0p73rrobpatd1h6u5da44a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -66,6 +74,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "372598341053-nlb4kbu7iscu88di8jtidfeo714ljmjp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pearadox.yg_alliance",
+            "certificate_hash": "88791dacc66b775cb88df7f88865e4ae4784efd7"
+          }
+        },
         {
           "client_id": "372598341053-01hcs4gl5ubp9stc1b7vdmv2mhqrsju2.apps.googleusercontent.com",
           "client_type": 1,
