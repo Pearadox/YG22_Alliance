@@ -16,8 +16,8 @@ public class matchData implements Serializable {
     private boolean auto_cube_switch;       // cube placed on Switch during Auto
     private boolean auto_cube_switch_att;   // cube attempt on Switch during Auto
     private boolean auto_switch_extra;      // extra cube placed on switch during Auto
-    private boolean auto_cube_scale;        // cube placed on switch during Auto
-    private boolean auto_cube_scale_att;    // cube attempt on switch during Auto
+    private boolean auto_cube_scale;        // cube placed on Scale during Auto
+    private boolean auto_cube_scale_att;    // cube attempt on Scale during Auto
     private boolean auto_xover_switch;      // crossed over field to Switch
     private boolean auto_xover_scale;       // crossed over field to Scale
     private boolean auto_wrong_switch;      // put cube in WRONG Switch
@@ -26,8 +26,8 @@ public class matchData implements Serializable {
     // ============== TELE =================
     private int     tele_cube_switch;       // # cubes placed on Switch during Tele
     private int     tele_switch_attempt;    // # cubes attempted on Switch during Tele
-    private int     tele_cube_scale;        // # cubes placed on Switch during Tele
-    private int     tele_scale_attempt;     // # cubes attempted on Switch during Tele
+    private int     tele_cube_scale;        // # cubes placed on Scale during Tele
+    private int     tele_scale_attempt;     // # cubes attempted on Scale during Tele
     private int     tele_their_switch;      // # cubes placed on _THEIR_Switch during Tele
     private int     tele_their_attempt;     // # cubes attempted on _THEIR_Switch during Tele
     private int     tele_cube_exchange;     // # cubes placed in Exchange during Tele
