@@ -1,6 +1,5 @@
 package com.pearadox.yg_alliance;
 
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
@@ -9,6 +8,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,8 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-// === DEBUG  ===
-import android.util.Log;
 import android.widget.Toast;
 
 import com.cpjd.main.Settings;
@@ -27,12 +25,12 @@ import com.cpjd.models.Match;
 import com.cpjd.models.Team;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -50,8 +48,18 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
-
-import static android.util.Log.w;
+// API-V3
+//import main.Settings;
+//import main.TBA;
+//import main.CTBA;
+//import models.other.events.EventOPR;
+//import models.simple.SEvent;
+//import models.simple.SMatch;
+//import models.simple.STeam;
+//import models.standard.Event;
+//import models.standard.Match;
+//import models.standard.Team;
+// === DEBUG  ===
 
 
 public class MainActivity extends AppCompatActivity {
@@ -115,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         txt_EvntDat.setText("");            // Event Date
         txt_EvntPlace.setText("");          // Event Location
 
+//        TBA.setAuthToken("xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg");
         TBA.setID("Pearadox", "YG_Alliance", "V1");
         final TBA tba = new TBA();
         Settings.FIND_TEAM_RANKINGS = true;
@@ -390,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
             gatherBA(prevTeam);
             bW.write(tmName + "," + tmRank + ",'"+tmWLT + ","+tmOPR + ","+tmKPa + ","+tmTPts + ",|");
 
+            // Todo - Fix All to use # of matches!!!
             bW.write(",=(($AF" + (lastRow+1) +"*2) + $Z" + (lastRow+1) + " + $O" + (lastRow+1) +") / 3");   // Weighted ALL
             bW.write(",=(($AG" + (lastRow+1) +"*2) + $AB" + (lastRow+1) + " + $Q" + (lastRow+1) +") / 3,");  // Weighted Last 3
             bW.write("=$O$" + (lastRow+1) + ",=$Q$" + (lastRow+1) + ",");          // Auto Gears (ALL & Last 3)
