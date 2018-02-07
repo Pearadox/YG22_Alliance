@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
     String TAG = "MainActivity";        // This CLASS name
     String Pearadox_Version = " ";      // initialize
-    Boolean FB_logon = false;           // indicator for Firebas logon success
+    Boolean FB_logon = false;           // indicator for Firebase logon success
+    Boolean BA_Data = false;
     Spinner spinner_Device, spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
@@ -308,17 +309,19 @@ public class MainActivity extends AppCompatActivity {
             bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
             bW.write(Pearadox.FRC_Event.toUpperCase() + " - " + Pearadox.FRC_EventName +"  \n");
             // Write Excel/Spreadsheet Header for each column
-            bW.write("Team,Match,Auto Mode,Rope?,Carry Fuel?,Fuel Amt,Carry Gear?,Start Pos,");
-            bW.write("Cross Baseline?,Gears Placed,Gears Attempted,Gear Post,Shoot HG?,HG %,Shoot LG?,LG %,");
-            bW.write("Act Hopper?,Fuel Collected,Stop Position,Auto Comment,|,");
+            bW.write("Team,Match,Carry Cube,Start Pos,_NO_ Auto Mode,Crossed Baseline?,");
+            bW.write("Cube Switch,Switch Attempted,Switch X-Over,Extra Cube,Cube Scale,Scale Attempted,Scale X-Over,Wrong Switch,Wrong Scale,");
+            bW.write("Auto Comment,|,");
 
-            bW.write("Pickup Gears?,Gears Placed,Gears Attempted,# Cycles,Shoot HG?,HG %,Shoot LG?,LG %,");
-            bW.write("Climb Attempt?,Touchpad Activated?,Climb Success?,Tele Comment,|,");
+            bW.write("Cube Switch,Switch Attempted,Cube Scale,Scale Attempted,Their Switch,Their Attempted,");
+            bW.write("Exchange,Portal,Power Zone,Our Floor,Their Floor,P/U Cubes,Place,Launch,");
+            bW.write("On Platform,Climb Success?,Climb Attempt?,Rung,Side,Lift-1,Lift-2,Was Lifted,Tele Comment,|,");
 
-            bW.write("Lost Parts?,Lost Comms?,Good Def?,Lane?,Blocking?,Hopper Dump?,Gear Block?,");
-            bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Last, First");
-            bW.write(",|,Team,Rank,W-L-T,OPR,kPa,Touch Pts,|");
-            bW.write(",Weighted ALL,Weighted Last-3,Auto Gear ALL,Auto Gear Last-3,Tele Gear ALL,Tele Gear Last-3,Climbs ALL,Climbs Last-3,Auto Gear Center,Auto Gear Left-Side,Auto Gear Right-Side, TOTAL Auto Sides");
+            bW.write("Lost Parts?,Lost Comms?,Good Def?,Lane?,Blocking?,Switch Block?,");
+            bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Scout-Last,Scout-First");
+            bW.write("Team,Rank,W-L-T,OPR,||");
+            bW.write(",Weighted ALL,Weighted Last-3,Auto Switch ALL,Auto Switch Last-3,Auto Scale ALL,Auto Scale Last-3,Tele Switch ALL,Tele Switch Last-3,Tele Scale ALL,Tele Scale Last-3,");
+            bW.write("Exchange,Climbs ALL,Climbs Last-3");
 
             bW.write(" " + "\n");
             prevTeam ="";
@@ -334,20 +337,22 @@ public class MainActivity extends AppCompatActivity {
                     }
                     lastRow = startRow - 1;
                 }
-                bW.write(match_inst.getTeam_num() + "," + match_inst.getMatch() + ",");
+                bW.write(match_inst.getTeam_num() + "," + match_inst.getMatch() + "," );
                 //----- Auto -----
-//                bW.write(match_inst.isAuto_mode() + "," + match_inst.isAuto_rope() + "," + match_inst.isAuto_carry_fuel() + "," + match_inst.getAuto_fuel_amount() + "," + match_inst.isAuto_gear() + "," + match_inst.getAuto_start() + ",");
-//                bW.write(match_inst.isAuto_baseline() + "," + match_inst.getAuto_gears_placed() + "," + match_inst.getAuto_gears_attempt() + "," + match_inst.getAuto_gear_pos() + "," + match_inst.isAuto_hg() + "," + match_inst.getAuto_hg_percent() + "," + match_inst.isAuto_lg() + "," + match_inst.getAuto_lg_percent() + ",");
+                bW.write(match_inst.isPre_cube() + "," + match_inst.getPre_startPos() + ","  + match_inst.isAuto_mode() + "," + match_inst.isAuto_baseline() + ",");
+                bW.write(match_inst.isAuto_cube_switch() + "," + match_inst.isAuto_cube_switch_att() + "," + match_inst.isAuto_xover_switch()  + "," + match_inst.isAuto_switch_extra()  + "," );
+                bW.write(match_inst.isAuto_cube_scale() + "," + match_inst.isAuto_cube_scale_att() + "," + match_inst.isAuto_xover_scale()  + "," + match_inst.isAuto_wrong_switch()  + ","  + match_inst.isAuto_wrong_scale()  + ",");
                 new_comm = StringEscapeUtils.escapeCsv(match_inst.getAuto_comment());
-//                bW.write(match_inst.isAuto_act_hopper() + "," + match_inst.getAuto_fuel_collected() + "," + match_inst.getAuto_stop() + "," + new_comm + "," + "|" + ",");
+                bW.write(new_comm + "," + "|" + ",");
                 //----- Tele -----
-//                bW.write(match_inst.isTele_gear_pickup() + "," + match_inst.getTele_gears_placed() + "," + match_inst.getTele_gears_attempt() + "," + match_inst.getTele_cycles() + "," + match_inst.isTele_hg() + "," + match_inst.getTele_hg_percent() + "," + match_inst.isTele_lg() + "," + match_inst.getTele_lg_percent() + ",");
-                String y = match_inst.getTele_comment();
+                bW.write(match_inst.getTele_cube_switch() + "," + match_inst.getTele_switch_attempt() + "," + match_inst.getTele_cube_scale() + "," + match_inst.getTele_scale_attempt() + "," + match_inst.getTele_their_switch() + "," + match_inst.getTele_their_attempt() + ",");
+                bW.write(match_inst.getTele_cube_exchange() + "," + match_inst.getTele_cube_portal() + "," + match_inst.getTele_cube_pwrzone() + "," + match_inst.getTele_cube_floor() + "," + match_inst.getTele_their_floor() + ","  + match_inst.isTele_cube_pickup() + "," + match_inst.isTele_placed_cube() + ","  + match_inst.isTele_launched_cube() + "," );
+//                String y = match_inst.getTele_comment();
                 new_comm = StringEscapeUtils.escapeCsv(match_inst.getTele_comment());
-//                bW.write(match_inst.isTele_climb_attempt() + "," + match_inst.isTele_touch_act() + "," + match_inst.isTele_climb_success() + "," + new_comm + "," + "|" + ",");
+                bW.write(match_inst.isTele_on_platform() + "," + match_inst.isTele_climb_success() + "," + match_inst.isTele_climb_attempt() + "," + match_inst.isTele_grab_rung() + "," + match_inst.isTele_grab_side() + "," + match_inst.isTele_lift_one() + "," + match_inst.isTele_lift_two() + "," + match_inst.isTele_got_lift() + ","   + new_comm + "," + "|" + ",");
                 //----- Final -----
-//                bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms() + "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_Hopper() + "," + match_inst.isFinal_def_Gear() + ",");
-                String x = match_inst.getFinal_comment();
+                bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms() + "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_BlockSwitch() + ",");
+//                String x = match_inst.getFinal_comment();
                 new_comm = StringEscapeUtils.escapeCsv(match_inst.getFinal_comment());
                 bW.write(match_inst.getFinal_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + new_comm + "," + "||" + "," + match_inst.getFinal_studID() + ",|,,,,,,,|");
                 //-----------------
@@ -382,9 +387,17 @@ public class MainActivity extends AppCompatActivity {
 //        Log.w(TAG, " wrtHdr  " + prevTeam);
         try {
             bW.write(prevTeam + ",'***,");
-            bW.write(",,,,,,'TOTAL >,=SUM($J" + startRow + ":$J" + lastRow + "),=SUM($K" + startRow + ":$K" + lastRow + ") ");
-            String escJK = StringEscapeUtils.escapeCsv("=IF($K" + (lastRow+1) +">0,$J" + (lastRow+1) + "/$K" + (lastRow+1) + ",0)");
-            bW.write(",'RATIO >," +  escJK);
+            String esc$XT = StringEscapeUtils.escapeCsv("=(COUNTIF($F" + startRow + ":$F" + lastRow + ",TRUE))");
+            bW.write(",,'CROSS>," + esc$XT + "/" + ((lastRow-startRow)+1));     // crossed ÷ #matches
+            String esc$G = StringEscapeUtils.escapeCsv("=(COUNTIF($G" + startRow + ":$G" + lastRow + ",TRUE))");
+            String esc$H = StringEscapeUtils.escapeCsv("=(COUNTIF($H" + startRow + ":$H" + lastRow + ",TRUE))");
+            String esc$I = StringEscapeUtils.escapeCsv("=(COUNTIF($I" + startRow + ":$I" + lastRow + ",TRUE))");
+            String esc$J = StringEscapeUtils.escapeCsv("=(COUNTIF($J" + startRow + ":$J" + lastRow + ",TRUE))");
+            String esc$K = StringEscapeUtils.escapeCsv("=(COUNTIF($K" + startRow + ":$K" + lastRow + ",TRUE))");
+            String esc$L = StringEscapeUtils.escapeCsv("=(COUNTIF($L" + startRow + ":$L" + lastRow + ",TRUE))");
+            String esc$M = StringEscapeUtils.escapeCsv("=(COUNTIF($M" + startRow + ":$M" + lastRow + ",TRUE))");
+            bW.write("," + esc$G + "," + esc$H + "," + esc$I + "/" + ((lastRow-startRow)+1) +  "," + esc$J  + "/" + ((lastRow-startRow)+1)+  "," + esc$K+  "," + esc$L + "," + esc$M + "/" + ((lastRow-startRow)+1));
+// ToDo -  done up to this point
             String escL3 = StringEscapeUtils.escapeCsv("=AVERAGE(OFFSET(INDIRECT(\"J\"&ROW()),-3,0,3,1))");
             bW.write(",'ALL>,=($J" + (lastRow+1) + "/" + ((lastRow-startRow)+1) + "),'LAST 3>," + escL3);
             bW.write(",,,,|,'TOTAL >,=SUM($W" + startRow + ":$W" + lastRow + "),=SUM($X" + startRow + ":$X" + lastRow + ")");
@@ -423,19 +436,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void gatherBA(String teamNo) {
 //        Log.w(TAG, " gatherBA  " + teamNo);
-        for (int i = 0; i < BAnumTeams; i++) {
-            if (BAe.teams[i].team_number == Long.parseLong(teamNo.trim())) {
-                tmName = BAe.teams[i].nickname;
-                tmRank = String.valueOf(BAe.teams[i].rank);
-                tmWLT = BAe.teams[i].record;
-                tmOPR = String.format("%3.3f",((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
+        if (BA_Data) {
+            for (int i = 0; i < BAnumTeams; i++) {
+                if (BAe.teams[i].team_number == Long.parseLong(teamNo.trim())) {
+                    tmName = BAe.teams[i].nickname;
+                    tmRank = String.valueOf(BAe.teams[i].rank);
+                    tmWLT = BAe.teams[i].record;
+                    tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
 //                Log.w(TAG,"  OPR: " + BAe.teams[i].opr);
 //                tmOPR = String.format("%3.3f",(BAe.teams[i].opr));
-                tmKPa = String.valueOf(BAe.teams[i].pressure);
-                tmTPts = String.valueOf(BAe.teams[i].touchpad);
+                    tmKPa = String.valueOf(BAe.teams[i].pressure);
+                    tmTPts = String.valueOf(BAe.teams[i].touchpad);
 //                System.out.println(tmName+" "+tmRank+" "+ tmWLT+" "+tmOPR+" "+tmKPa+" "+tmTPts + " \n");
-                break;      // exit For - found team
-            }
+                    break;      // exit For - found team
+                }
+            } // End For
+        } else {
+            tmName = "???";
+            tmRank = "00";
+            tmWLT = "*-*-*";
+
         }
     }
 
@@ -481,6 +501,9 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         String ev = parent.getItemAtPosition(pos).toString();
         Pearadox.FRC_EventName = ev;
         Log.w(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
+        txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
+        txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
+        txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
         p_Firebase.eventObj event_inst = new p_Firebase.eventObj();
         for(int i=0 ; i < Pearadox.eventList.size() ; i++)
         {
@@ -488,6 +511,9 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
             if (event_inst.getcomp_name().equals(ev)) {
                 Pearadox.FRC_Event = event_inst.getComp_code();
                 Pearadox.FRC_ChampDiv = event_inst.getcomp_div();
+                txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
+                txt_EvntDat.setText(event_inst.getcomp_date());         // Event Date
+                txt_EvntPlace.setText(event_inst.getcomp_place());                      // Event Location
             }
         }
         Log.w(TAG, "** Event code '" + Pearadox.FRC_Event + "' " + Pearadox.FRC_ChampDiv + "  \n ");
@@ -499,12 +525,9 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         System.out.println(e.location);
         System.out.println(e.start_date);
         System.out.println("\n");
-        txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
-        txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
-        txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
-        txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
-        txt_EvntDat.setText(e.start_date);                      // Event Date
-        txt_EvntPlace.setText(e.location);                      // Event Location
+//        txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
+//        txt_EvntDat.setText(e.start_date);                      // Event Date
+//        txt_EvntPlace.setText(e.location);                      // Event Location
 
         btn_Teams.setEnabled(true);
         btn_Match_Sched.setEnabled(true);
@@ -537,7 +560,7 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                 Log.w(TAG, "***** Matches Loaded from Firebase. # = " + Pearadox.Matches_Data.size());
                 if (Pearadox.Matches_Data.size() > 0) {
                     Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
-                    toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast1.setGravity(Gravity.BOTTOM, 0, 0);
                     toast1.show();
                 } else {
                     btn_Spreadsheet.setEnabled(false);
@@ -548,6 +571,7 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                 BAe = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);
                 if (BAe.name == null) {
                     Log.e(TAG,"### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###");
+                    BA_Data = false;
                     Toast toast2 = Toast.makeText(getBaseContext(), "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###", Toast.LENGTH_LONG);
                     toast2.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast2.show();
@@ -555,14 +579,15 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP);
                     btn_Teams.setEnabled(false);
                     btn_Match_Sched.setEnabled(false);
-                    btn_Spreadsheet.setEnabled(false);
+                    btn_Spreadsheet.setEnabled(true);
                 } else {
+                    BA_Data = true;
                     BAteams = BAe.teams.clone();
                     BAnumTeams = BAteams.length;
 
                     btn_Teams.setEnabled(true);
                     btn_Match_Sched.setEnabled(true);
-//                    btn_Spreadsheet.setEnabled(true);
+                    btn_Spreadsheet.setEnabled(true);
                 }
             }
             @Override
