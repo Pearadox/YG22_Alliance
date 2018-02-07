@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }else {
                     final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
                     Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, " Time = "  + dateFormatted2);
                 }  else {
                     final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                    tg.startTone(ToneGenerator.TONE_CDMA_EMERGENCY_RINGBACK);
                     Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
@@ -387,8 +387,10 @@ public class MainActivity extends AppCompatActivity {
 //        Log.w(TAG, " wrtHdr  " + prevTeam);
         try {
             bW.write(prevTeam + ",'***,");
+            /*  Auto */
+            String esc$E = StringEscapeUtils.escapeCsv("=(COUNTIF($E" + startRow + ":$E" + lastRow + ",TRUE))");
             String esc$XT = StringEscapeUtils.escapeCsv("=(COUNTIF($F" + startRow + ":$F" + lastRow + ",TRUE))");
-            bW.write(",,'CROSS>," + esc$XT + "/" + ((lastRow-startRow)+1));     // crossed ÷ #matches
+            bW.write(",'Bool% >>," + esc$E + "/" + ((lastRow-startRow)+1) + "," + esc$XT + "/" + ((lastRow-startRow)+1));  // crossed ÷ #matches
             String esc$G = StringEscapeUtils.escapeCsv("=(COUNTIF($G" + startRow + ":$G" + lastRow + ",TRUE))");
             String esc$H = StringEscapeUtils.escapeCsv("=(COUNTIF($H" + startRow + ":$H" + lastRow + ",TRUE))");
             String esc$I = StringEscapeUtils.escapeCsv("=(COUNTIF($I" + startRow + ":$I" + lastRow + ",TRUE))");
@@ -397,15 +399,60 @@ public class MainActivity extends AppCompatActivity {
             String esc$L = StringEscapeUtils.escapeCsv("=(COUNTIF($L" + startRow + ":$L" + lastRow + ",TRUE))");
             String esc$M = StringEscapeUtils.escapeCsv("=(COUNTIF($M" + startRow + ":$M" + lastRow + ",TRUE))");
             bW.write("," + esc$G + "," + esc$H + "," + esc$I + "/" + ((lastRow-startRow)+1) +  "," + esc$J  + "/" + ((lastRow-startRow)+1)+  "," + esc$K+  "," + esc$L + "," + esc$M + "/" + ((lastRow-startRow)+1));
-// ToDo -  done up to this point
-            String escL3 = StringEscapeUtils.escapeCsv("=AVERAGE(OFFSET(INDIRECT(\"J\"&ROW()),-3,0,3,1))");
-            bW.write(",'ALL>,=($J" + (lastRow+1) + "/" + ((lastRow-startRow)+1) + "),'LAST 3>," + escL3);
+            String esc$N = StringEscapeUtils.escapeCsv("=(COUNTIF($N" + startRow + ":$N" + lastRow + ",TRUE))");
+            String esc$O = StringEscapeUtils.escapeCsv("=(COUNTIF($O" + startRow + ":$O" + lastRow + ",TRUE))");
+            bW.write("," + esc$N + "/" + ((lastRow-startRow)+1) +  "," + esc$O  + "/" + ((lastRow-startRow)+1)+  ",,|");
+
+            /*  Tele  */
+            String escR = StringEscapeUtils.escapeCsv("=IF(SUM($S" + startRow + ":$S" + lastRow +")>0,SUM($R" + startRow + ":$R" + lastRow + ")/SUM($S" + startRow + ":$S" + lastRow + "),0)");
+            String escT = StringEscapeUtils.escapeCsv("=IF(SUM($U" + startRow + ":$U" + lastRow +")>0,SUM($T" + startRow + ":$T" + lastRow + ")/SUM($U" + startRow + ":$U" + lastRow + "),0)");
+            String escV = StringEscapeUtils.escapeCsv("=IF(SUM($W" + startRow + ":$W" + lastRow +")>0,SUM($V" + startRow + ":$V" + lastRow + ")/SUM($W" + startRow + ":$W" + lastRow + "),0)");
+            String escS = "";String escU = "";String escW= "";
+            if (lastRow-startRow >= 2)  {
+                escS = StringEscapeUtils.escapeCsv("=IF(SUM($S" + (lastRow - 2) + ":$S" + lastRow + ")>0,SUM($R" + (lastRow - 2) + ":$R" + lastRow + ")/SUM($S" + (lastRow - 2) + ":$S" + lastRow + "),0)");
+                escU = StringEscapeUtils.escapeCsv("=IF(SUM($U" + (lastRow - 2) + ":$U" + lastRow + ")>0,SUM($T" + (lastRow - 2) + ":$T" + lastRow + ")/SUM($U" + (lastRow - 2) + ":$U" + lastRow + "),0)");
+                escW = StringEscapeUtils.escapeCsv("=IF(SUM($W" + (lastRow - 2) + ":$W" + lastRow + ")>0,SUM($V" + (lastRow - 2) + ":$V" + lastRow + ")/SUM($W" + (lastRow - 2) + ":$W" + lastRow + "),0)");
+            } else {
+                escS = "0";
+                escU = "0";
+                escW = "0";
+            }
+            //            String escL3 = StringEscapeUtils.escapeCsv("=AVERAGE(OFFSET(INDIRECT(\"J\"&ROW()),-3,0,3,1))");
+            bW.write("," + escR + "," + escS + "," + escT + "," + escU + "," + escV + "," + escW);
+            bW.write("," + "=SUM($X" + startRow + ":$X" + lastRow + ")/" + ((lastRow-startRow)+1));
+            bW.write("," + "=SUM($Y" + startRow + ":$Y" + lastRow + ")/" + ((lastRow-startRow)+1));
+            bW.write("," + "=SUM($Z" + startRow + ":$Z" + lastRow + ")/" + ((lastRow-startRow)+1));
+            bW.write("," + "=SUM($AA" + startRow + ":$AA" + lastRow + ")/" + ((lastRow-startRow)+1));
+            bW.write("," + "=SUM($AB" + startRow + ":$AB" + lastRow + ")/" + ((lastRow-startRow)+1));
+            String esc$AC = StringEscapeUtils.escapeCsv("=(COUNTIF($AC" + startRow + ":$AC" + lastRow + ",TRUE))");
+            String esc$AD = StringEscapeUtils.escapeCsv("=(COUNTIF($AD" + startRow + ":$AD" + lastRow + ",TRUE))");
+            bW.write("," + esc$AC + "/" + ((lastRow-startRow)+1) + "," + esc$AD + "/" + ((lastRow-startRow)+1));
+            String esc$AE = StringEscapeUtils.escapeCsv("=(COUNTIF($AE" + startRow + ":$AE" + lastRow + ",TRUE))");
+            String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
+            bW.write("," + esc$AE + "/" + ((lastRow-startRow)+1) + "," + esc$AF + "/" + ((lastRow-startRow)+1));
+            String esc$Climb = StringEscapeUtils.escapeCsv("=IF((COUNTIF($AH" + startRow + ":$AH" + lastRow + ",TRUE))>0,COUNTIF($AG" + startRow + ":$AG" + lastRow + ",TRUE)/COUNTIF($AH" + startRow + ":$AH" + lastRow + ",TRUE),0)");
+            String escAH = "";
+            if (lastRow-startRow >= 2)  {
+                escAH = StringEscapeUtils.escapeCsv("=IF((COUNTIF($AH" + (lastRow - 2) + ":$AH" + lastRow + ",TRUE))>0,COUNTIF($AG" + (lastRow - 2) + ":$AG" + lastRow + ",TRUE)/COUNTIF($AH" + (lastRow - 2) + ":$AH" + lastRow + ",TRUE),0)");
+            } else {
+                escAH = "0";
+            }
+            bW.write("," + esc$Climb + "," + escAH);
+            String esc$AI = StringEscapeUtils.escapeCsv("=(COUNTIF($AI" + startRow + ":$AI" + lastRow + ",TRUE))");
+            String esc$AJ = StringEscapeUtils.escapeCsv("=(COUNTIF($AJ" + startRow + ":$AJ" + lastRow + ",TRUE))");
+            bW.write("," + esc$AI + "/" + ((lastRow-startRow)+1) + "," + esc$AJ  + "/" + ((lastRow-startRow)+1));
+            String esc$AK = StringEscapeUtils.escapeCsv("=(COUNTIF($AK" + startRow + ":$AK" + lastRow + ",TRUE))");
+            String esc$AL = StringEscapeUtils.escapeCsv("=(COUNTIF($AL" + startRow + ":$AL" + lastRow + ",TRUE))");
+            String esc$AM = StringEscapeUtils.escapeCsv("=(COUNTIF($AM" + startRow + ":$AM" + lastRow + ",TRUE))");
+            bW.write("," + esc$AK + "/" + ((lastRow-startRow)+1) + "," + esc$AL  + "/" + ((lastRow-startRow)+1) + "," + esc$AM  + "/" + ((lastRow-startRow)+1) + ",,|");
+
+            // ToDo -  done up to this point   =IF((COUNTIF($AH3:$AH6,TRUE))>0,COUNTIF($AG3:$AG6,TRUE)/COUNTIF($AH3:$AH6,TRUE),0)
             bW.write(",,,,|,'TOTAL >,=SUM($W" + startRow + ":$W" + lastRow + "),=SUM($X" + startRow + ":$X" + lastRow + ")");
             bW.write(",'RATIO >,=$W" + (lastRow+1) + "/" + ((lastRow-startRow)+1) );
             bW.write(",'Last 3>,=Sum($W" + (lastRow-2) + ":$W" + (lastRow) + ")/3" );    // Tele Gears Last 3
 
-            String esc$AD = StringEscapeUtils.escapeCsv("=(COUNTIF($AD" + startRow + ":$AD" + lastRow + ",TRUE))");
-            String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
+//            String esc$AD = StringEscapeUtils.escapeCsv("=(COUNTIF($AD" + startRow + ":$AD" + lastRow + ",TRUE))");
+//            String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
             String escAD$AF = StringEscapeUtils.escapeCsv("=IF($AD" + (lastRow+1) +">0,$AE" + (lastRow+1) + "/" + ((lastRow-startRow)+1) + ",0)");
             String esc$AD3 = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + (lastRow-2) + ":$AF" + (lastRow) + ",TRUE))");
             bW.write(",'TOTAL >,"+ esc$AD + "," + esc$AF + "," + escAD$AF + "," + esc$AD3 + "/3,,,,,,,,,,,,||,,,|,");
