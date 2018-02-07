@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
             bW.write("On Platform,Climb Success?,Climb Attempt?,Rung,Side,Lift-1,Lift-2,Was Lifted,Tele Comment,|,");
 
             bW.write("Lost Parts?,Lost Comms?,Good Def?,Lane?,Blocking?,Switch Block?,");
-            bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Scout-Last,Scout-First");
+            bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Scout-Last,Scout-First,");
             bW.write("Team,Rank,W-L-T,OPR,||");
             bW.write(",Weighted ALL,Weighted Last-3,Auto Switch ALL,Auto Switch Last-3,Auto Scale ALL,Auto Scale Last-3,Tele Switch ALL,Tele Switch Last-3,Tele Scale ALL,Tele Scale Last-3,");
             bW.write("Exchange,Climbs ALL,Climbs Last-3");
@@ -391,8 +391,13 @@ public class MainActivity extends AppCompatActivity {
             String esc$E = StringEscapeUtils.escapeCsv("=(COUNTIF($E" + startRow + ":$E" + lastRow + ",TRUE))");
             String esc$XT = StringEscapeUtils.escapeCsv("=(COUNTIF($F" + startRow + ":$F" + lastRow + ",TRUE))");
             bW.write(",'Bool% >>," + esc$E + "/" + ((lastRow-startRow)+1) + "," + esc$XT + "/" + ((lastRow-startRow)+1));  // crossed ÷ #matches
-            String esc$G = StringEscapeUtils.escapeCsv("=(COUNTIF($G" + startRow + ":$G" + lastRow + ",TRUE))");
-            String esc$H = StringEscapeUtils.escapeCsv("=(COUNTIF($H" + startRow + ":$H" + lastRow + ",TRUE))");
+            String esc$G = StringEscapeUtils.escapeCsv("=IF((COUNTIF($H" + startRow + ":$H" + lastRow + ",TRUE))>0,COUNTIF($G" + startRow + ":$G" + lastRow + ",TRUE)/COUNTIF($H" + startRow + ":$H" + lastRow + ",TRUE),0)");
+            String esc$H = "";
+            if (lastRow-startRow >= 2)  {
+                esc$H = StringEscapeUtils.escapeCsv("=IF((COUNTIF($H" + (lastRow - 2) + ":$H" + lastRow + ",TRUE))>0,COUNTIF($G" + (lastRow - 2) + ":$G" + lastRow + ",TRUE)/COUNTIF($H" + (lastRow - 2) + ":$H" + lastRow + ",TRUE),0)");
+            } else {
+                esc$H = "0";
+            }
             String esc$I = StringEscapeUtils.escapeCsv("=(COUNTIF($I" + startRow + ":$I" + lastRow + ",TRUE))");
             String esc$J = StringEscapeUtils.escapeCsv("=(COUNTIF($J" + startRow + ":$J" + lastRow + ",TRUE))");
             String esc$K = StringEscapeUtils.escapeCsv("=(COUNTIF($K" + startRow + ":$K" + lastRow + ",TRUE))");
@@ -446,21 +451,23 @@ public class MainActivity extends AppCompatActivity {
             String esc$AM = StringEscapeUtils.escapeCsv("=(COUNTIF($AM" + startRow + ":$AM" + lastRow + ",TRUE))");
             bW.write("," + esc$AK + "/" + ((lastRow-startRow)+1) + "," + esc$AL  + "/" + ((lastRow-startRow)+1) + "," + esc$AM  + "/" + ((lastRow-startRow)+1) + ",,|");
 
-            // ToDo -  done up to this point   =IF((COUNTIF($AH3:$AH6,TRUE))>0,COUNTIF($AG3:$AG6,TRUE)/COUNTIF($AH3:$AH6,TRUE),0)
-            bW.write(",,,,|,'TOTAL >,=SUM($W" + startRow + ":$W" + lastRow + "),=SUM($X" + startRow + ":$X" + lastRow + ")");
-            bW.write(",'RATIO >,=$W" + (lastRow+1) + "/" + ((lastRow-startRow)+1) );
-            bW.write(",'Last 3>,=Sum($W" + (lastRow-2) + ":$W" + (lastRow) + ")/3" );    // Tele Gears Last 3
-
-//            String esc$AD = StringEscapeUtils.escapeCsv("=(COUNTIF($AD" + startRow + ":$AD" + lastRow + ",TRUE))");
-//            String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
-            String escAD$AF = StringEscapeUtils.escapeCsv("=IF($AD" + (lastRow+1) +">0,$AE" + (lastRow+1) + "/" + ((lastRow-startRow)+1) + ",0)");
-            String esc$AD3 = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + (lastRow-2) + ":$AF" + (lastRow) + ",TRUE))");
-            bW.write(",'TOTAL >,"+ esc$AD + "," + esc$AF + "," + escAD$AF + "," + esc$AD3 + "/3,,,,,,,,,,,,||,,,|,");
+            /*  Final  */
+            String esc$AP = StringEscapeUtils.escapeCsv("=(COUNTIF($AP" + startRow + ":$AP" + lastRow + ",TRUE))");
+            String esc$AQ = StringEscapeUtils.escapeCsv("=(COUNTIF($AQ" + startRow + ":$AQ" + lastRow + ",TRUE))");
+            String esc$AR = StringEscapeUtils.escapeCsv("=(COUNTIF($AR" + startRow + ":$AR" + lastRow + ",TRUE))");
+            bW.write("," + esc$AP + "/" + ((lastRow-startRow)+1) + "," + esc$AQ  + "/" + ((lastRow-startRow)+1) + "," + esc$AR  + "/" + ((lastRow-startRow)+1));
+            String esc$AS = StringEscapeUtils.escapeCsv("=(COUNTIF($AS" + startRow + ":$AS" + lastRow + ",TRUE))");
+            String esc$AT = StringEscapeUtils.escapeCsv("=(COUNTIF($AT" + startRow + ":$AT" + lastRow + ",TRUE))");
+            String esc$AU = StringEscapeUtils.escapeCsv("=(COUNTIF($AU" + startRow + ":$AU" + lastRow + ",TRUE))");
+            bW.write("," + esc$AS + "/" + ((lastRow-startRow)+1) + "," + esc$AT + "/" + ((lastRow-startRow)+1) + "," + esc$AU  + "/" + ((lastRow-startRow)+1));
+            bW.write(",=SUM($AV" + startRow + ":$AV" + lastRow + ")/" + ((lastRow-startRow)+1));
+            bW.write(",,,||,,,|");
             gatherBA(prevTeam);
-            bW.write(tmName + "," + tmRank + ",'"+tmWLT + ","+tmOPR + ","+tmKPa + ","+tmTPts + ",|");
+            bW.write(tmName + "," + tmRank + ",'"+tmWLT + ","+tmOPR + ",||");
 
             // Todo - Fix All to use # of matches!!!
-            bW.write(",=(($AF" + (lastRow+1) +"*2) + $Z" + (lastRow+1) + " + $O" + (lastRow+1) +") / 3");   // Weighted ALL
+            bW.write(",=($G" + (lastRow+1) + "+($K" + (lastRow+1) +"*2) +($R" + (lastRow+1) + "+($T" + (lastRow+1) +"*2) + $AG" + (lastRow+1) + " + $AK" + (lastRow+1) + " + ($AL" + (lastRow+1) +"*2)" +") / 3");   // Weighted ALL
+            // ToDo -  done up to this point
             bW.write(",=(($AG" + (lastRow+1) +"*2) + $AB" + (lastRow+1) + " + $Q" + (lastRow+1) +") / 3,");  // Weighted Last 3
             bW.write("=$O$" + (lastRow+1) + ",=$Q$" + (lastRow+1) + ",");          // Auto Gears (ALL & Last 3)
             bW.write("=$Z$" + (lastRow+1) + ",=$AB$" + (lastRow+1) + ",");         // Tele Gears (ALL & Last 3)
@@ -492,8 +499,8 @@ public class MainActivity extends AppCompatActivity {
                     tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
 //                Log.w(TAG,"  OPR: " + BAe.teams[i].opr);
 //                tmOPR = String.format("%3.3f",(BAe.teams[i].opr));
-                    tmKPa = String.valueOf(BAe.teams[i].pressure);
-                    tmTPts = String.valueOf(BAe.teams[i].touchpad);
+//                    tmKPa = String.valueOf(BAe.teams[i].pressure);
+//                    tmTPts = String.valueOf(BAe.teams[i].touchpad);
 //                System.out.println(tmName+" "+tmRank+" "+ tmWLT+" "+tmOPR+" "+tmKPa+" "+tmTPts + " \n");
                     break;      // exit For - found team
                 }
@@ -502,7 +509,7 @@ public class MainActivity extends AppCompatActivity {
             tmName = "???";
             tmRank = "00";
             tmWLT = "*-*-*";
-
+            tmOPR = "000";
         }
     }
 
