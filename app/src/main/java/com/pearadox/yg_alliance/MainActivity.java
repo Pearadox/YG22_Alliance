@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfEvent_DBReference;
     private DatabaseReference pfMatchData_DBReference;
+    private DatabaseReference pfTeam_DBReference;
     private FirebaseAuth mAuth;
     matchData match_inst = new matchData();
     String destFile;
@@ -318,10 +319,10 @@ public class MainActivity extends AppCompatActivity {
             bW.write("On Platform,Climb Success?,Climb Attempt?,Rung,Side,Lift-1,Lift-2,Was Lifted,Tele Comment,|,");
 
             bW.write("Lost Parts?,Lost Comms?,Good Def?,Lane?,Blocking?,Switch Block?,");
-            bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Scout-Last,Scout-First,");
+            bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Scout-Last,Scout-First,|,");
             bW.write("Team,Rank,W-L-T,OPR,||");
             bW.write(",Weighted ALL,Weighted Last-3,Auto Switch ALL,Auto Switch Last-3,Auto Scale ALL,Auto Scale Last-3,Tele Switch ALL,Tele Switch Last-3,Tele Scale ALL,Tele Scale Last-3,");
-            bW.write("Exchange,Climbs ALL,Climbs Last-3");
+            bW.write("Exchange,Climbs ALL,Climbs Last-3,Side Out,Side In,Middle");
 
             bW.write(" " + "\n");
             prevTeam ="";
@@ -461,23 +462,25 @@ public class MainActivity extends AppCompatActivity {
             String esc$AU = StringEscapeUtils.escapeCsv("=(COUNTIF($AU" + startRow + ":$AU" + lastRow + ",TRUE))");
             bW.write("," + esc$AS + "/" + ((lastRow-startRow)+1) + "," + esc$AT + "/" + ((lastRow-startRow)+1) + "," + esc$AU  + "/" + ((lastRow-startRow)+1));
             bW.write(",=SUM($AV" + startRow + ":$AV" + lastRow + ")/" + ((lastRow-startRow)+1));
-            bW.write(",,,||,,,|");
+            bW.write(",,,||,,,|,");
             gatherBA(prevTeam);
             bW.write(tmName + "," + tmRank + ",'"+tmWLT + ","+tmOPR + ",||");
 
-            // Todo - Fix All to use # of matches!!!
-            bW.write(",=($G" + (lastRow+1) + "+($K" + (lastRow+1) +"*2) +($R" + (lastRow+1) + "+($T" + (lastRow+1) +"*2) + $AG" + (lastRow+1) + " + $AK" + (lastRow+1) + " + ($AL" + (lastRow+1) +"*2)" +") / 3");   // Weighted ALL
+            bW.write(",=($G" + (lastRow+1) + "+($K" + (lastRow+1) +"*2) +($R" + (lastRow+1) + "+($T" + (lastRow+1) +"*2) + $AG" + (lastRow+1) + " + $AK" + (lastRow+1) + " + ($AL" + (lastRow+1) +"*2)" +") / 3)");   // Weighted ALL
+            bW.write(",=($H" + (lastRow+1) + "+($L" + (lastRow+1) +"*2) +($S" + (lastRow+1) + "+($U" + (lastRow+1) +"*2) + $AH" + (lastRow+1) + " + $AK" + (lastRow+1) + " + ($AL" + (lastRow+1) +"*2)" +") / 3)");   // Weighted Last 3
+            bW.write(",=$G$" + (lastRow+1) + ",=$H$" + (lastRow+1) + ",");          // Auto Switch (ALL & Last 3)
+            bW.write("=$K$" + (lastRow+1) + ",=$L$" + (lastRow+1) + ",");           // Auto Scale (ALL & Last 3)
+            bW.write("=$R$" + (lastRow+1) + ",=$S$" + (lastRow+1) + ",");           // Tele Switch (ALL & Last 3)
+            bW.write("=$T$" + (lastRow+1) + ",=$U$" + (lastRow+1) + ",");           // Tele Switch (ALL & Last 3)
+            bW.write("=$X$" + (lastRow+1) + ",");                                   // Exchange
+            bW.write("=$AG$" + (lastRow+1) + ",=$AH$" + (lastRow+1) + ",");         // Climbs (ALL & Last 3)
             // ToDo -  done up to this point
-            bW.write(",=(($AG" + (lastRow+1) +"*2) + $AB" + (lastRow+1) + " + $Q" + (lastRow+1) +") / 3,");  // Weighted Last 3
-            bW.write("=$O$" + (lastRow+1) + ",=$Q$" + (lastRow+1) + ",");          // Auto Gears (ALL & Last 3)
-            bW.write("=$Z$" + (lastRow+1) + ",=$AB$" + (lastRow+1) + ",");         // Tele Gears (ALL & Last 3)
-            bW.write("=$AF$" + (lastRow+1) + ",=$AG$" + (lastRow+1) + ",");        // Climbs (ALL & Last 3)
-            String escL = StringEscapeUtils.escapeCsv("=COUNTIF($L$" + startRow  + ":$L$" + (lastRow) + ",\"2\")");
-            bW.write(escL + ",");           // Auto Center Gears
-            String escS1 = StringEscapeUtils.escapeCsv("=COUNTIF($L$" + startRow  + ":$L$" + (lastRow) + ",\"1\")");
-            bW.write(escS1 + ",");           // Auto Left-Side Gears
-            String escS3 = StringEscapeUtils.escapeCsv("=COUNTIF($L$" + startRow  + ":$L$" + (lastRow) + ",\"3\")");
-            bW.write(escS3 + ",=$BM$" + (lastRow+1) + "+ $BN$" + (lastRow+1) + ",");      // TOTAL Auto Side Gears
+            String escOut = StringEscapeUtils.escapeCsv("=COUNTIF($D$" + startRow  + ":$D$" + (lastRow) + ",\"Side (out)\")");
+            bW.write(escOut + ",");           // Side (OUT)
+            String escIn = StringEscapeUtils.escapeCsv("=COUNTIF($D$" + startRow  + ":$D$" + (lastRow) + ",\"Side (in)\")");
+            bW.write(escIn + ",");           // Side (IN)
+            String escMid = StringEscapeUtils.escapeCsv("=COUNTIF($D$" + startRow  + ":$D$" + (lastRow) + ",\"Middle\")");
+            bW.write(escMid + ",");           // Middle
             //=============================
             bW.write(" " + "\n");   // End-of-Line
             prevTeam = match_inst.getTeam_num();
@@ -506,7 +509,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             } // End For
         } else {
-            tmName = "???";
+            for (int x = 0; x < Pearadox.numTeams; x++) {
+                p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
+                My_inst = Pearadox.team_List.get(x);
+                if (teamNo.matches(My_inst.getTeam_num())) {
+                    tmName = My_inst.getTeam_name();
+                    break;
+                }
+            }
             tmRank = "00";
             tmWLT = "*-*-*";
             tmOPR = "000";
@@ -589,12 +599,49 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
         pfDatabase = FirebaseDatabase.getInstance();
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
         addMD_VE_Listener(pfMatchData_DBReference.orderByChild("team_num"));        // Load _ALL_ Matches in team order GLF 4/18
+        pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
+        addTeam_VE_Listener(pfTeam_DBReference.orderByChild("team_num"));               // Load Teams since we now know event
 
     }
     public void onNothingSelected(AdapterView<?> parent) {
         // Do nothing.
     }
 }
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void addTeam_VE_Listener(final Query pfTeam_DBReference) {
+        pfTeam_DBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.w(TAG, "<<<< getFB_Data >>>> Teams");
+                Pearadox.team_List.clear();
+                Pearadox.numTeams = 0;
+                p_Firebase.teamsObj tmobj = new p_Firebase.teamsObj();
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
+                    tmobj = iterator.next().getValue(p_Firebase.teamsObj.class);
+                    Pearadox.team_List.add(tmobj);
+                    Pearadox.numTeams++;
+                }
+                if (Pearadox.numTeams == 0) {
+                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                    Toast toast = Toast.makeText(getBaseContext(), "*** There are _NO_ teams loaded for '" + Pearadox.FRC_Event + "' ***", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    Log.i(TAG, "***** Teams Loaded. # = " + Pearadox.numTeams + "  " + Pearadox.team_List.size());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                /*listener failed or was removed for security reasons*/
+            }
+        });
+    }
+
 
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
