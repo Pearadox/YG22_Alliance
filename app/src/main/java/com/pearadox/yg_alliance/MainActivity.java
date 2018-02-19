@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
             bW.write(Pearadox.FRC_Event.toUpperCase() + " - " + Pearadox.FRC_EventName +"  \n");
             // Write Excel/Spreadsheet Header for each column
             bW.write("Team,Match,Carry Cube,Start Pos,_NO_ Auto Mode,Crossed Baseline?,");
-            bW.write("Cube Switch,Switch Attempted,Switch X-Over,Extra Cube,Cube Scale,Scale Attempted,Scale X-Over,Wrong Switch,Wrong Scale,");
+            bW.write("Cube Switch,Switch Attempted,Switch X-Over,Extra Cube,Cube Scale,Scale Attempted,Scale Extra,Scale X-Over,Wrong Switch,Wrong Scale,");
             bW.write("Auto Comment,|,");
 
             bW.write("Cube Switch,Switch Attempted,Cube Scale,Scale Attempted,Their Switch,Their Attempted,");
@@ -342,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
                 //----- Auto -----
                 bW.write(match_inst.isPre_cube() + "," + match_inst.getPre_startPos() + ","  + match_inst.isAuto_mode() + "," + match_inst.isAuto_baseline() + ",");
                 bW.write(match_inst.isAuto_cube_switch() + "," + match_inst.isAuto_cube_switch_att() + "," + match_inst.isAuto_xover_switch()  + "," + match_inst.isAuto_switch_extra()  + "," );
-                bW.write(match_inst.isAuto_cube_scale() + "," + match_inst.isAuto_cube_scale_att() + "," + match_inst.isAuto_xover_scale()  + "," + match_inst.isAuto_wrong_switch()  + ","  + match_inst.isAuto_wrong_scale()  + ",");
+                bW.write(match_inst.isAuto_cube_scale() + "," + match_inst.isAuto_cube_scale_att() + "," + match_inst.isAuto_scale_extra() + "," + match_inst.isAuto_xover_scale()  + "," + match_inst.isAuto_wrong_switch()  + ","  + match_inst.isAuto_wrong_scale()  + ",");
                 new_comm = StringEscapeUtils.escapeCsv(match_inst.getAuto_comment());
                 bW.write(new_comm + "," + "|" + ",");
                 //----- Tele -----
@@ -399,82 +399,82 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 esc$H = "0";
             }
-            String esc$I = StringEscapeUtils.escapeCsv("=(COUNTIF($I" + startRow + ":$I" + lastRow + ",TRUE))");
+            String esc$I = StringEscapeUtils.escapeCsv("=(COUNTIF($I" + startRow + ":$I" + lastRow + ",TRUE))");    // Switch Cross-over
             String esc$J = StringEscapeUtils.escapeCsv("=(COUNTIF($J" + startRow + ":$J" + lastRow + ",TRUE))");
             String esc$K = StringEscapeUtils.escapeCsv("=(COUNTIF($K" + startRow + ":$K" + lastRow + ",TRUE))");
-            String esc$L = StringEscapeUtils.escapeCsv("=(COUNTIF($L" + startRow + ":$L" + lastRow + ",TRUE))");
-            String esc$M = StringEscapeUtils.escapeCsv("=(COUNTIF($M" + startRow + ":$M" + lastRow + ",TRUE))");
-            bW.write("," + esc$G + "," + esc$H + "," + esc$I + "/" + ((lastRow-startRow)+1) +  "," + esc$J  + "/" + ((lastRow-startRow)+1)+  "," + esc$K+  "," + esc$L + "," + esc$M + "/" + ((lastRow-startRow)+1));
-            String esc$N = StringEscapeUtils.escapeCsv("=(COUNTIF($N" + startRow + ":$N" + lastRow + ",TRUE))");
-            String esc$O = StringEscapeUtils.escapeCsv("=(COUNTIF($O" + startRow + ":$O" + lastRow + ",TRUE))");
-            bW.write("," + esc$N + "/" + ((lastRow-startRow)+1) +  "," + esc$O  + "/" + ((lastRow-startRow)+1)+  ",,|");
+            String esc$L = StringEscapeUtils.escapeCsv("=(COUNTIF($L" + startRow + ":$L" + lastRow + ",TRUE))");    // Scale Att
+            String esc$M = StringEscapeUtils.escapeCsv("=(COUNTIF($M" + startRow + ":$M" + lastRow + ",TRUE))");    // Scale Extra
+            String esc$N = StringEscapeUtils.escapeCsv("=(COUNTIF($M" + startRow + ":$M" + lastRow + ",TRUE))");
+            bW.write("," + esc$G + "," + esc$H + "," + esc$I + "/" + ((lastRow-startRow)+1) +  "," + esc$J  + "/" + ((lastRow-startRow)+1)+  "," + esc$K+  "," + esc$L + "," + esc$M + "," + esc$N + "/" + ((lastRow-startRow)+1));
+            String esc$O = StringEscapeUtils.escapeCsv("=(COUNTIF($N" + startRow + ":$N" + lastRow + ",TRUE))");
+            String esc$P = StringEscapeUtils.escapeCsv("=(COUNTIF($O" + startRow + ":$O" + lastRow + ",TRUE))");
+            bW.write("," + esc$O + "/" + ((lastRow-startRow)+1) +  "," + esc$P  + "/" + ((lastRow-startRow)+1)+  ",,|");
 
             /*  Tele  */
-            String escR = StringEscapeUtils.escapeCsv("=IF(SUM($S" + startRow + ":$S" + lastRow +")>0,SUM($R" + startRow + ":$R" + lastRow + ")/SUM($S" + startRow + ":$S" + lastRow + "),0)");
-            String escT = StringEscapeUtils.escapeCsv("=IF(SUM($U" + startRow + ":$U" + lastRow +")>0,SUM($T" + startRow + ":$T" + lastRow + ")/SUM($U" + startRow + ":$U" + lastRow + "),0)");
-            String escV = StringEscapeUtils.escapeCsv("=IF(SUM($W" + startRow + ":$W" + lastRow +")>0,SUM($V" + startRow + ":$V" + lastRow + ")/SUM($W" + startRow + ":$W" + lastRow + "),0)");
-            String escS = "";String escU = "";String escW= "";
+            String escS = StringEscapeUtils.escapeCsv("=IF(SUM($T" + startRow + ":$T" + lastRow +")>0,SUM($S" + startRow + ":$S" + lastRow + ")/SUM($T" + startRow + ":$T" + lastRow + "),0)");
+            String escU = StringEscapeUtils.escapeCsv("=IF(SUM($V" + startRow + ":$V" + lastRow +")>0,SUM($S" + startRow + ":$S" + lastRow + ")/SUM($V" + startRow + ":$V" + lastRow + "),0)");
+            String escW = StringEscapeUtils.escapeCsv("=IF(SUM($X" + startRow + ":$X" + lastRow +")>0,SUM($W" + startRow + ":$W" + lastRow + ")/SUM($X" + startRow + ":$X" + lastRow + "),0)");
+            String escT = "";String escV = "";String escX= "";
             if (lastRow-startRow >= 2)  {
-                escS = StringEscapeUtils.escapeCsv("=IF(SUM($S" + (lastRow - 2) + ":$S" + lastRow + ")>0,SUM($R" + (lastRow - 2) + ":$R" + lastRow + ")/SUM($S" + (lastRow - 2) + ":$S" + lastRow + "),0)");
-                escU = StringEscapeUtils.escapeCsv("=IF(SUM($U" + (lastRow - 2) + ":$U" + lastRow + ")>0,SUM($T" + (lastRow - 2) + ":$T" + lastRow + ")/SUM($U" + (lastRow - 2) + ":$U" + lastRow + "),0)");
-                escW = StringEscapeUtils.escapeCsv("=IF(SUM($W" + (lastRow - 2) + ":$W" + lastRow + ")>0,SUM($V" + (lastRow - 2) + ":$V" + lastRow + ")/SUM($W" + (lastRow - 2) + ":$W" + lastRow + "),0)");
+                escT = StringEscapeUtils.escapeCsv("=IF(SUM($S" + (lastRow - 2) + ":$S" + lastRow + ")>0,SUM($R" + (lastRow - 2) + ":$R" + lastRow + ")/SUM($S" + (lastRow - 2) + ":$S" + lastRow + "),0)");
+                escV = StringEscapeUtils.escapeCsv("=IF(SUM($U" + (lastRow - 2) + ":$U" + lastRow + ")>0,SUM($T" + (lastRow - 2) + ":$T" + lastRow + ")/SUM($U" + (lastRow - 2) + ":$U" + lastRow + "),0)");
+                escX = StringEscapeUtils.escapeCsv("=IF(SUM($W" + (lastRow - 2) + ":$W" + lastRow + ")>0,SUM($V" + (lastRow - 2) + ":$V" + lastRow + ")/SUM($W" + (lastRow - 2) + ":$W" + lastRow + "),0)");
             } else {
                 escS = "0";
                 escU = "0";
                 escW = "0";
             }
             //            String escL3 = StringEscapeUtils.escapeCsv("=AVERAGE(OFFSET(INDIRECT(\"J\"&ROW()),-3,0,3,1))");
-            bW.write("," + escR + "," + escS + "," + escT + "," + escU + "," + escV + "," + escW);
-            bW.write("," + "=SUM($X" + startRow + ":$X" + lastRow + ")/" + ((lastRow-startRow)+1));
-            bW.write("," + "=SUM($Y" + startRow + ":$Y" + lastRow + ")/" + ((lastRow-startRow)+1));
-            bW.write("," + "=SUM($Z" + startRow + ":$Z" + lastRow + ")/" + ((lastRow-startRow)+1));
-            bW.write("," + "=SUM($AA" + startRow + ":$AA" + lastRow + ")/" + ((lastRow-startRow)+1));
-            bW.write("," + "=SUM($AB" + startRow + ":$AB" + lastRow + ")/" + ((lastRow-startRow)+1));
-            String esc$AC = StringEscapeUtils.escapeCsv("=(COUNTIF($AC" + startRow + ":$AC" + lastRow + ",TRUE))");
+            bW.write("," + escS + "," + escT + "," + escU + "," + escV + "," + escW + "," + escX);
+            bW.write("," + "=SUM($Y" + startRow + ":$Y" + lastRow + ")/" + ((lastRow-startRow)+1));     // Exchange
+            bW.write("," + "=SUM($Z" + startRow + ":$Z" + lastRow + ")/" + ((lastRow-startRow)+1));     // Portal
+            bW.write("," + "=SUM($AA" + startRow + ":$AA" + lastRow + ")/" + ((lastRow-startRow)+1));   //Pwr Cube Zone
+            bW.write("," + "=SUM($AB" + startRow + ":$AB" + lastRow + ")/" + ((lastRow-startRow)+1));   // Our Floor
+            bW.write("," + "=SUM($AC" + startRow + ":$AC" + lastRow + ")/" + ((lastRow-startRow)+1));   // Their Floor
             String esc$AD = StringEscapeUtils.escapeCsv("=(COUNTIF($AD" + startRow + ":$AD" + lastRow + ",TRUE))");
-            bW.write("," + esc$AC + "/" + ((lastRow-startRow)+1) + "," + esc$AD + "/" + ((lastRow-startRow)+1));
             String esc$AE = StringEscapeUtils.escapeCsv("=(COUNTIF($AE" + startRow + ":$AE" + lastRow + ",TRUE))");
-            String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
-            bW.write("," + esc$AE + "/" + ((lastRow-startRow)+1) + "," + esc$AF + "/" + ((lastRow-startRow)+1));
-            String esc$Climb = StringEscapeUtils.escapeCsv("=IF((COUNTIF($AH" + startRow + ":$AH" + lastRow + ",TRUE))>0,COUNTIF($AG" + startRow + ":$AG" + lastRow + ",TRUE)/COUNTIF($AH" + startRow + ":$AH" + lastRow + ",TRUE),0)");
-            String escAH = "";
+            bW.write("," + esc$AD + "/" + ((lastRow-startRow)+1) + "," + esc$AE + "/" + ((lastRow-startRow)+1));
+            String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");     // On Platform
+            String esc$AG = StringEscapeUtils.escapeCsv("=(COUNTIF($AG" + startRow + ":$AG" + lastRow + ",TRUE))");     // Climb Success
+            bW.write("," + esc$AF + "/" + ((lastRow-startRow)+1) + "," + esc$AG + "/" + ((lastRow-startRow)+1));
+            String esc$Climb = StringEscapeUtils.escapeCsv("=IF((COUNTIF($AI" + startRow + ":$AI" + lastRow + ",TRUE))>0,COUNTIF($AH" + startRow + ":$AH" + lastRow + ",TRUE)/COUNTIF($AI" + startRow + ":$AI" + lastRow + ",TRUE),0)");
+            String escAI = "";
             if (lastRow-startRow >= 2)  {
-                escAH = StringEscapeUtils.escapeCsv("=IF((COUNTIF($AH" + (lastRow - 2) + ":$AH" + lastRow + ",TRUE))>0,COUNTIF($AG" + (lastRow - 2) + ":$AG" + lastRow + ",TRUE)/COUNTIF($AH" + (lastRow - 2) + ":$AH" + lastRow + ",TRUE),0)");
+                escAI = StringEscapeUtils.escapeCsv("=IF((COUNTIF($AH" + (lastRow - 2) + ":$AH" + lastRow + ",TRUE))>0,COUNTIF($AG" + (lastRow - 2) + ":$AG" + lastRow + ",TRUE)/COUNTIF($AH" + (lastRow - 2) + ":$AH" + lastRow + ",TRUE),0)");
             } else {
-                escAH = "0";
+                escAI = "0";
             }
-            bW.write("," + esc$Climb + "," + escAH);
-            String esc$AI = StringEscapeUtils.escapeCsv("=(COUNTIF($AI" + startRow + ":$AI" + lastRow + ",TRUE))");
+            bW.write("," + esc$Climb + "," + escAI);
             String esc$AJ = StringEscapeUtils.escapeCsv("=(COUNTIF($AJ" + startRow + ":$AJ" + lastRow + ",TRUE))");
-            bW.write("," + esc$AI + "/" + ((lastRow-startRow)+1) + "," + esc$AJ  + "/" + ((lastRow-startRow)+1));
             String esc$AK = StringEscapeUtils.escapeCsv("=(COUNTIF($AK" + startRow + ":$AK" + lastRow + ",TRUE))");
-            String esc$AL = StringEscapeUtils.escapeCsv("=(COUNTIF($AL" + startRow + ":$AL" + lastRow + ",TRUE))");
-            String esc$AM = StringEscapeUtils.escapeCsv("=(COUNTIF($AM" + startRow + ":$AM" + lastRow + ",TRUE))");
-            bW.write("," + esc$AK + "/" + ((lastRow-startRow)+1) + "," + esc$AL  + "/" + ((lastRow-startRow)+1) + "," + esc$AM  + "/" + ((lastRow-startRow)+1) + ",,|");
+            bW.write("," + esc$AJ + "/" + ((lastRow-startRow)+1) + "," + esc$AK  + "/" + ((lastRow-startRow)+1));
+            String esc$AL = StringEscapeUtils.escapeCsv("=(COUNTIF($AL" + startRow + ":$AL" + lastRow + ",TRUE))");     // Lift-1
+            String esc$AM = StringEscapeUtils.escapeCsv("=(COUNTIF($AM" + startRow + ":$AM" + lastRow + ",TRUE))");     // Lift-2
+            String esc$AN = StringEscapeUtils.escapeCsv("=(COUNTIF($AN" + startRow + ":$AN" + lastRow + ",TRUE))");
+            bW.write("," + esc$AL + "/" + ((lastRow-startRow)+1) + "," + esc$AM  + "/" + ((lastRow-startRow)+1) + "," + esc$AN  + "/" + ((lastRow-startRow)+1) + ",,|");
 
             /*  Final  */
-            String esc$AP = StringEscapeUtils.escapeCsv("=(COUNTIF($AP" + startRow + ":$AP" + lastRow + ",TRUE))");
-            String esc$AQ = StringEscapeUtils.escapeCsv("=(COUNTIF($AQ" + startRow + ":$AQ" + lastRow + ",TRUE))");
-            String esc$AR = StringEscapeUtils.escapeCsv("=(COUNTIF($AR" + startRow + ":$AR" + lastRow + ",TRUE))");
-            bW.write("," + esc$AP + "/" + ((lastRow-startRow)+1) + "," + esc$AQ  + "/" + ((lastRow-startRow)+1) + "," + esc$AR  + "/" + ((lastRow-startRow)+1));
+            String esc$AQ = StringEscapeUtils.escapeCsv("=(COUNTIF($AQ" + startRow + ":$AQ" + lastRow + ",TRUE))");     // Lost Parts
+            String esc$AR = StringEscapeUtils.escapeCsv("=(COUNTIF($AR" + startRow + ":$AR" + lastRow + ",TRUE))");     // Lost Comm
             String esc$AS = StringEscapeUtils.escapeCsv("=(COUNTIF($AS" + startRow + ":$AS" + lastRow + ",TRUE))");
-            String esc$AT = StringEscapeUtils.escapeCsv("=(COUNTIF($AT" + startRow + ":$AT" + lastRow + ",TRUE))");
-            String esc$AU = StringEscapeUtils.escapeCsv("=(COUNTIF($AU" + startRow + ":$AU" + lastRow + ",TRUE))");
-            bW.write("," + esc$AS + "/" + ((lastRow-startRow)+1) + "," + esc$AT + "/" + ((lastRow-startRow)+1) + "," + esc$AU  + "/" + ((lastRow-startRow)+1));
-            bW.write(",=SUM($AV" + startRow + ":$AV" + lastRow + ")/" + ((lastRow-startRow)+1));
+            bW.write("," + esc$AQ + "/" + ((lastRow-startRow)+1) + "," + esc$AR  + "/" + ((lastRow-startRow)+1) + "," + esc$AS  + "/" + ((lastRow-startRow)+1));
+            String esc$AT = StringEscapeUtils.escapeCsv("=(COUNTIF($AT" + startRow + ":$AT" + lastRow + ",TRUE))");     // Lane Blk
+            String esc$AU = StringEscapeUtils.escapeCsv("=(COUNTIF($AU" + startRow + ":$AU" + lastRow + ",TRUE))");     // Block
+            String esc$AV = StringEscapeUtils.escapeCsv("=(COUNTIF($AV" + startRow + ":$AV" + lastRow + ",TRUE))");     // Switch Blk
+            bW.write("," + esc$AT + "/" + ((lastRow-startRow)+1) + "," + esc$AU + "/" + ((lastRow-startRow)+1) + "," + esc$AV  + "/" + ((lastRow-startRow)+1));
+            bW.write(",=SUM($AW" + startRow + ":$AW" + lastRow + ")/" + ((lastRow-startRow)+1));        // # Penalties
             bW.write(",,,||,,,|,");
             gatherBA(prevTeam);
             bW.write(tmName + "," + tmRank + ",'"+tmWLT + ","+tmOPR + ",||");
 
-            bW.write(",=($G" + (lastRow+1) + "+($K" + (lastRow+1) +"*2) +($R" + (lastRow+1) + "+($T" + (lastRow+1) +"*2) + $AG" + (lastRow+1) + " + $AK" + (lastRow+1) + " + ($AL" + (lastRow+1) +"*2)" +") / 3)");   // Weighted ALL
-            bW.write(",=($H" + (lastRow+1) + "+($L" + (lastRow+1) +"*2) +($S" + (lastRow+1) + "+($U" + (lastRow+1) +"*2) + $AH" + (lastRow+1) + " + $AK" + (lastRow+1) + " + ($AL" + (lastRow+1) +"*2)" +") / 3)");   // Weighted Last 3
+            bW.write(",=($G" + (lastRow+1) + "+($K" + (lastRow+1) +"*2) +($S" + (lastRow+1) + "+($U" + (lastRow+1) +"*2) + $AH" + (lastRow+1) + " + $AL" + (lastRow+1) + " + ($AM" + (lastRow+1) +"*2)" +") / 3)");   // Weighted ALL
+            bW.write(",=($H" + (lastRow+1) + "+($L" + (lastRow+1) +"*2) +($T" + (lastRow+1) + "+($V" + (lastRow+1) +"*2) + $AI" + (lastRow+1) + " + $AM" + (lastRow+1) + " + ($AN" + (lastRow+1) +"*2)" +") / 3)");   // Weighted Last 3
             bW.write(",=$G$" + (lastRow+1) + ",=$H$" + (lastRow+1) + ",");          // Auto Switch (ALL & Last 3)
             bW.write("=$K$" + (lastRow+1) + ",=$L$" + (lastRow+1) + ",");           // Auto Scale (ALL & Last 3)
-            bW.write("=$R$" + (lastRow+1) + ",=$S$" + (lastRow+1) + ",");           // Tele Switch (ALL & Last 3)
-            bW.write("=$T$" + (lastRow+1) + ",=$U$" + (lastRow+1) + ",");           // Tele Switch (ALL & Last 3)
-            bW.write("=$X$" + (lastRow+1) + ",");                                   // Exchange
-            bW.write("=$AG$" + (lastRow+1) + ",=$AH$" + (lastRow+1) + ",");         // Climbs (ALL & Last 3)
-            // ToDo -  done up to this point
+            bW.write("=$S$" + (lastRow+1) + ",=$T$" + (lastRow+1) + ",");           // Tele Switch (ALL & Last 3)
+            bW.write("=$U$" + (lastRow+1) + ",=$V$" + (lastRow+1) + ",");           // Tele Switch (ALL & Last 3)
+            bW.write("=$Y$" + (lastRow+1) + ",");                                   // Exchange
+            bW.write("=$AH$" + (lastRow+1) + ",=$AI$" + (lastRow+1) + ",");         // Climbs (ALL & Last 3)
             String escOut = StringEscapeUtils.escapeCsv("=COUNTIF($D$" + startRow  + ":$D$" + (lastRow) + ",\"Side (out)\")");
             bW.write(escOut + ",");           // Side (OUT)
             String escIn = StringEscapeUtils.escapeCsv("=COUNTIF($D$" + startRow  + ":$D$" + (lastRow) + ",\"Side (in)\")");
@@ -810,13 +810,14 @@ public void onStart() {
     Log.v(TAG, ">>>>  yg_alliance onStart  <<<<");
     Fb_Auth();      // Authenticate with Firebase
     loadEvents();
-
 }
+
     @Override
     public void onResume() {
         super.onResume();
         Log.v(TAG, "onResume");
      }
+
     @Override
     public void onStop() {
         super.onStop();
