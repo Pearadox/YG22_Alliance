@@ -157,14 +157,23 @@
         android:layout_gravity="center"
         android:text="Match Schedule" />
 
-        <Button
-            android:id="@+id/btn_Spreadsheet"
-            android:layout_width="120sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
-            android:text="Match Data Spreadsheet"
-            android:layout_alignBottom="@+id/btn_Match_Sched"
-            android:layout_alignParentEnd="true" />
+    <Button
+        android:id="@+id/btn_Spreadsheet"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|end"
+        android:text="Match Data Spreadsheet"
+        android:layout_alignBottom="@+id/btn_Match_Sched"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/btn_Rank"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_Spreadsheet"
+        android:layout_alignStart="@+id/btn_Match_Sched"
+        android:layout_marginBottom="14dp"
+        android:text="B.A. Rank" />
 
     <!--</LinearLayout>-->
 

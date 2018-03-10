@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner_Device, spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
-    Button btn_Teams, btn_Match_Sched, btn_Spreadsheet;
+    Button btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank;
     Team[] BAteams;
     public static int BAnumTeams = 0;                      // # of teams from Blue Alliance
     public String[] teamsRed;
@@ -115,9 +117,11 @@ public class MainActivity extends AppCompatActivity {
         btn_Teams = (Button) findViewById(R.id.btn_Teams);
         btn_Match_Sched = (Button) findViewById(R.id.btn_Match_Sched);
         btn_Spreadsheet = (Button) findViewById(R.id.btn_Spreadsheet);
+        btn_Rank = (Button) findViewById(R.id.btn_Rank);
         btn_Teams.setEnabled(false);
         btn_Match_Sched.setEnabled(false);
         btn_Spreadsheet.setEnabled(false);
+        btn_Rank.setEnabled(false);
         txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
         txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
@@ -135,51 +139,73 @@ public class MainActivity extends AppCompatActivity {
 //        Settings.GET_EVENT_AWARDS = true;
 
 
+
+
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Teams.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
+            Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
+
+            Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2018);
+            Log.w(TAG, " Team array size = " + teams.length);
+            if (teams.length > 0) {
+                String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
+                Log.w(TAG, " filename = " + destFile);
+                try {
+                    File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+                    Log.e(TAG, " path = " + prt);
+                    BufferedWriter bW;
+                    bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+                    bW.write("[" + "\n");
+                    for (int i = 0; i < teams.length; i++) {
+                        String tnum = String.format("%1$4s", teams[i].team_number);
+                        Log.w(TAG, " Team = " + tnum);
+                        bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
+                        bW.write("         \"team_name\":\"" + teams[i].nickname + "\", " + "\n");
+                        bW.write("         \"team_loc\":\"" + teams[i].location + "\" " + "\n");
+
+                        if (i == teams.length - 1) {       // Last one?
+                            bW.write("    } " + "\n");
+                        } else {
+                            bW.write("    }," + "\n");
+                        }
+                    } // end For # teams
+                    //=====================================================================
+
+                    bW.write("]" + "\n");
+                    bW.write(" " + "\n");
+                    bW.flush();
+                    bW.close();
+                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to SD card ***", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } catch (FileNotFoundException ex) {
+                    System.out.println(ex.getMessage() + " not found in the specified directory.");
+                    System.exit(0);
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            }else {
+                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }
+            }
+        });
+
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+        btn_Rank.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
                 Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2018);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
-                    String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
-                    Log.w(TAG, " filename = " + destFile);
-                    try {
-                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
-                        Log.e(TAG, " path = " + prt);
-                        BufferedWriter bW;
-                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                        bW.write("[" + "\n");
-                        for (int i = 0; i < teams.length; i++) {
-                            String tnum = String.format("%1$4s", teams[i].team_number);
-                            Log.w(TAG, " Team = " + tnum);
-                            bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
-                            bW.write("         \"team_name\":\"" + teams[i].nickname + "\", " + "\n");
-                            bW.write("         \"team_loc\":\"" + teams[i].location + "\" " + "\n");
 
-                            if (i == teams.length - 1) {       // Last one?
-                                bW.write("    } " + "\n");
-                            } else {
-                                bW.write("    }," + "\n");
-                            }
-                        } // end For # teams
-                        //=====================================================================
-
-                        bW.write("]" + "\n");
-                        bW.write(" " + "\n");
-                        bW.flush();
-                        bW.close();
-                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to SD card ***", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.show();
-                    } catch (FileNotFoundException ex) {
-                        System.out.println(ex.getMessage() + " not found in the specified directory.");
-                        System.exit(0);
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }else {
+                } else {
                     final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
                     Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
@@ -187,7 +213,8 @@ public class MainActivity extends AppCompatActivity {
                     toast.show();
                 }
             }
-        });
+            });
+
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
@@ -492,7 +519,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void gatherBA(String teamNo) {
-//        Log.w(TAG, " gatherBA  " + teamNo);
+        Log.w(TAG, " gatherBA  " + teamNo);
         if (BA_Data) {
             for (int i = 0; i < BAnumTeams; i++) {
                 if (BAe.teams[i].team_number == Long.parseLong(teamNo.trim())) {
@@ -500,11 +527,8 @@ public class MainActivity extends AppCompatActivity {
                     tmRank = String.valueOf(BAe.teams[i].rank);
                     tmWLT = BAe.teams[i].record;
                     tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
-//                Log.w(TAG,"  OPR: " + BAe.teams[i].opr);
-//                tmOPR = String.format("%3.3f",(BAe.teams[i].opr));
-//                    tmKPa = String.valueOf(BAe.teams[i].pressure);
-//                    tmTPts = String.valueOf(BAe.teams[i].touchpad);
-//                System.out.println(tmName+" "+tmRank+" "+ tmWLT+" "+tmOPR+" "+tmKPa+" "+tmTPts + " \n");
+                    Log.w(TAG,"  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  "+ tmName);
+//                    System.out.println(tmName+" "+tmRank+" "+ tmWLT+" "+tmOPR+" "+tmKPa+" "+tmTPts + " \n");
                     break;      // exit For - found team
                 }
             } // End For
@@ -595,10 +619,12 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
 
         btn_Teams.setEnabled(true);
         btn_Match_Sched.setEnabled(true);
+        btn_Rank.setEnabled(true);
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
         addMD_VE_Listener(pfMatchData_DBReference.orderByChild("team_num"));        // Load _ALL_ Matches in team order GLF 4/18
+
         pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
         addTeam_VE_Listener(pfTeam_DBReference.orderByChild("team_num"));               // Load Teams since we now know event
 
@@ -680,7 +706,8 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP);
                     btn_Teams.setEnabled(false);
                     btn_Match_Sched.setEnabled(false);
-                    btn_Spreadsheet.setEnabled(true);
+                    btn_Spreadsheet.setEnabled(true);       // OK for Spreadsheet
+                    btn_Rank.setEnabled(false);
                 } else {
                     BA_Data = true;
                     BAteams = BAe.teams.clone();
@@ -697,6 +724,37 @@ private class event_OnItemSelectedListener implements android.widget.AdapterView
             }
         });
     }
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+        if (id == R.id.action_about) {
+            AboutDialog about = new AboutDialog(this);
+            about.setTitle("YG_Alliance   Ver " + Pearadox_Version);
+            about.show();
+//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void loadEvents() {
         Log.w(TAG, "###  loadEvents  ###");
