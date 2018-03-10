@@ -204,7 +204,14 @@ public class MainActivity extends AppCompatActivity {
                 Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2018);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
+                    for (int i = 0; i < teams.length; i++) {
 
+                        tmName = teams[i].nickname;
+                        tmRank = String.valueOf(teams[i].rank);
+                        tmWLT = teams[i].record;
+                        tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
+                        Log.w(TAG, "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
+                    }
                 } else {
                     final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
@@ -212,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 }
+                btn_Rank.setEnabled(false);         // Turn off Button
             }
             });
 
