@@ -1,5 +1,5 @@
-# YG_Alliance 
+# YG_Alliance 19
 
 
-Pearadox Yellow-Green Alliance application
+Pearadox Yellow-Green Alliance application for 2019
 
