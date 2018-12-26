@@ -1,51 +1,27 @@
 {
   "project_info": {
-    "project_number": "372598341053",
-    "firebase_url": "https://paradox-2017.firebaseio.com",
-    "project_id": "paradox-2017",
-    "storage_bucket": "paradox-2017.appspot.com"
+    "project_number": "247705971707",
+    "firebase_url": "https://pearadox-2019.firebaseio.com",
+    "project_id": "pearadox-2019",
+    "storage_bucket": "pearadox-2019.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:372598341053:android:f9d2d1348193000d",
+        "mobilesdk_app_id": "1:247705971707:android:f9d2d1348193000d",
         "android_client_info": {
           "package_name": "com.pearadox.scout_5414"
         }
       },
       "oauth_client": [
         {
-          "client_id": "372598341053-rlbvnvc9sica8c3snv7hrrdi642u9vkm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pearadox.scout_5414",
-            "certificate_hash": "88791dacc66b775cb88df7f88865e4ae4784efd7"
-          }
-        },
-        {
-          "client_id": "372598341053-k6vag6jv2f0p73rrobpatd1h6u5da44a.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pearadox.scout_5414",
-            "certificate_hash": "06af2ff42a87c7e653683263b69e02d73681d649"
-          }
-        },
-        {
-          "client_id": "372598341053-bk7p1vs74rglcpoudflsljdprr4dr5d0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pearadox.scout_5414",
-            "certificate_hash": "4ae080903125e44278ca2a178dcad4b5df469de4"
-          }
-        },
-        {
-          "client_id": "372598341053-2sqva5t1g04b97lr6nlp04hj9d6t6tfn.apps.googleusercontent.com",
+          "client_id": "247705971707-lusf3min55veg08b7p7at0m3k1m7tido.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA92NwFnj6w51j1X4e9fk4nG0cxevOxjZU"
+          "current_key": "AIzaSyDgIYslUD-7uSfb3HZ3dgxKThVRB3gK0T8"
         }
       ],
       "services": {
@@ -53,65 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "372598341053-2sqva5t1g04b97lr6nlp04hj9d6t6tfn.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:372598341053:android:7a8a32d3da3fea51",
-        "android_client_info": {
-          "package_name": "com.pearadox.yg_alliance"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "372598341053-nlb4kbu7iscu88di8jtidfeo714ljmjp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pearadox.yg_alliance",
-            "certificate_hash": "88791dacc66b775cb88df7f88865e4ae4784efd7"
-          }
-        },
-        {
-          "client_id": "372598341053-01hcs4gl5ubp9stc1b7vdmv2mhqrsju2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pearadox.yg_alliance",
-            "certificate_hash": "4ae080903125e44278ca2a178dcad4b5df469de4"
-          }
-        },
-        {
-          "client_id": "372598341053-2sqva5t1g04b97lr6nlp04hj9d6t6tfn.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA92NwFnj6w51j1X4e9fk4nG0cxevOxjZU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "372598341053-2sqva5t1g04b97lr6nlp04hj9d6t6tfn.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
