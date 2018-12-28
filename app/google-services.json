@@ -36,6 +36,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247705971707:android:7a8a32d3da3fea51",
+        "android_client_info": {
+          "package_name": "com.pearadox.yg_alliance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247705971707-lusf3min55veg08b7p7at0m3k1m7tido.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgIYslUD-7uSfb3HZ3dgxKThVRB3gK0T8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
