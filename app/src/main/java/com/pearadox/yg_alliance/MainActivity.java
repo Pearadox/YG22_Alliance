@@ -1031,7 +1031,7 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
             fileReader.close();
             pw = (stringBuffer.toString());
             pw = pw.substring(0,11);    //Remove CR/LF
-//            Log.e(TAG, "Peardox = '" + pw + "'");
+            Log.d(TAG, "Peardox = '" + pw + "'");
         } catch (IOException e) {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
@@ -1039,6 +1039,8 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
             e.printStackTrace();
+            Log.e(TAG, "*** Firebase Authorization failed - No Password supplied *** ");
+
         }
 //        Log.e(TAG, "Sign-In " + eMail + "  '" + pw + "'");
 
@@ -1046,6 +1048,7 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "$$$  SignIn  $$$");
                         if (task.isSuccessful()) {
                             // Sign in success
                             Log.d(TAG, "signInWithEmail:success ");
@@ -1059,6 +1062,7 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
                             Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication failed.", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
+                            Log.e(TAG, "*** Firebase SIgn-In Authorization failed *** ");
                         }
                     }
                 });
