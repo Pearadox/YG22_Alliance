@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner_Device, spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
-    Button btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank, btn_Pit;
+    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank, btn_Pit;
     public static ArrayList<pitData> Pit_Data = new ArrayList<pitData>();
     public static int num_Pits = 0;                         // Actual # of Pit Data objects
     final String[] URL = {""};
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
         Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
 
+        btn_Events = (Button) findViewById(R.id.btn_Events);
         btn_Teams = (Button) findViewById(R.id.btn_Teams);
         btn_Match_Sched = (Button) findViewById(R.id.btn_Match_Sched);
         btn_Spreadsheet = (Button) findViewById(R.id.btn_Spreadsheet);

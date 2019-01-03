@@ -139,64 +139,69 @@
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="100sp"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_marginBottom="89dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentStart="true">-->
-
-    <Button
-        android:id="@+id/btn_Teams"
-        android:layout_width="120sp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btn_Match_Sched"
-        android:layout_alignBottom="@+id/btn_Match_Sched"
-        android:layout_alignParentStart="true"
-        android:layout_gravity="left|start"
-        android:text="  Team \n   List  " />
-
-    <Button
-        android:id="@+id/btn_Match_Sched"
-        android:layout_width="120sp"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/txt_EvntDat"
+    <LinearLayout
+        android:id="@+id/btn_Row1"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="89dp"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:layout_marginBottom="52dp"
-        android:text="Match Schedule" />
+        android:layout_alignParentStart="true">
 
-    <Button
-        android:id="@+id/btn_Spreadsheet"
-        android:layout_width="120sp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|end"
-        android:text="Match Data Spreadsheet"
-        android:layout_alignBottom="@+id/btn_Teams"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:id="@+id/btn_Rank"
-        android:layout_width="120sp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_Spreadsheet"
-        android:layout_alignStart="@+id/btn_Match_Sched"
-        android:layout_marginBottom="14dp"
-        android:text="B.A. Rank" />
-
-    <Button
-        android:id="@+id/btn_Pit"
-        android:layout_width="120sp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/btn_Rank"
-        android:layout_gravity="left|start"
-        android:text="  Pit \n  Coverage  " />
+        <Button
+            android:id="@+id/btn_Events"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            tools:layout_weight="1"
+            android:text="Events \n List" />
 
 
+        <Button
+            android:id="@+id/btn_Teams"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            tools:layout_weight="1"
+            android:text="  Team \n   List  " />
 
-    <!--</LinearLayout>-->
+        <Button
+            android:id="@+id/btn_Match_Sched"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            tools:layout_weight="1"
+            android:text="  Match \n  Sched.  " />
+
+    </LinearLayout>
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+    <LinearLayout
+        android:id="@+id/btn_Row2"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/btn_Pit"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|start"
+            android:text="  Pit \n  Coverage  " />
+
+        <Button
+            android:id="@+id/btn_Spreadsheet"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:text="Match Data Spreadsheet" />
+
+        <Button
+            android:id="@+id/btn_Rank"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="B.A. \n Rank" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>
