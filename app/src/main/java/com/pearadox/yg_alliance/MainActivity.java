@@ -1031,7 +1031,7 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
             fileReader.close();
             pw = (stringBuffer.toString());
             pw = pw.substring(0,11);    //Remove CR/LF
-            Log.d(TAG, "Peardox = '" + pw + "'");
+//            Log.d(TAG, "Peardox = '" + pw + "'");
         } catch (IOException e) {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
@@ -1077,7 +1077,7 @@ public void onStart() {
     super.onStart();
     Log.v(TAG, ">>>>  yg_alliance onStart  <<<<");
     Fb_Auth();      // Authenticate with Firebase
-    loadEvents();
+//    loadEvents();
 }
 
     @Override

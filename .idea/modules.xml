@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/YG18_Alliance.iml" filepath="$PROJECT_DIR$/YG18_Alliance.iml" />
       <module fileurl="file://$PROJECT_DIR$/YG19_Alliance.iml" filepath="$PROJECT_DIR$/YG19_Alliance.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
