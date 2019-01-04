@@ -170,6 +170,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+        btn_Events.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "  btn_Events setOnClickListener  " );
+
+            }
+        });
+
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Teams.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
@@ -547,15 +556,15 @@ public class MainActivity extends AppCompatActivity {
         Log.w(TAG, " gatherBA  " + teamNo);
         if (BA_Data) {
             for (int i = 0; i < BAnumTeams; i++) {
-                if (BAe.teams[i].team_number == Long.parseLong(teamNo.trim())) {
-                    tmName = BAe.teams[i].nickname;
-                    tmRank = String.valueOf(BAe.teams[i].rank);
-                    tmWLT = BAe.teams[i].record;
-                    tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
-                    Log.w(TAG, "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
-//                    System.out.println(tmName+" "+tmRank+" "+ tmWLT+" "+tmOPR+" "+tmKPa+" "+tmTPts + " \n");
-                    break;      // exit For - found team
-                }
+//                if (BAe.teams[i].team_number == Long.parseLong(teamNo.trim())) {
+//                    tmName = BAe.teams[i].nickname;
+//                    tmRank = String.valueOf(BAe.teams[i].rank);
+//                    tmWLT = BAe.teams[i].record;
+//                    tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
+//                    Log.w(TAG, "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
+////                    System.out.println(tmName+" "+tmRank+" "+ tmWLT+" "+tmOPR+" "+tmKPa+" "+tmTPts + " \n");
+//                    break;      // exit For - found team
+//                }
             } // End For
         } else {
             for (int x = 0; x < Pearadox.numTeams; x++) {
@@ -585,7 +594,8 @@ public class MainActivity extends AppCompatActivity {
         return x;
     }
 
-
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void preReqs() {
         boolean isSdPresent;
@@ -663,10 +673,10 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, "*** TBA Event ***");
             Event e = new TBA().getEvent("BAyear" + Pearadox.FRC_Event);
             // Print general event info
-            System.out.println(e.name);
-            System.out.println(e.location);
-            System.out.println(e.start_date);
-            System.out.println("\n");
+//            System.out.println(e.name);
+//            System.out.println(e.location);
+//            System.out.println(e.start_date);
+//            System.out.println("\n");
 //        txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
 //        txt_EvntDat.setText(e.start_date);                      // Event Date
 //        txt_EvntPlace.setText(e.location);                      // Event Location
@@ -750,11 +760,11 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     btn_Spreadsheet.setEnabled(false);
                 }
-// ----------  Blue Alliance  -----------
-                Settings.GET_EVENT_STATS = false;
+                // ----------  Blue Alliance  -----------
                 TBA t = new TBA();
                 BAe = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);
-                if (BAe.name == null) {
+                // TODO  is getname right
+                if (BAe.getName() == null) {
                     Log.e(TAG, "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###");
                     BA_Data = false;
                     Toast toast2 = Toast.makeText(getBaseContext(), "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###", Toast.LENGTH_LONG);
@@ -769,7 +779,8 @@ public class MainActivity extends AppCompatActivity {
                     btn_Rank.setEnabled(false);
                 } else {
                     BA_Data = true;
-                    BAteams = BAe.teams.clone();
+                    // TODO
+//                    BAteams = BAe.teams.clone();
                     BAnumTeams = BAteams.length;
 
                     btn_Teams.setEnabled(true);
