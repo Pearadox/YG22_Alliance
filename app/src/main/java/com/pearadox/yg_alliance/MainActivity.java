@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
+                // TODO teams
                 Team[] teams = tba.getTeams(2018,1);
 //                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
                 Log.w(TAG, " Team array size = " + teams.length);
