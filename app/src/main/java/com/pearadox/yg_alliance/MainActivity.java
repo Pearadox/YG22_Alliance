@@ -187,11 +187,11 @@ public class MainActivity extends AppCompatActivity {
                         bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
                         bW.write("[" + "\n");
                         for (int i = 0; i < teams.length; i++) {
-                            String tnum = String.format("%1$4s", teams[i].team_number);
+//                            String tnum = String.format("%1$4s", teams[i].team_number);
                             Log.w(TAG, " Team = " + tnum);
                             bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
-                            bW.write("         \"team_name\":\"" + teams[i].nickname + "\", " + "\n");
-                            bW.write("         \"team_loc\":\"" + teams[i].location + "\" " + "\n");
+//                            bW.write("         \"team_name\":\"" + teams[i].nickname + "\", " + "\n");
+//                            bW.write("         \"team_loc\":\"" + teams[i].location + "\" " + "\n");
 
                             if (i == teams.length - 1) {       // Last one?
                                 bW.write("    } " + "\n");
@@ -230,15 +230,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
+                Team[] teams = tba.getTeams(2018,1);
+//                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
                     for (int i = 0; i < teams.length; i++) {
-                        teamMumber = String.valueOf(teams[i].team_number);
-                        tmName = teams[i].nickname;
-                        tmRank = String.valueOf(teams[i].rank);
-                        tmWLT = teams[i].record;
-                        tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
+//                        teamMumber = String.valueOf(teams[i].team_number);
+//                        tmName = teams[i].nickname;
+//                        tmRank = String.valueOf(teams[i].rank);
+//                        tmWLT = teams[i].record;
+//                        tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
                         Log.w(TAG, teamMumber + "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
                     }
                 } else {
@@ -332,118 +333,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
                 Event event = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);       // GLF 4/12
-//                Event event = new TBA().getEvent("2017" + "txlu");       // **DEBUG testing **  hard coded yr/event
-                Match[] matches = event.matches;
-                Log.w(TAG, " Matches size = " + matches.length);
+//                Match[] matches = event.matches;
+//                Log.w(TAG, " Matches size = " + matches.length);
 
                 //----------------------------------------
-                if (matches.length > 0) {
-                    System.out.println("Match name: " + matches[0].comp_level + " Time: " + matches[0].time_string + " Time (long in ms): " + matches[0].time);
-                    Date date1 = new Date(matches[0].time);
-                    DateFormat formatter1 = new SimpleDateFormat("HH:mm:ss:SSS");
-                    String dateFormatted = formatter1.format(date1);
-                    Log.e(TAG, " Time = " + dateFormatted);
-                    System.out.println("Match name: " + matches[3].comp_level + " Time: " + matches[3].time_string + " Time (long in ms): " + matches[3].time);
-                    Date date2 = new Date(matches[3].time);
-                    DateFormat formatter2 = new SimpleDateFormat("HH:mm");
-                    String dateFormatted2 = formatter2.format(date2);
-                    Log.e(TAG, " Time = " + dateFormatted2);
-                } else {
-                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_CDMA_EMERGENCY_RINGBACK);
-                    Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-                }
-                //----------------------------------------
-                int qm = 0;
-                String mn, r1, r2, r3, b1, b2, b3;
-                String matchFile = Pearadox.FRC_ChampDiv + "_Match-Sched" + ".json";
-                if (matches.length > 0) {
-                    // The comp level variable includes an indentifier for whether it's practice, qualifying, or playoff
-                    try {
-                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + matchFile);
-                        BufferedWriter bW;
-                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                        bW.write("[" + "\n");
-                        for (int i = 0; i < matches.length; i++) {
-//                            Log.w(TAG, " Comp = " + matches[i].comp_level);
-                            if (matches[i].comp_level.matches("qm")) {
-                                qm++;
-                                bW.write(" {\"time\":\"" + matches[i].time_string + "\", ");
-                                mn = String.valueOf(matches[i].match_number);
-                                if (mn.length() < 2) {
-                                    mn = "00" + mn;
-                                }      // make it at least 3-digits
-                                if (mn.length() < 3) {
-                                    mn = "0" + mn;
-                                }       // make it at least 3-digits
-                                Log.w(TAG, " match# = " + mn);
-                                bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn + "\", ");
-                                teamsRed = matches[i].redTeams.clone();
-                                r1 = teamsRed[0].substring(3, teamsRed[0].length());
-                                if (r1.length() < 4) {
-                                    r1 = " " + r1;
-                                }
-                                Log.w(TAG, " R1 = " + r1);
-                                r2 = teamsRed[1].substring(3, teamsRed[1].length());
-                                if (r2.length() < 4) {
-                                    r2 = " " + r2;
-                                }
-                                r3 = teamsRed[2].substring(3, teamsRed[2].length());
-                                if (r3.length() < 4) {
-                                    r3 = " " + r3;
-                                }
-                                bW.write(" \"r1\":\"" + r1 + "\",  \"r2\": \"" + r2 + "\", \"r3\":\"" + r3 + "\",");
-                                teamsBlue = matches[i].blueTeams.clone();
-                                b1 = teamsBlue[0].substring(3, teamsBlue[0].length());
-                                if (b1.length() < 4) {
-                                    b1 = " " + b1;
-                                }
-                                b2 = teamsBlue[1].substring(3, teamsBlue[1].length());
-                                if (b2.length() < 4) {
-                                    b2 = " " + b2;
-                                }
-                                b3 = teamsBlue[2].substring(3, teamsBlue[2].length());
-                                if (b3.length() < 4) {
-                                    b3 = " " + b3;
-                                }
-                                bW.write(" \"b1\":\"" + b1 + "\",  \"b2\": \"" + b2 + "\", \"b3\":\"" + b3 + "\"");
 
-                                if (i == matches.length - 1) {       // Last one?
-                                    bW.write("} " + "\n");
-                                } else {
-                                    bW.write("}," + "\n");
-                                }
-                            } else {
-                                Log.e(TAG, "******* NOT 'qm' ********* ");
-//                                System.out.println(matches[i].set_number);
-//                                System.out.println(matches[i].event_key);
-//                                System.out.println(matches[i].time_string);
-//                                System.out.println(matches[i].key);
-                            }
-                        }  // end For # matches
-                        //=====================================================================
 
-                        bW.write("]" + "\n");
-                        bW.write(" " + "\n");
-                        bW.flush();
-                        bW.close();
-                        Log.w(TAG, qm + " *** '" + Pearadox.FRC_Event + "' Matches written to SD card ***");
-                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Matches file written to SD card *** " + qm, Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.show();
-                    } catch (FileNotFoundException ex) {
-                        System.out.println(ex.getMessage() + " not found in the specified directory.");
-                        System.exit(0);
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }  // end Try/Catch
-                } else {
-                    Toast toast = Toast.makeText(getBaseContext(), "☆☆☆ No Match data exists for this event yet (too early!)  ☆☆☆", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-                }
             }
         });
 
