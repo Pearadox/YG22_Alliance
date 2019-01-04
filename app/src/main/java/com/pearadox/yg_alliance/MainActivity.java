@@ -21,11 +21,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cpjd.main.Settings;
+// API-V3
 import com.cpjd.main.TBA;
-import com.cpjd.models.Event;
-import com.cpjd.models.Match;
-import com.cpjd.models.Team;
+import com.cpjd.main.CTBA;
+import com.cpjd.models.other.events.EventOPR;
+import com.cpjd.models.simple.SEvent;
+import com.cpjd.models.simple.SMatch;
+import com.cpjd.models.simple.STeam;
+import com.cpjd.models.standard.Event;
+import com.cpjd.models.standard.Match;
+import com.cpjd.models.standard.Team;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,19 +63,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 
-import static android.util.Log.i;
-// API-V3
-//import main.Settings;
-//import main.TBA;
-//import main.CTBA;
-//import models.other.events.EventOPR;
-//import models.simple.SEvent;
-//import models.simple.SMatch;
-//import models.simple.STeam;
-//import models.standard.Event;
-//import models.standard.Match;
-//import models.standard.Team;
 // === DEBUG  ===
+import static android.util.Log.i;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -77,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";        // This CLASS name
     String Pearadox_Version = " ";      // initialize
     Long Pearadox_Date;
+    String TBA_AuthToken = "xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg";
     Boolean FB_logon = false;           // indicator for Firebase logon success
     Boolean BA_Data = false;
     Spinner spinner_Device, spinner_Event;

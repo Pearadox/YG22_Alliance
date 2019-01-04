@@ -31,6 +31,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-storage:0.6.0'
     androidTestCompile 'junit:junit:4.12'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation files('libs/TBA-API-V3.jar')
+    annotationProcessor files('libs/TBA-API-V3.jar')
+
 }
 
 apply plugin: 'com.google.gms.google-services'
