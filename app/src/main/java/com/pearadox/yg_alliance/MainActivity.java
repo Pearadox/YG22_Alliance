@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     String Pearadox_Version = " ";      // initialize
     Long Pearadox_Date;
     String TBA_AuthToken = "xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg";
+    String BAyear = "2019";
     Boolean FB_logon = false;           // indicator for Firebase logon success
     Boolean BA_Data = false;
     Spinner spinner_Device, spinner_Event;
@@ -132,12 +133,16 @@ public class MainActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
         }
-        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©2019  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
+        TBA.setAuthToken(TBA_AuthToken);
+        final TBA tba = new TBA();
+
+
         mAuth = FirebaseAuth.getInstance();
 
         preReqs();                        // Check for pre-requisites
@@ -162,16 +167,6 @@ public class MainActivity extends AppCompatActivity {
         txt_EvntDat.setText("");            // Event Date
         txt_EvntPlace.setText("");          // Event Location
 
-//        TBA.setAuthToken("xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg");
-        TBA.setID("Pearadox", "YG_Alliance", "V1");
-        final TBA tba = new TBA();
-        Settings.FIND_TEAM_RANKINGS = true;
-        Settings.GET_EVENT_TEAMS = true;
-        Settings.GET_EVENT_MATCHES = true;
-//        Settings.GET_EVENT_ALLIANCES = true;
-//        Settings.GET_EVENT_AWARDS = true;
-
-
 
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
@@ -179,7 +174,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2018);
+                Team[] teams = tba.getTeams(2018,1);
+//                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
                     String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
@@ -234,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2018);
+                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
                     for (int i = 0; i < teams.length; i++) {
@@ -262,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, "  btn_Pit setOnClickListener  " + Pearadox.FRC_ChampDiv);
             pitData the_pits = new pitData();
             p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
-//            Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, 2018);
+//            Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
             Log.w(TAG, " Team array size = " + Pearadox.numTeams);
             if (Pearadox.numTeams > 0) {
                 String destFile = Pearadox.FRC_ChampDiv + "_PitData" + ".txt";
@@ -335,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
-                Event event = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);       // GLF 4/12
+                Event event = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);       // GLF 4/12
 //                Event event = new TBA().getEvent("2017" + "txlu");       // **DEBUG testing **  hard coded yr/event
                 Match[] matches = event.matches;
                 Log.w(TAG, " Matches size = " + matches.length);
@@ -457,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Spreadsheet setOnClickListener  ");
                 Log.e(TAG, "***** Matches # = " + Pearadox.Matches_Data.size());   // Done in Event Click Listner
-//        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
+//        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2019  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
 //        toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //        toast1.show();
                 String new_comm = "";
@@ -708,7 +704,7 @@ public class MainActivity extends AppCompatActivity {
                 }        //directory is created;
             }
             Log.w(TAG, "FRC files created");
-//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Files initialied ***" , Toast.LENGTH_LONG);
+//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2019  *** Files initialied ***" , Toast.LENGTH_LONG);
 //        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //        toast.show();
         } else {
@@ -770,7 +766,7 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, "** Event code '" + Pearadox.FRC_Event + "' " + Pearadox.FRC_ChampDiv + "  \n ");
 
             Log.w(TAG, "*** TBA Event ***");
-            Event e = new TBA().getEvent("2018" + Pearadox.FRC_Event);
+            Event e = new TBA().getEvent("BAyear" + Pearadox.FRC_Event);
             // Print general event info
             System.out.println(e.name);
             System.out.println(e.location);
@@ -853,7 +849,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.w(TAG, "***** Matches Loaded from Firebase. # = " + Pearadox.Matches_Data.size());
                 if (Pearadox.Matches_Data.size() > 0) {
-                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2018  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
+                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2019  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
                     toast1.setGravity(Gravity.BOTTOM, 0, 0);
                     toast1.show();
                 } else {
@@ -862,7 +858,7 @@ public class MainActivity extends AppCompatActivity {
 // ----------  Blue Alliance  -----------
                 Settings.GET_EVENT_STATS = false;
                 TBA t = new TBA();
-                BAe = new TBA().getEvent("2018" + Pearadox.FRC_ChampDiv);
+                BAe = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);
                 if (BAe.name == null) {
                     Log.e(TAG, "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###");
                     BA_Data = false;
@@ -916,7 +912,7 @@ public class MainActivity extends AppCompatActivity {
             AboutDialog about = new AboutDialog(this);
             about.setTitle("YG_Alliance   Ver " + Pearadox_Version);
             about.show();
-//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2019  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
 //            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //            toast.show();
             return true;
