@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     String Pearadox_Version = " ";      // initialize
     Long Pearadox_Date;
     String TBA_AuthToken = "xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg";
-    String BAyear = "2019";
+    int BAyear = 2019;  // Current Yesr for B.A. calls
     Boolean FB_logon = false;           // indicator for Firebase logon success
     Boolean BA_Data = false;
     Spinner spinner_Device, spinner_Event;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     final String[] URL = {""};
     final String[] photStat = {""};
     String teamNumber = "";
-    Team[] BAteams;
+    Team[] teams;
     public static int BAnumTeams = 0;                       // # of teams from Blue Alliance
     public String[] teamsRed;
     public String[] teamsBlue;
@@ -172,31 +172,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
             Log.w(TAG, "  btn_Events setOnClickListener  " );
             pfDatabase = FirebaseDatabase.getInstance();
-            pfEvent_DBReference = pfDatabase.getReference("competitions");      // Get list of Events/Competitions
+            pfEvent_DBReference = pfDatabase.getReference("competitions");
             p_Firebase.eventObj new_event = new p_Firebase.eventObj();
-
-//                String Name = ""; String Code = ""; String[] Div; String Date = ""; String Place = ""; String City = "";
-            Event[] our_events = tba.getEvents(5414, 2019);
+            Event[] our_events = tba.getEvents(5414, BAyear);
             Log.w(TAG, " #Events = " + our_events.length);
 
             for (int i = 0; i < our_events.length; i++) {
-//                Name = our_events[i].getName();
                 new_event.setcomp_name(our_events[i].getName());
-//                Code = our_events[i].getEventCode();
                 new_event.setComp_code(our_events[i].getEventCode());
-//                Div = our_events[i].getDivisonKeys();
-                // ToDo - How is World's Diviosion set on B.A.??????
+                // ToDo - How is World's Division set on B.A.??????
                 new_event.setcomp_div(our_events[i].getEventCode());
-//                Date = our_events[i].getStartDate();
                 new_event.setcomp_date(our_events[i].getStartDate());
-//                Place = our_events[i].getLocationName();
                 new_event.setcomp_place(our_events[i].getLocationName());
-//                City = our_events[i].getCity() + ", " + our_events[i].getStateProv();
                 new_event.setcomp_city(our_events[i].getCity() + ", " + our_events[i].getStateProv());
-
-//                Log.w(TAG, "Event="+  i +"  Name'" + Name + "'  Code=" + Code  + "'  Date=" + Date+ "'  Place="+ Place + "'  City="+ City);
                 String keyID = new_event.getComp_code();
                 pfEvent_DBReference.child(keyID).setValue(new_event);
+                // ToDo Add new directories for each event  (match-data, matches,pit-data, teams)
 
             } // for
             btn_Events.setEnabled(false);         // Turn off Button
@@ -213,9 +204,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-                // TODO teams
-                Team[] teams = tba.getTeams(2018,1);
-//                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
+                Team[] teams = tba.getEventTeams("2019" + Pearadox.FRC_ChampDiv);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
                     String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
@@ -227,11 +216,11 @@ public class MainActivity extends AppCompatActivity {
                         bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
                         bW.write("[" + "\n");
                         for (int i = 0; i < teams.length; i++) {
-//                            String tnum = String.format("%1$4s", teams[i].team_number);
+                            String tnum = String.format("%1$4s", teams[i].getTeamNumber());
                             Log.w(TAG, " Team = " + tnum);
                             bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
-//                            bW.write("         \"team_name\":\"" + teams[i].nickname + "\", " + "\n");
-//                            bW.write("         \"team_loc\":\"" + teams[i].location + "\" " + "\n");
+                            bW.write("         \"team_name\":\"" + teams[i].getNickname() + "\", " + "\n");
+                            bW.write("         \"team_loc\":\"" + (teams[i].getCity() + ", " + teams[i].getStateProv() + "  " + teams[i].getPostalCode()) + "\" " + "\n");
 
                             if (i == teams.length - 1) {       // Last one?
                                 bW.write("    } " + "\n");
