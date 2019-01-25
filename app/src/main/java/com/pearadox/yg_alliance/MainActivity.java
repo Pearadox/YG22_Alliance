@@ -171,23 +171,39 @@ public class MainActivity extends AppCompatActivity {
         btn_Events.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             Log.w(TAG, "  btn_Events setOnClickListener  " );
-            String Name = ""; String Code = ""; String[] Div; String Date = ""; String Place = ""; String City = "";
+            pfDatabase = FirebaseDatabase.getInstance();
+            pfEvent_DBReference = pfDatabase.getReference("competitions");      // Get list of Events/Competitions
+            p_Firebase.eventObj new_event = new p_Firebase.eventObj();
+
+//                String Name = ""; String Code = ""; String[] Div; String Date = ""; String Place = ""; String City = "";
             Event[] our_events = tba.getEvents(5414, 2019);
             Log.w(TAG, " #Events = " + our_events.length);
+
             for (int i = 0; i < our_events.length; i++) {
-                Name = our_events[i].getName();
-                Code = our_events[i].getEventCode();
-                Div = our_events[i].getDivisonKeys();
-                Date = our_events[i].getStartDate();
-                Place = our_events[i].getLocationName();
-                City = our_events[i].getCity() + ", " + our_events[i].getStateProv();
-                Log.w(TAG, "Event="+  i +"  Name'" + Name + "'  Code=" + Code  + "'  Date=" + Date+ "'  Place="+ Place + "'  City="+ City);
+//                Name = our_events[i].getName();
+                new_event.setcomp_name(our_events[i].getName());
+//                Code = our_events[i].getEventCode();
+                new_event.setComp_code(our_events[i].getEventCode());
+//                Div = our_events[i].getDivisonKeys();
+                // ToDo - How is World's Diviosion set on B.A.??????
+                new_event.setcomp_div(our_events[i].getEventCode());
+//                Date = our_events[i].getStartDate();
+                new_event.setcomp_date(our_events[i].getStartDate());
+//                Place = our_events[i].getLocationName();
+                new_event.setcomp_place(our_events[i].getLocationName());
+//                City = our_events[i].getCity() + ", " + our_events[i].getStateProv();
+                new_event.setcomp_city(our_events[i].getCity() + ", " + our_events[i].getStateProv());
+
+//                Log.w(TAG, "Event="+  i +"  Name'" + Name + "'  Code=" + Code  + "'  Date=" + Date+ "'  Place="+ Place + "'  City="+ City);
+                String keyID = new_event.getComp_code();
+                pfEvent_DBReference.child(keyID).setValue(new_event);
 
             } // for
             btn_Events.setEnabled(false);         // Turn off Button
             Toast toast = Toast.makeText(getBaseContext(), "*** Competitions (" + our_events.length + " events) written to Firebase ***", Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
+            loadEvents();       // Reload with new events
             }
         });
 
@@ -680,13 +696,13 @@ public class MainActivity extends AppCompatActivity {
                     Pearadox.FRC_ChampDiv = event_inst.getcomp_div();
                     txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
                     txt_EvntDat.setText(event_inst.getcomp_date());         // Event Date
-                    txt_EvntPlace.setText(event_inst.getcomp_place());                      // Event Location
+                    txt_EvntPlace.setText(event_inst.getcomp_place());      // Event Location
                 }
             }
             Log.w(TAG, "** Event code '" + Pearadox.FRC_Event + "' " + Pearadox.FRC_ChampDiv + "  \n ");
 
-            Log.w(TAG, "*** TBA Event ***");
-            Event e = new TBA().getEvent("BAyear" + Pearadox.FRC_Event);
+//            Log.w(TAG, "*** TBA Event ***");
+//            Event e = new TBA().getEvent("BAyear" + Pearadox.FRC_Event);
             // Print general event info
 //            System.out.println(e.name);
 //            System.out.println(e.location);
@@ -775,33 +791,34 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     btn_Spreadsheet.setEnabled(false);
                 }
+                // ToDo - fix TBA code below
                 // ----------  Blue Alliance  -----------
-                TBA t = new TBA();
-                BAe = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);
+//                TBA t = new TBA();
+//                BAe = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);
                 // TODO  is getname right
-                if (BAe.getName() == null) {
-                    Log.e(TAG, "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###");
-                    BA_Data = false;
-                    Toast toast2 = Toast.makeText(getBaseContext(), "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###", Toast.LENGTH_LONG);
-                    toast2.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast2.show();
-                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-                    btn_Teams.setEnabled(false);
-                    btn_Match_Sched.setEnabled(false);
-                    btn_Spreadsheet.setEnabled(true);       // OK for Spreadsheet
-                    btn_Pit.setEnabled(true);               // OK for Pit
-                    btn_Rank.setEnabled(false);
-                } else {
-                    BA_Data = true;
-                    // TODO
-//                    BAteams = BAe.teams.clone();
-                    BAnumTeams = BAteams.length;
-
-                    btn_Teams.setEnabled(true);
-                    btn_Match_Sched.setEnabled(true);
-                    btn_Spreadsheet.setEnabled(true);
-                }
+//                if (BAe.getName() == null) {
+//                    Log.e(TAG, "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###");
+//                    BA_Data = false;
+//                    Toast toast2 = Toast.makeText(getBaseContext(), "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###", Toast.LENGTH_LONG);
+//                    toast2.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//                    toast2.show();
+//                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+//                    btn_Teams.setEnabled(false);
+//                    btn_Match_Sched.setEnabled(false);
+//                    btn_Spreadsheet.setEnabled(true);       // OK for Spreadsheet
+//                    btn_Pit.setEnabled(true);               // OK for Pit
+//                    btn_Rank.setEnabled(false);
+//                } else {
+//                    BA_Data = true;
+//                    // TODO
+////                    BAteams = BAe.teams.clone();
+//                    BAnumTeams = BAteams.length;
+//
+//                    btn_Teams.setEnabled(true);
+//                    btn_Match_Sched.setEnabled(true);
+//                    btn_Spreadsheet.setEnabled(true);
+//                }
             }
 
             @Override
@@ -992,7 +1009,7 @@ public void onStart() {
     super.onStart();
     Log.v(TAG, ">>>>  yg_alliance onStart  <<<<");
     Fb_Auth();      // Authenticate with Firebase
-//    loadEvents();
+    loadEvents();
 }
 
     @Override
