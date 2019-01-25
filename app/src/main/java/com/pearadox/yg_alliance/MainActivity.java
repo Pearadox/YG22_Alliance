@@ -139,9 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
-        TBA.setAuthToken(TBA_AuthToken);
-        final TBA tba = new TBA();
-
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -167,13 +164,30 @@ public class MainActivity extends AppCompatActivity {
         txt_EvntDat.setText("");            // Event Date
         txt_EvntPlace.setText("");          // Event Location
 
+        TBA.setAuthToken(TBA_AuthToken);
+        final TBA tba = new TBA();
 
-
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+        /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Events.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.w(TAG, "  btn_Events setOnClickListener  " );
+            Log.w(TAG, "  btn_Events setOnClickListener  " );
+            String Name = ""; String Code = ""; String[] Div; String Date = ""; String Place = ""; String City = "";
+            Event[] our_events = tba.getEvents(5414, 2019);
+            Log.w(TAG, " #Events = " + our_events.length);
+            for (int i = 0; i < our_events.length; i++) {
+                Name = our_events[i].getName();
+                Code = our_events[i].getEventCode();
+                Div = our_events[i].getDivisonKeys();
+                Date = our_events[i].getStartDate();
+                Place = our_events[i].getLocationName();
+                City = our_events[i].getCity() + ", " + our_events[i].getStateProv();
+                Log.w(TAG, "Event="+  i +"  Name'" + Name + "'  Code=" + Code  + "'  Date=" + Date+ "'  Place="+ Place + "'  City="+ City);
 
+            } // for
+            btn_Events.setEnabled(false);         // Turn off Button
+            Toast toast = Toast.makeText(getBaseContext(), "*** Competitions (" + our_events.length + " events) written to Firebase ***", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
             }
         });
 
