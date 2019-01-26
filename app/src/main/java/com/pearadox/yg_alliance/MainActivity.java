@@ -203,7 +203,8 @@ public class MainActivity extends AppCompatActivity {
         btn_Teams.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
-
+                pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
+                p_Firebase.teamsObj new_team = new p_Firebase.teamsObj();
                 Team[] teams = tba.getEventTeams("2019" + Pearadox.FRC_ChampDiv);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
@@ -221,6 +222,11 @@ public class MainActivity extends AppCompatActivity {
                             bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
                             bW.write("         \"team_name\":\"" + teams[i].getNickname() + "\", " + "\n");
                             bW.write("         \"team_loc\":\"" + (teams[i].getCity() + ", " + teams[i].getStateProv() + "  " + teams[i].getPostalCode()) + "\" " + "\n");
+                            new_team.setTeam_num(tnum);
+                            new_team.setTeam_name(teams[i].getNickname());
+                            new_team.setTeam_loc(teams[i].getCity() + ", " + teams[i].getStateProv() + "  " + teams[i].getPostalCode());
+                            String keyID = String.format("%04d", teams[i].getTeamNumber());     // Make it 4 digit (only for KEY)
+                            pfTeam_DBReference.child(keyID).setValue(new_team);  // Add to firebase
 
                             if (i == teams.length - 1) {       // Last one?
                                 bW.write("    } " + "\n");
@@ -361,9 +367,12 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
-                Event event = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);       // GLF 4/12
-//                Match[] matches = event.matches;
-//                Log.w(TAG, " Matches size = " + matches.length);
+                Event[] event = tba.getEvents(5414, 2018);
+//                Event event = tba.getEvent("2018" + Pearadox.FRC_ChampDiv);
+                Match[] colorado = tba.getMatches("2018code");
+                Match[] matches = tba.getMatchKeys("2018code");
+
+                Log.w(TAG, " Matches size = " + matches.length);
 
                 //----------------------------------------
 
