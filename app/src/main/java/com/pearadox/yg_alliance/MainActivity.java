@@ -370,9 +370,9 @@ public class MainActivity extends AppCompatActivity {
                 Event[] event = tba.getEvents(5414, 2018);
 //                Event event = tba.getEvent("2018" + Pearadox.FRC_ChampDiv);
                 Match[] colorado = tba.getMatches("2018code");
-                Match[] matches = tba.getMatchKeys("2018code");
+                String[] match_sched = tba.getMatchKeys("2018code");
 
-                Log.w(TAG, " Matches size = " + matches.length);
+                Log.w(TAG, " Matches size = " + match_sched.length);
 
                 //----------------------------------------
 
