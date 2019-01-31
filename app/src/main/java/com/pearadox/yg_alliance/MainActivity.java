@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 //    public String[] teamsBlue;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfEvent_DBReference;
+    private DatabaseReference pfMatch_DBReference;
     private DatabaseReference pfMatchData_DBReference;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfPitData_DBReference;
@@ -373,6 +374,7 @@ public class MainActivity extends AppCompatActivity {
 //                Match[] matchSched = tba.getMatches("2019" + Pearadox.FRC_ChampDiv);
                 Match[] matchSched = tba.getMatches("2018code");
                 Log.w(TAG, " Matches size = " + matchSched.length);
+                pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event);   // Matches data from Firebase D/B
 
                 //----------------------------------------
                 if (matchSched.length > 0) {
@@ -400,12 +402,14 @@ public class MainActivity extends AppCompatActivity {
                             Match m = matchSched[i];//                            Log.w(TAG, " Comp = " + matchSched[i].comp_level);
                             if (m.getCompLevel().matches("qm")) {
                                 qm++;
+                                MO_inst.setMtype("Qualifying");
 //                                long millis = m.getPredictedTime();
                                 long millis = m.getTime();
                                 Date date = new Date(millis);
                                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                                 formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
                                 String formatted = formatter.format(date);      // Pass date object
+                                MO_inst.setTime(formatted);
                                 bW.write(" {\"time\":\"" + formatted + "\", ");
                                 mn = String.valueOf(m.getMatchNumber());
                                 if (mn.length() < 2) {
@@ -415,6 +419,7 @@ public class MainActivity extends AppCompatActivity {
                                     mn = "0" + mn;
                                 }       // make it at least 3-digits
                                 Log.w(TAG, " match# = " + mn);
+                                MO_inst.setMatch(mn);
                                 bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn + "\", ");
                                 String Red = m.getRed().getTeamKeys()[0];   // R1
                                 r1 = Red.substring(3, Red.length());
@@ -422,33 +427,41 @@ public class MainActivity extends AppCompatActivity {
                                     r1 = " " + r1;
                                 }
                                 Log.w(TAG, " R1 = " + r1);
+                                MO_inst.setR1(r1);
                                 Red = m.getRed().getTeamKeys()[1];          // R2
                                 r2 = Red.substring(3, Red.length());
                                 if (r2.length() < 4) {
                                     r2 = " " + r2;
                                 }
+                                MO_inst.setR2(r2);
                                 Red = m.getRed().getTeamKeys()[2];          // R3
                                 r3 = Red.substring(3, Red.length());
                                 if (r3.length() < 4) {
                                     r3 = " " + r3;
                                 }
+                                MO_inst.setR3(r3);
                                 bW.write(" \"r1\":\"" + r1 + "\",  \"r2\": \"" + r2 + "\", \"r3\":\"" + r3 + "\",");
                                 String Blue = m.getBlue().getTeamKeys()[0];  // B1
                                 b1 = Blue.substring(3, Blue.length());
                                 if (b1.length() < 4) {
                                     b1 = " " + b1;
                                 }
+                                MO_inst.setB1(b1);
                                 Blue = m.getBlue().getTeamKeys()[1];         // B2
                                 b2 = Blue.substring(3, Blue.length());
                                 if (b2.length() < 4) {
                                     b2 = " " + b2;
                                 }
+                                MO_inst.setB2(b2);
                                 Blue = m.getBlue().getTeamKeys()[2];         // B3
                                 b3 = Blue.substring(3, Blue.length());
                                 if (b3.length() < 4) {
                                     b3 = " " + b3;
                                 }
+                                MO_inst.setB3(b3);
                                 bW.write(" \"b1\":\"" + b1 + "\",  \"b2\": \"" + b2 + "\", \"b3\":\"" + b3 + "\"");
+
+                                pfMatch_DBReference.child(String.valueOf(qm)).setValue(MO_inst);  // Add to firebase
 
                                 if (i == matchSched.length - 1) {       // Last one?
                                     bW.write("} " + "\n");
