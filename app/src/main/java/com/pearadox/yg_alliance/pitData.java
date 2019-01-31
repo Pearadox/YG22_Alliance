@@ -22,7 +22,7 @@ public class pitData implements Serializable {
     public int pit_numLifted = 0;                   // Num. of robots can lift (1-2)
     public boolean pit_liftRamp = false;            // lift type Ramp
     public boolean pit_liftHook = false;            // lift type Hook
-    public boolean pit_HAB2 = false;                 // Can leave from HAB level 2
+    public boolean pit_HAB2 = false;                // Can leave from HAB level 2
     public int pit_speed = 0;                       // Speed (Ft. per Sec)
     public String pit_motor;                        // Type of Motor
     public String pit_lang;                         // Programming  Language
@@ -30,7 +30,7 @@ public class pitData implements Serializable {
     /* */
     public String pit_comment;                      // Comment(s)
     public String pit_scout = " ";                  // Student who collected the data
-    public String  pit_dateTime;                  // Date & Time data was saved
+    public String  pit_dateTime;                    // Date & Time data was saved
     public String pit_photoURL;                     // URL of the robot photo in Firebase
 
 

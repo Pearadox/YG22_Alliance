@@ -48,8 +48,10 @@ public class PitCover_Activity extends AppCompatActivity {
                 this,
                 draftList,
                 R.layout.pit_list_layout,
-                new String[] {"team","BA","Stats"},
-                new int[] {R.id.TeamData,R.id.BA, R.id.Stats}
+                new String[] {"team","Stats"},
+                new int[] {R.id.TeamData, R.id.Stats}
+//                new String[] {"team","BA","Stats"},
+//                new int[] {R.id.TeamData,R.id.BA, R.id.Stats}
         );
 
         draftList.clear();
@@ -93,7 +95,7 @@ public class PitCover_Activity extends AppCompatActivity {
                     Mesg = "";
                 }
                 temp.put("Stats", Mesg );
-                temp.put("BA",  "     ");
+//                temp.put("BA",  "     ");
                 draftList.add(temp);
 
             } // end For # teams

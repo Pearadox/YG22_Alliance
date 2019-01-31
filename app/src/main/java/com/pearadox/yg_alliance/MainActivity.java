@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_Events, btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank, btn_Pit;
     final String[] URL = {""};
     final String[] photStat = {""};
+    String DatTim = "";
     String teamNumber = "";
     Team[] teams;
     public static int BAnumTeams = 0;                       // # of teams from Blue Alliance
@@ -305,11 +306,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, " path = " + prt);
                     BufferedWriter bW;
                     bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                    bW.write("TEAM" + "  " + "PIT  PHOTO   HT   SCOUT" + "\n");
+                    bW.write("TEAM" + "  " + "PIT  PHOTO  _____Date/Time_____       SCOUT" + "\n");
 
                     for (int i = 0; i < Pearadox.numTeams; i++) {
-                        pitData_pres = " - ";       // Not there
-                        photo_pres = " - ";
+                        pitData_pres = " -  ";       // Not there
+                        photo_pres = "  - ";
                         Ht = "  ";  Stud = "";
                         My_inst = Pearadox.team_List.get(i);
                         tnum = My_inst.getTeam_num();
@@ -321,20 +322,21 @@ public class MainActivity extends AppCompatActivity {
 //                            Log.w(TAG, " Team# = '" + tnum + "'  and '" + the_pits.getPit_team() + "'") ;
 
                             if (the_pits.getPit_team().matches(tnum)) {
-                                pitData_pres = " ✔ ";
-                                Ht = String.format("%1$2s", the_pits.getPit_tall());
+                                pitData_pres = " ✔";
+//                                Ht = String.format("%1$2s", the_pits.getPit_tall());
+                                DatTim = the_pits.getpit_dateTime();
                                 Stud = the_pits.getPit_scout();
 //                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
                                 String photoStatus = the_pits.getPit_photoURL();
                                 Log.w(TAG, "%%%%%%%%% Status = " + photoStatus) ;
                                 if (TextUtils.isEmpty(photoStatus)) {
-                                    photo_pres = " ❌  ";
+                                    photo_pres = "❌";
                                 } else {
-                                    photo_pres = " ✔ ";
+                                    photo_pres = " ✔";
                                 }
                             } // Endif
                         } //End for #pits
-                        Result = tnum   + "    " + pitData_pres + "     " +  photo_pres + "     " + Ht + "   " + Stud;
+                        Result = tnum   + "    " + pitData_pres + "     " +  photo_pres+ "        " +  DatTim  + "   " + Stud;
 
                         bW.write(Result + "\n");
                     } // end For # teams
