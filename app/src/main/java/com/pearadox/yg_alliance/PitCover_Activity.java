@@ -4,6 +4,7 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.ListView;
@@ -18,6 +19,14 @@ public class PitCover_Activity extends AppCompatActivity {
     String TAG = "PitCover_Activity";        // This CLASS name
     static final ArrayList<HashMap<String, String>> draftList = new ArrayList<HashMap<String, String>>();
     ListView lstView_Teams;
+    String tnum = "";
+    String camera = "\uD83D\uDCF7";
+    String thumb = "\uD83D\uDC4D";
+    String pitData_pres = "";
+    String photo_pres = "   ✔ ";
+    String Stud = "";
+    String DatTim = "";
+    String Mesg = "";
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
@@ -47,6 +56,7 @@ public class PitCover_Activity extends AppCompatActivity {
         String totalScore="";
         p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
         Log.w(TAG, " Team array size = " + Pearadox.numTeams);
+        pitData the_pits = new pitData();
         draftList.clear();
 
         if (Pearadox.numTeams > 0) {
@@ -54,10 +64,36 @@ public class PitCover_Activity extends AppCompatActivity {
                 HashMap<String, String> temp = new HashMap<String, String>();
                 My_inst = Pearadox.team_List.get(i);
                 Log.w(TAG, " Team = " + My_inst.getTeam_num());
-
                 temp.put("team",  My_inst.getTeam_num() + " - " + My_inst.getTeam_name());
-                temp.put("Stats", "Line1  \uD83D\uDCF7     ");
-                temp.put("BA",  "    \uD83D\uDC4D ");
+                tnum = My_inst.getTeam_num();
+
+                // Find Pit Data (if there)
+                boolean found = false;
+                for (int x = 0; x < Pearadox.num_Pits; x++) {
+                    the_pits = Pearadox.Pit_Data.get(x);
+//                            Log.w(TAG, " Team# = '" + tnum + "'  and '" + the_pits.getPit_team() + "'") ;
+                    if (the_pits.getPit_team().matches(tnum)) {
+                        found = true;
+                        pitData_pres = " ✔ ";
+                        Stud = the_pits.getPit_scout();
+                        DatTim = the_pits.getpit_dateTime();
+//                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
+                        String photoStatus = the_pits.getPit_photoURL();
+                        Log.w(TAG, "%%%%%%%%% Status = " + photoStatus) ;
+                        if (TextUtils.isEmpty(photoStatus)) {
+                            photo_pres = "  ❌ ";
+                        } else {
+                            photo_pres = " ✔ ";
+                        }
+                    } // Endif
+                } //End for #pits
+                if (found) {
+                    Mesg = "Pit " + thumb + "    " + camera + photo_pres + "    " + "@ " + DatTim + "    " + "Scout: " + Stud ;
+                } else {
+                    Mesg = "";
+                }
+                temp.put("Stats", Mesg );
+                temp.put("BA",  "     ");
                 draftList.add(temp);
 
             } // end For # teams

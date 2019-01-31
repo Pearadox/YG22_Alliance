@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -326,8 +327,8 @@ public class MainActivity extends AppCompatActivity {
 //                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
                                 String photoStatus = the_pits.getPit_photoURL();
                                 Log.w(TAG, "%%%%%%%%% Status = " + photoStatus) ;
-                                if (photoStatus == null) {
-                                    photo_pres = " -  ";
+                                if (TextUtils.isEmpty(photoStatus)) {
+                                    photo_pres = " ❌  ";
                                 } else {
                                     photo_pres = " ✔ ";
                                 }
