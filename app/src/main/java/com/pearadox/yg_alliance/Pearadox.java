@@ -15,6 +15,8 @@ public class Pearadox {
     public static int num_Events = 0; 						        // Actual # of Events/Competitions
     public static ArrayList<p_Firebase.teamsObj> team_List = new ArrayList<p_Firebase.teamsObj>();
     public static int numTeams = 0; 						        // Actual # of Teams
+    public static ArrayList<pitData> Pit_Data = new ArrayList<pitData>();
+    public static int num_Pits = 0;                         // Actual # of Pit Data objects
 
 
 // -----  Array of Match Data Objects
