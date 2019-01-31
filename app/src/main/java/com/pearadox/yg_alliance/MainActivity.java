@@ -371,8 +371,8 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
-//                Match[] matchSched = tba.getMatches("2019" + Pearadox.FRC_ChampDiv);
-                Match[] matchSched = tba.getMatches("2018code");
+                Match[] matchSched = tba.getMatches("2019" + Pearadox.FRC_ChampDiv);
+//                Match[] matchSched = tba.getMatches("2018code");          // ***DEBUG***
                 Log.w(TAG, " Matches size = " + matchSched.length);
                 pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event);   // Matches data from Firebase D/B
 
