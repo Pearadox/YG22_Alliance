@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < Pearadox.numTeams; i++) {
                         pitData_pres = " -  ";       // Not there
                         photo_pres = "  - ";
-                        Ht = "  ";  Stud = "";
+                        Ht = "  ";  Stud = ""; DatTim = "";
                         My_inst = Pearadox.team_List.get(i);
                         tnum = My_inst.getTeam_num();
 //                        Log.w(TAG, " Team# = '" + tnum + "'  Pit=" + num_Pits) ;
