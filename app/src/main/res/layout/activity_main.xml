@@ -142,33 +142,34 @@
     <LinearLayout
         android:id="@+id/btn_Row1"
         android:layout_width="match_parent"
-        android:layout_height="100sp"
-        android:orientation="horizontal"
-        android:layout_marginBottom="89dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="129dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_Events"
             android:layout_width="120sp"
             android:layout_height="wrap_content"
-            tools:layout_weight="1"
-            android:text="Events \n List" />
+            android:text="Events \n List"
+            tools:layout_weight="1" />
 
 
         <Button
             android:id="@+id/btn_Teams"
             android:layout_width="120sp"
             android:layout_height="wrap_content"
-            tools:layout_weight="1"
-            android:text="  Team \n   List  " />
+            android:text="  Team \n   List  "
+            tools:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_Match_Sched"
             android:layout_width="120sp"
             android:layout_height="wrap_content"
-            tools:layout_weight="1"
-            android:text="  Match \n  Sched.  " />
+            android:text="  Match \n  Sched.  "
+            tools:layout_weight="1" />
 
     </LinearLayout>
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
@@ -176,17 +177,25 @@
     <LinearLayout
         android:id="@+id/btn_Row2"
         android:layout_width="match_parent"
-        android:layout_height="100sp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="70dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_Pit"
             android:layout_width="120sp"
             android:layout_height="wrap_content"
             android:layout_gravity="left|start"
-            android:text="  Pit \n  Coverage  " />
+            android:text="Pit \n Coverage" />
+
+        <Button
+            android:id="@+id/btn_PitScout"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:text="Pit Scout\nAssignment" />
 
         <Button
             android:id="@+id/btn_Spreadsheet"
@@ -194,13 +203,24 @@
             android:layout_height="wrap_content"
             android:text="Match Data Spreadsheet" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_Row3"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/btn_Rank"
             android:layout_width="120sp"
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:text="B.A. \n Rank" />
-
     </LinearLayout>
 
 

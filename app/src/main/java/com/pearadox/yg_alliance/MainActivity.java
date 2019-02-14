@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner_Device, spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
     ArrayAdapter<String> adapter_Event;
-    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank, btn_Pit;
+    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank, btn_Pit,btn_PitScout;
     final String[] URL = {""};
     final String[] photStat = {""};
     String DatTim = "";
@@ -155,11 +155,13 @@ public class MainActivity extends AppCompatActivity {
         btn_Spreadsheet = (Button) findViewById(R.id.btn_Spreadsheet);
         btn_Rank = (Button) findViewById(R.id.btn_Rank);
         btn_Pit = (Button) findViewById(R.id.btn_Pit);
+        btn_PitScout = (Button) findViewById(R.id.btn_PitScout);
         btn_Teams.setEnabled(false);
         btn_Match_Sched.setEnabled(false);
         btn_Spreadsheet.setEnabled(false);
         btn_Rank.setEnabled(false);
         btn_Pit.setEnabled(false);
+        btn_PitScout.setEnabled(false);
         txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
         txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
@@ -266,86 +268,149 @@ public class MainActivity extends AppCompatActivity {
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Rank.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
+            Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-                Team[] teams = tba.getTeams(2018,1);
+            Team[] teams = tba.getTeams(2018,1);
 //                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
-                Log.w(TAG, " Team array size = " + teams.length);
-                if (teams.length > 0) {
-                    for (int i = 0; i < teams.length; i++) {
+            Log.w(TAG, " Team array size = " + teams.length);
+            if (teams.length > 0) {
+                for (int i = 0; i < teams.length; i++) {
 //                        teamMumber = String.valueOf(teams[i].team_number);
 //                        tmName = teams[i].nickname;
 //                        tmRank = String.valueOf(teams[i].rank);
 //                        tmWLT = teams[i].record;
 //                        tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
-                        Log.w(TAG, teamMumber + "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
-                    }
-                } else {
-                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                    Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ Blue Alliance teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
+                    Log.w(TAG, teamMumber + "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
                 }
-                btn_Rank.setEnabled(false);         // Turn off Button
+            } else {
+                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ Blue Alliance teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }
+            btn_Rank.setEnabled(false);         // Turn off Button
             }
         });
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Pit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.w(TAG, "  btn_Pit setOnClickListener  " + Pearadox.FRC_ChampDiv);
+                pitData the_pits = new pitData();
+                p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
+                Log.w(TAG, " Team array size = " + Pearadox.numTeams);
+                if (Pearadox.numTeams > 0) {
+                    String destFile = Pearadox.FRC_ChampDiv + "_PitData" + ".txt";
+                    Log.w(TAG, " filename = " + destFile);
+                    try {
+                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+                        Log.e(TAG, " path = " + prt);
+                        BufferedWriter bW;
+                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+                        bW.write("TEAM" + "  " + "PIT  PHOTO  _____Date/Time_____       SCOUT" + "\n");
+
+                        for (int i = 0; i < Pearadox.numTeams; i++) {
+                            pitData_pres = " -  ";       // Not there
+                            photo_pres = "  - ";
+                            Ht = "  ";
+                            Stud = "";
+                            DatTim = "";
+                            My_inst = Pearadox.team_List.get(i);
+                            tnum = My_inst.getTeam_num();
+//                        Log.w(TAG, " Team# = '" + tnum + "'  Pit=" + num_Pits) ;
+
+                            // Find Pit Data (if there)
+                            for (int x = 0; x < Pearadox.num_Pits; x++) {
+                                the_pits = Pearadox.Pit_Data.get(x);
+//                            Log.w(TAG, " Team# = '" + tnum + "'  and '" + the_pits.getPit_team() + "'") ;
+
+                                if (the_pits.getPit_team().matches(tnum)) {
+                                    pitData_pres = " ✔";
+//                                Ht = String.format("%1$2s", the_pits.getPit_tall());
+                                    DatTim = the_pits.getpit_dateTime();
+                                    Stud = the_pits.getPit_scout();
+//                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
+                                    String photoStatus = the_pits.getPit_photoURL();
+                                    Log.w(TAG, "%%%%%%%%% Status = " + photoStatus);
+                                    if (TextUtils.isEmpty(photoStatus)) {
+                                        photo_pres = "❌";
+                                    } else {
+                                        photo_pres = " ✔";
+                                    }
+                                } // Endif
+                            } //End for #pits
+                            Result = tnum + "    " + pitData_pres + "     " + photo_pres + "        " + DatTim + "   " + Stud;
+
+                            bW.write(Result + "\n");
+                        } // end For # teams
+                        //=====================================================================
+
+                        bW.write(" " + "\n");
+                        bW.flush();
+                        bW.close();
+                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Pit Data Coverage file (" + Pearadox.numTeams + " teams) written to SD card ***", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    } catch (FileNotFoundException ex) {
+                        System.out.println(ex.getMessage() + " not found in the specified directory.");
+                        System.exit(0);
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                } else {
+                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                    Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }
+                btn_Pit.setEnabled(false);         // Turn off Button
+
+                Intent pit_intent = new Intent(MainActivity.this, PitCover_Activity.class);
+                startActivity(pit_intent);
+            }
+        });
+
+
+        /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+        btn_PitScout.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
             Log.w(TAG, "  btn_Pit setOnClickListener  " + Pearadox.FRC_ChampDiv);
-            pitData the_pits = new pitData();
-            p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
-            Log.w(TAG, " Team array size = " + Pearadox.numTeams);
-            if (Pearadox.numTeams > 0) {
-                String destFile = Pearadox.FRC_ChampDiv + "_PitData" + ".txt";
+                p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
+                String tnumB1=""; String tnumB2=""; String tnumB3=""; String tnumR1=""; String tnumR2=""; String tnumR3="";
+                String tnamB1=""; String tnamB2=""; String tnamB3=""; String tnamR1=""; String tnamR2=""; String tnamR3="";
+                Log.w(TAG, " Team array size = " + Pearadox.numTeams);
+                if (Pearadox.numTeams > 0) {
+                String destFile = Pearadox.FRC_ChampDiv.toUpperCase() + "_PitScout_Assign" + ".csv";
                 Log.w(TAG, " filename = " + destFile);
                 try {
                     File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
                     Log.e(TAG, " path = " + prt);
                     BufferedWriter bW;
                     bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                    bW.write("TEAM" + "  " + "PIT  PHOTO  _____Date/Time_____       SCOUT" + "\n");
+                    bW.write("Blue 1" + "," + "Blue 2" + "," + "Blue 3" + "," +"Red 1"  + ","+ "Red 2" + "," + "Red 3" + "\n");   // Header
+                    int loop = Pearadox.numTeams / 6;
+                    // ToDo Remainder????
+                    Log.w(TAG, " loop = " + loop);
+                    for (int i = 0; i < Pearadox.numTeams; i=i+6) {
+                        Log.w(TAG, "In For   i=" + i);
+                        My_inst = Pearadox.team_List.get(i);   tnumB1 = My_inst.getTeam_num(); tnamB1 = My_inst.getTeam_name();
+                        My_inst = Pearadox.team_List.get(i+1); tnumB2 = My_inst.getTeam_num(); tnamB2 = My_inst.getTeam_name();
+                        My_inst = Pearadox.team_List.get(i+2); tnumB3 = My_inst.getTeam_num(); tnamB3 = My_inst.getTeam_name();
+                        My_inst = Pearadox.team_List.get(i+3); tnumR1 = My_inst.getTeam_num(); tnamR1 = My_inst.getTeam_name();
+                        My_inst = Pearadox.team_List.get(i+4); tnumR2 = My_inst.getTeam_num(); tnamR2 = My_inst.getTeam_name();
+                        My_inst = Pearadox.team_List.get(i+5); tnumR3 = My_inst.getTeam_num(); tnamR3 = My_inst.getTeam_name();
+                        bW.write( tnumB1 + "-" + tnamB1 + "," + tnumB2 + "-" + tnamB2 + "," + tnumB3 + "-" + tnamB3 + ",");
+                        bW.write( tnumR1 + "-" + tnamR1 + "," + tnumR2 + "-" + tnamR2 + "," + tnumR3 + "-" + tnamR3 + "\n");
 
-                    for (int i = 0; i < Pearadox.numTeams; i++) {
-                        pitData_pres = " -  ";       // Not there
-                        photo_pres = "  - ";
-                        Ht = "  ";  Stud = ""; DatTim = "";
-                        My_inst = Pearadox.team_List.get(i);
-                        tnum = My_inst.getTeam_num();
-//                        Log.w(TAG, " Team# = '" + tnum + "'  Pit=" + num_Pits) ;
-
-                        // Find Pit Data (if there)
-                        for (int x = 0; x < Pearadox.num_Pits; x++) {
-                            the_pits = Pearadox.Pit_Data.get(x);
-//                            Log.w(TAG, " Team# = '" + tnum + "'  and '" + the_pits.getPit_team() + "'") ;
-
-                            if (the_pits.getPit_team().matches(tnum)) {
-                                pitData_pres = " ✔";
-//                                Ht = String.format("%1$2s", the_pits.getPit_tall());
-                                DatTim = the_pits.getpit_dateTime();
-                                Stud = the_pits.getPit_scout();
-//                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
-                                String photoStatus = the_pits.getPit_photoURL();
-                                Log.w(TAG, "%%%%%%%%% Status = " + photoStatus) ;
-                                if (TextUtils.isEmpty(photoStatus)) {
-                                    photo_pres = "❌";
-                                } else {
-                                    photo_pres = " ✔";
-                                }
-                            } // Endif
-                        } //End for #pits
-                        Result = tnum   + "    " + pitData_pres + "     " +  photo_pres+ "        " +  DatTim  + "   " + Stud;
-
-                        bW.write(Result + "\n");
                     } // end For # teams
                     //=====================================================================
 
                     bW.write(" " + "\n");
                     bW.flush();
                     bW.close();
-                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Pit Data Coverage file (" + Pearadox.numTeams + " teams) written to SD card ***", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Pit Data Assignment file (" + Pearadox.numTeams + " teams) written to SD card ***", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 } catch (FileNotFoundException ex) {
@@ -361,11 +426,7 @@ public class MainActivity extends AppCompatActivity {
                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
             }
-            btn_Pit.setEnabled(false);         // Turn off Button
-
-            Intent pit_intent = new Intent(MainActivity.this, PitCover_Activity.class);
-            startActivity(pit_intent);
-
+            btn_PitScout.setEnabled(false);         // Turn off Button
         }
     });
 
@@ -835,6 +896,7 @@ public class MainActivity extends AppCompatActivity {
 
             btn_Teams.setEnabled(true);
             btn_Match_Sched.setEnabled(true);
+            btn_PitScout.setEnabled(true);
             btn_Rank.setEnabled(true);
 
             pfDatabase = FirebaseDatabase.getInstance();
