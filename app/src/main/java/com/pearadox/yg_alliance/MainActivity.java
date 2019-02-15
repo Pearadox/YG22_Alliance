@@ -270,8 +270,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
             Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-            Team[] teams = tba.getTeams(2018,1);
-//                Team[] teams = tba.getTeams(Pearadox.FRC_ChampDiv, BAyear);
+//            Team[] teams = tba.getEventTeams("2019" + Pearadox.FRC_ChampDiv);
+            Team[] teams = tba.getEventTeams("2018CODE");        // *** DEBUG ***
             Log.w(TAG, " Team array size = " + teams.length);
             if (teams.length > 0) {
                 for (int i = 0; i < teams.length; i++) {
@@ -391,19 +391,60 @@ public class MainActivity extends AppCompatActivity {
                     bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
                     bW.write("Blue 1" + "," + "Blue 2" + "," + "Blue 3" + "," +"Red 1"  + ","+ "Red 2" + "," + "Red 3" + "\n");   // Header
                     int loop = Pearadox.numTeams / 6;
-                    // ToDo Remainder????
-                    Log.w(TAG, " loop = " + loop);
+                    int rem = Pearadox.numTeams % 6;
+                    Log.w(TAG, " loop = " + loop + "Rem=" + rem);
                     for (int i = 0; i < Pearadox.numTeams; i=i+6) {
                         Log.w(TAG, "In For   i=" + i);
-                        My_inst = Pearadox.team_List.get(i);   tnumB1 = My_inst.getTeam_num(); tnamB1 = My_inst.getTeam_name();
-                        My_inst = Pearadox.team_List.get(i+1); tnumB2 = My_inst.getTeam_num(); tnamB2 = My_inst.getTeam_name();
-                        My_inst = Pearadox.team_List.get(i+2); tnumB3 = My_inst.getTeam_num(); tnamB3 = My_inst.getTeam_name();
-                        My_inst = Pearadox.team_List.get(i+3); tnumR1 = My_inst.getTeam_num(); tnamR1 = My_inst.getTeam_name();
-                        My_inst = Pearadox.team_List.get(i+4); tnumR2 = My_inst.getTeam_num(); tnamR2 = My_inst.getTeam_name();
-                        My_inst = Pearadox.team_List.get(i+5); tnumR3 = My_inst.getTeam_num(); tnamR3 = My_inst.getTeam_name();
-                        bW.write( tnumB1 + "-" + tnamB1 + "," + tnumB2 + "-" + tnamB2 + "," + tnumB3 + "-" + tnamB3 + ",");
-                        bW.write( tnumR1 + "-" + tnamR1 + "," + tnumR2 + "-" + tnamR2 + "," + tnumR3 + "-" + tnamR3 + "\n");
-
+                        if (i + 6 <= Pearadox.numTeams) {       // protect against NOT multiple of 6
+                            My_inst = Pearadox.team_List.get(i);     tnumB1 = My_inst.getTeam_num(); tnamB1 = My_inst.getTeam_name();
+                            My_inst = Pearadox.team_List.get(i + 1); tnumB2 = My_inst.getTeam_num(); tnamB2 = My_inst.getTeam_name();
+                            My_inst = Pearadox.team_List.get(i + 2); tnumB3 = My_inst.getTeam_num(); tnamB3 = My_inst.getTeam_name();
+                            My_inst = Pearadox.team_List.get(i + 3); tnumR1 = My_inst.getTeam_num(); tnamR1 = My_inst.getTeam_name();
+                            My_inst = Pearadox.team_List.get(i + 4); tnumR2 = My_inst.getTeam_num(); tnamR2 = My_inst.getTeam_name();
+                            My_inst = Pearadox.team_List.get(i + 5); tnumR3 = My_inst.getTeam_num(); tnamR3 = My_inst.getTeam_name();
+                            bW.write(tnumB1 + "-" + tnamB1 + "," + tnumB2 + "-" + tnamB2 + "," + tnumB3 + "-" + tnamB3 + ",");
+                            bW.write(tnumR1 + "-" + tnamR1 + "," + tnumR2 + "-" + tnamR2 + "," + tnumR3 + "-" + tnamR3 + "\n");
+                        } else {
+                            switch(rem) {
+                                case 1 :
+                                    My_inst = Pearadox.team_List.get(i);     tnumB1 = My_inst.getTeam_num(); tnamB1 = My_inst.getTeam_name();
+                                    bW.write(tnumB1 + "-" + tnamB1 + "," + " " + "," + " " + ",");
+                                    bW.write(" " + "," + " " + "," + " " + "\n");
+                                    break;
+                                case 2 :
+                                    My_inst = Pearadox.team_List.get(i);     tnumB1 = My_inst.getTeam_num(); tnamB1 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 1); tnumB2 = My_inst.getTeam_num(); tnamB2 = My_inst.getTeam_name();
+                                    bW.write(tnumB1 + "-" + tnamB1 + "," + tnumB2 + "-" + tnamB2 + "," + " " + ",");
+                                    bW.write(" " + "," + " " + "," + " " + "\n");
+                                    break;
+                                case 3 :
+                                    My_inst = Pearadox.team_List.get(i);     tnumB1 = My_inst.getTeam_num(); tnamB1 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 1); tnumB2 = My_inst.getTeam_num(); tnamB2 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 2); tnumB3 = My_inst.getTeam_num(); tnamB3 = My_inst.getTeam_name();
+                                    bW.write(tnumB1 + "-" + tnamB1 + "," + tnumB2 + "-" + tnamB2 + "," + tnumB3 + "-" + tnamB3 + ",");
+                                    bW.write(" " + "," + " " + "," + " " + "\n");
+                                    break;
+                                case 4 :
+                                    My_inst = Pearadox.team_List.get(i);     tnumB1 = My_inst.getTeam_num(); tnamB1 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 1); tnumB2 = My_inst.getTeam_num(); tnamB2 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 2); tnumB3 = My_inst.getTeam_num(); tnamB3 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 3); tnumR1 = My_inst.getTeam_num(); tnamR1 = My_inst.getTeam_name();
+                                    bW.write(tnumB1 + "-" + tnamB1 + "," + tnumB2 + "-" + tnamB2 + "," + tnumB3 + "-" + tnamB3 + ",");
+                                    bW.write(tnumR1 + "-" + tnamR1 + "," + " " + "," + " " + "\n");
+                                    break;
+                                case 5 :
+                                    My_inst = Pearadox.team_List.get(i);     tnumB1 = My_inst.getTeam_num(); tnamB1 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 1); tnumB2 = My_inst.getTeam_num(); tnamB2 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 2); tnumB3 = My_inst.getTeam_num(); tnamB3 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 3); tnumR1 = My_inst.getTeam_num(); tnamR1 = My_inst.getTeam_name();
+                                    My_inst = Pearadox.team_List.get(i + 4); tnumR2 = My_inst.getTeam_num(); tnamR2 = My_inst.getTeam_name();
+                                    bW.write(tnumB1 + "-" + tnamB1 + "," + tnumB2 + "-" + tnamB2 + "," + tnumB3 + "-" + tnamB3 + ",");
+                                    bW.write(tnumR1 + "-" + tnamR1 + "," + tnumR2 + "-" + tnamR2 + "," + " " + "\n");
+                                    break;
+                                default :
+                                    Log.e(TAG, "<<<<<<<  ERROR!!  >>>>>>> = " + "Rem=" + rem);
+                            }
+                        }
                     } // end For # teams
                     //=====================================================================
 
