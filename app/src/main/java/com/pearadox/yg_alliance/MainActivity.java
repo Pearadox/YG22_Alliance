@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -26,6 +27,8 @@ import android.widget.Toast;
 // API-V3
 import com.cpjd.main.TBA;
 import com.cpjd.main.CTBA;
+import com.cpjd.models.other.DistrictRanking;
+import com.cpjd.models.other.EventRanking;
 import com.cpjd.models.other.events.EventOPR;
 import com.cpjd.models.simple.SEvent;
 import com.cpjd.models.simple.SMatch;
@@ -34,6 +37,7 @@ import com.cpjd.models.standard.Event;
 import com.cpjd.models.standard.Match;
 import com.cpjd.models.standard.Team;
 
+import com.cpjd.requests.EventRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -271,27 +275,39 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
 //            Team[] teams = tba.getEventTeams("2019" + Pearadox.FRC_ChampDiv);
-            Team[] teams = tba.getEventTeams("2018CODE");        // *** DEBUG ***
-            Log.w(TAG, " Team array size = " + teams.length);
-            if (teams.length > 0) {
-                for (int i = 0; i < teams.length; i++) {
-//                        teamMumber = String.valueOf(teams[i].team_number);
-//                        tmName = teams[i].nickname;
-//                        tmRank = String.valueOf(teams[i].rank);
-//                        tmWLT = teams[i].record;
-//                        tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
-                    Log.w(TAG, teamMumber + "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
+//            Team[] teams = tba.getEventTeams("2018CODE");        // *** DEBUG ***
+//            Log.w(TAG, " Team array size = " + teams.length);
+//            EventOPR[] opr = tba.getOprs("2018CODE");
+//            for(EventOPR o : opr) System.out.println(o);
+//            EventRanking[] rankings = new EventRequest().getEventRankings("2019" + Pearadox.FRC_ChampDiv);
+            EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
+            Log.w(TAG, " Rank array size = " + rankings.length);
+            if (rankings.length > 0) {
+                for (int i = 0; i < rankings.length; i++) {
+                    teamNumber = (rankings[i].getTeamKey());
+                    String tmWLT = String.valueOf(rankings[i].getWins()) + "-" + String.valueOf(rankings[i].getLosses()) + "-" + String.valueOf(rankings[i].getTies());
+                    tmRank = String.valueOf(rankings[i].getRank());
+                    Log.w(TAG, teamNumber + "  Rank: " + tmRank + "  WLT: " + tmWLT + "  Rank=" + tmRank );
                 }
             } else {
                 final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
                 tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ Blue Alliance teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
             }
             btn_Rank.setEnabled(false);         // Turn off Button
             }
         });
+//            if (teams.length > 0) {
+//                for (int i = 0; i < teams.length; i++) {
+//                    teamMumber = String.valueOf(teams[i].getTeamNumber());
+//                    tmName = teams[i].getNickname();
+//                    tmRank = String.valueOf(rankings[i].getRank());
+////                        tmOPR = String.format("%3.3f", opr[i].getOpr());
+//                    String WLT = String.valueOf(rankings[i].getWins()) + "-" + String.valueOf(rankings[i].getLosses()) + "-" + String.valueOf(rankings[i].getTies());
+//                    Log.w(TAG, teamMumber + "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
+//                }
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Pit.setOnClickListener(new View.OnClickListener() {

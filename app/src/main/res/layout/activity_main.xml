@@ -219,7 +219,7 @@
             android:id="@+id/btn_Rank"
             android:layout_width="120sp"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:text="B.A. \n Rank" />
     </LinearLayout>
 
