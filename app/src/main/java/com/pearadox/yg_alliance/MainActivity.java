@@ -277,8 +277,8 @@ public class MainActivity extends AppCompatActivity {
 //            Team[] teams = tba.getEventTeams("2019" + Pearadox.FRC_ChampDiv);
 //            Team[] teams = tba.getEventTeams("2018CODE");        // *** DEBUG ***
 //            Log.w(TAG, " Team array size = " + teams.length);
-//            EventOPR[] opr = tba.getOprs("2018CODE");
-//            for(EventOPR o : opr) System.out.println(o);
+            EventOPR[] opr = tba.getOprs("2018code");
+            for(EventOPR o : opr) System.out.println(o);
 //            EventRanking[] rankings = new EventRequest().getEventRankings("2019" + Pearadox.FRC_ChampDiv);
             EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
             Log.w(TAG, " Rank array size = " + rankings.length);
@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
                     teamNumber = (rankings[i].getTeamKey());
                     String tmWLT = String.valueOf(rankings[i].getWins()) + "-" + String.valueOf(rankings[i].getLosses()) + "-" + String.valueOf(rankings[i].getTies());
                     tmRank = String.valueOf(rankings[i].getRank());
-                    Log.w(TAG, teamNumber + "  Rank: " + tmRank + "  WLT: " + tmWLT + "  Rank=" + tmRank );
+                    Log.w(TAG, teamNumber + "  Rank: " + tmRank + "  WLT: " + tmWLT  );
                 }
             } else {
                 final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
@@ -668,22 +668,22 @@ public class MainActivity extends AppCompatActivity {
                         }
                         bW.write(match_inst.getTeam_num() + "," + match_inst.getMatch() + ",");
                         //----- Auto -----
-                        bW.write(match_inst.isPre_cube() + "," + match_inst.getPre_startPos() + "," + match_inst.isAuto_mode() + "," + match_inst.isAuto_baseline() + ",");
-                        bW.write(match_inst.isAuto_cube_switch() + "," + match_inst.isAuto_cube_switch_att() + "," + match_inst.isAuto_xover_switch() + "," + match_inst.isAuto_switch_extra() + ",");
-                        bW.write(match_inst.isAuto_cube_scale() + "," + match_inst.isAuto_cube_scale_att() + "," + match_inst.isAuto_scale_extra() + "," + match_inst.isAuto_xover_scale() + "," + match_inst.isAuto_wrong_switch() + "," + match_inst.isAuto_wrong_scale() + ",");
-                        new_comm = StringEscapeUtils.escapeCsv(match_inst.getAuto_comment());
+//                        bW.write(match_inst.isPre_cube() + "," + match_inst.getPre_startPos() + "," + match_inst.isAuto_mode() + "," + match_inst.isAuto_baseline() + ",");
+//                        bW.write(match_inst.isAuto_cube_switch() + "," + match_inst.isAuto_cube_switch_att() + "," + match_inst.isAuto_xover_switch() + "," + match_inst.isAuto_switch_extra() + ",");
+//                        bW.write(match_inst.isAuto_cube_scale() + "," + match_inst.isAuto_cube_scale_att() + "," + match_inst.isAuto_scale_extra() + "," + match_inst.isAuto_xover_scale() + "," + match_inst.isAuto_wrong_switch() + "," + match_inst.isAuto_wrong_scale() + ",");
+//                        new_comm = StringEscapeUtils.escapeCsv(match_inst.getAuto_comment());
                         bW.write(new_comm + "," + "|" + ",");
                         //----- Tele -----
-                        bW.write(match_inst.getTele_cube_switch() + "," + match_inst.getTele_switch_attempt() + "," + match_inst.getTele_cube_scale() + "," + match_inst.getTele_scale_attempt() + "," + match_inst.getTele_their_switch() + "," + match_inst.getTele_their_attempt() + ",");
-                        bW.write(match_inst.getTele_cube_exchange() + "," + match_inst.getTele_cube_portal() + "," + match_inst.getTele_cube_pwrzone() + "," + match_inst.getTele_cube_floor() + "," + match_inst.getTele_their_floor() + "," + match_inst.getTele_random_floor() + "," + match_inst.isTele_cube_pickup() + "," + match_inst.isTele_placed_cube() + "," + match_inst.isTele_launched_cube() + ",");
+//                        bW.write(match_inst.getTele_cube_switch() + "," + match_inst.getTele_switch_attempt() + "," + match_inst.getTele_cube_scale() + "," + match_inst.getTele_scale_attempt() + "," + match_inst.getTele_their_switch() + "," + match_inst.getTele_their_attempt() + ",");
+//                        bW.write(match_inst.getTele_cube_exchange() + "," + match_inst.getTele_cube_portal() + "," + match_inst.getTele_cube_pwrzone() + "," + match_inst.getTele_cube_floor() + "," + match_inst.getTele_their_floor() + "," + match_inst.getTele_random_floor() + "," + match_inst.isTele_cube_pickup() + "," + match_inst.isTele_placed_cube() + "," + match_inst.isTele_launched_cube() + ",");
 //                String y = match_inst.getTele_comment();
                         new_comm = StringEscapeUtils.escapeCsv(match_inst.getTele_comment());
-                        bW.write(match_inst.isTele_on_platform() + "," + match_inst.isTele_climb_success() + "," + match_inst.isTele_climb_attempt() + "," + match_inst.isTele_grab_rung() + "," + match_inst.isTele_grab_side() + "," + match_inst.isTele_lift_one() + "," + match_inst.isTele_lift_two() + "," + match_inst.isTele_got_lift() + "," + new_comm + "," + "|" + ",");
+//                        bW.write(match_inst.isTele_on_platform() + "," + match_inst.isTele_climb_success() + "," + match_inst.isTele_climb_attempt() + "," + match_inst.isTele_grab_rung() + "," + match_inst.isTele_grab_side() + "," + match_inst.isTele_lift_one() + "," + match_inst.isTele_lift_two() + "," + match_inst.isTele_got_lift() + "," + new_comm + "," + "|" + ",");
                         //----- Final -----
-                        bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms() + "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_BlockSwitch() + ",");
+//                        bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms() + "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_BlockSwitch() + ",");
 //                String x = match_inst.getFinal_comment();
                         new_comm = StringEscapeUtils.escapeCsv(match_inst.getFinal_comment());
-                        bW.write(match_inst.getFinal_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + new_comm + "," + "||" + "," + match_inst.getFinal_studID() + ",|,,,,,||");
+                        bW.write(match_inst.getTele_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + new_comm + "," + "||" + "," + match_inst.getFinal_studID() + ",|,,,,,||");
                         //-----------------
                         bW.write(" " + "\n");
                         lastRow = lastRow + 1;
