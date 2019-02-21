@@ -38,6 +38,7 @@ import com.cpjd.models.standard.Match;
 import com.cpjd.models.standard.Team;
 
 import com.cpjd.requests.EventRequest;
+import com.cpjd.utils.exceptions.DataNotFoundException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,8 +73,6 @@ import java.util.TimeZone;
 
 // === DEBUG  ===
 import static android.util.Log.i;
-
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -270,35 +269,49 @@ public class MainActivity extends AppCompatActivity {
 
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-        btn_Rank.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
+    btn_Rank.setOnClickListener(new View.OnClickListener() {
+        public void onClick(View v) {
+        Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-//            Team[] teams = tba.getEventTeams("2019" + Pearadox.FRC_ChampDiv);
-//            Team[] teams = tba.getEventTeams("2018CODE");        // *** DEBUG ***
-//            Log.w(TAG, " Team array size = " + teams.length);
+        try {
+//            EventOPR[] opr = new TBA().getOprs("2019" + Pearadox.FRC_ChampDiv);
+//            EventOPR[] opr = tba.getOprs("2019" + Pearadox.FRC_ChampDiv);
             EventOPR[] opr = tba.getOprs("2018code");
-            for(EventOPR o : opr) System.out.println(o);
-//            EventRanking[] rankings = new EventRequest().getEventRankings("2019" + Pearadox.FRC_ChampDiv);
-            EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
+            Log.w(TAG, " OPR array size = " + opr.length);
+//            for(EventOPR o : opr) System.out.println(o);
+            for (int i = 0; i < opr.length; i++) {
+                teamNumber = String.format("%4s", (opr[i].getTeamKey().substring(3)));     //leading blanks
+                tmOPR = String.format("%10.4f", opr[i].getOpr());
+                Log.w(TAG, "Team='" + teamNumber + "'  OPR=" + tmOPR);
+            }  // end For # OPRs
+        } catch (NullPointerException e) {
+            Log.e(TAG, " >>>> ERROR <<<<<  " + e);
+            Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance OPR data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
+
+        try {
+            EventRanking[] rankings = new EventRequest().getEventRankings("2019" + Pearadox.FRC_ChampDiv);
+//            EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
             Log.w(TAG, " Rank array size = " + rankings.length);
-            if (rankings.length > 0) {
                 for (int i = 0; i < rankings.length; i++) {
                     teamNumber = (rankings[i].getTeamKey());
                     String tmWLT = String.valueOf(rankings[i].getWins()) + "-" + String.valueOf(rankings[i].getLosses()) + "-" + String.valueOf(rankings[i].getTies());
                     tmRank = String.valueOf(rankings[i].getRank());
                     Log.w(TAG, teamNumber + "  Rank: " + tmRank + "  WLT: " + tmWLT  );
                 }
-            } else {
-                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
-            }
             btn_Rank.setEnabled(false);         // Turn off Button
-            }
-        });
+        } catch (DataNotFoundException e) {
+            Log.e(TAG, " >>>> ERROR <<<<<  " + e);
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+            Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance Ranking data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
+    }
+    });
 //            if (teams.length > 0) {
 //                for (int i = 0; i < teams.length; i++) {
 //                    teamMumber = String.valueOf(teams[i].getTeamNumber());
