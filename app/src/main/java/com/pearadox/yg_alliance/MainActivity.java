@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
     String teamMumber = "";
     String tmName = "";
     String tmRank = "";
+    String tmRScore = "";
     String tmWLT = "";
     String tmOPR = "";
     String tmKPa = "";
@@ -234,6 +235,10 @@ public class MainActivity extends AppCompatActivity {
                             new_team.setTeam_name(teams[i].getNickname());
                             new_team.setTeam_loc(teams[i].getCity() + ", " + teams[i].getStateProv() + "  " + teams[i].getPostalCode());
                             String keyID = String.format("%04d", teams[i].getTeamNumber());     // Make it 4 digit (only for KEY)
+                            new_team.setTeam_OPR("");
+                            new_team.setTeam_rank("");
+                            new_team.setTeam_rScore("");
+                            new_team.setTeam_WLT("");
                             pfTeam_DBReference.child(keyID).setValue(new_team);  // Add to firebase
 
                             if (i == teams.length - 1) {       // Last one?
@@ -274,15 +279,16 @@ public class MainActivity extends AppCompatActivity {
         Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
         try {
-//            EventOPR[] opr = new TBA().getOprs("2019" + Pearadox.FRC_ChampDiv);
-//            EventOPR[] opr = tba.getOprs("2019" + Pearadox.FRC_ChampDiv);
-            EventOPR[] opr = tba.getOprs("2018code");
+            EventOPR[] opr = tba.getOprs("2019" + Pearadox.FRC_ChampDiv);
+//            EventOPR[] opr = tba.getOprs("2018code");
             Log.w(TAG, " OPR array size = " + opr.length);
 //            for(EventOPR o : opr) System.out.println(o);
             for (int i = 0; i < opr.length; i++) {
-                teamNumber = String.format("%4s", (opr[i].getTeamKey().substring(3)));     //leading blanks
-                tmOPR = String.format("%10.4f", opr[i].getOpr());
-                Log.w(TAG, "Team='" + teamNumber + "'  OPR=" + tmOPR);
+                String teamKey = opr[i].getTeamKey().substring(3);
+                teamNumber = ("0000" + teamKey).substring(teamKey.length());  // leading zero(s)
+                tmOPR = String.format("%8.3f", opr[i].getOpr());
+                Log.w(TAG, "Team='" + teamNumber + "'  OPR='" + tmOPR + "'");
+                updateOPR(teamNumber);
             }  // end For # OPRs
         } catch (NullPointerException e) {
             Log.e(TAG, " >>>> ERROR <<<<<  " + e);
@@ -296,10 +302,14 @@ public class MainActivity extends AppCompatActivity {
 //            EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
             Log.w(TAG, " Rank array size = " + rankings.length);
                 for (int i = 0; i < rankings.length; i++) {
-                    teamNumber = (rankings[i].getTeamKey());
-                    String tmWLT = String.valueOf(rankings[i].getWins()) + "-" + String.valueOf(rankings[i].getLosses()) + "-" + String.valueOf(rankings[i].getTies());
+                    String teamKey  = rankings[i].getTeamKey().substring(3);
+                    teamNumber = ("0000" + teamKey).substring(teamKey.length());  // leading zero(s)
+                    tmWLT = String.valueOf(rankings[i].getWins()) + "-" + String.valueOf(rankings[i].getLosses()) + "-" + String.valueOf(rankings[i].getTies());
                     tmRank = String.valueOf(rankings[i].getRank());
-                    Log.w(TAG, teamNumber + "  Rank: " + tmRank + "  WLT: " + tmWLT  );
+                    double[] sortOrd = rankings[i].getSortOrders();
+                    tmRScore = String.valueOf(sortOrd[0]);
+                    Log.w(TAG, teamNumber + "  Rank: " + tmRank + "  Score:" + tmRScore + "  WLT: " + tmWLT  );
+                    updateRank(teamNumber);
                 }
             btn_Rank.setEnabled(false);         // Turn off Button
         } catch (DataNotFoundException e) {
@@ -312,16 +322,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     });
-//            if (teams.length > 0) {
-//                for (int i = 0; i < teams.length; i++) {
-//                    teamMumber = String.valueOf(teams[i].getTeamNumber());
-//                    tmName = teams[i].getNickname();
-//                    tmRank = String.valueOf(rankings[i].getRank());
-////                        tmOPR = String.format("%3.3f", opr[i].getOpr());
-//                    String WLT = String.valueOf(rankings[i].getWins()) + "-" + String.valueOf(rankings[i].getLosses()) + "-" + String.valueOf(rankings[i].getTies());
-//                    Log.w(TAG, teamMumber + "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
-//                }
 
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Pit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -930,6 +933,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    private void updateOPR(String teamNumber) {
+        Log.w(TAG, "  updateOPR  " + Pearadox.FRC_ChampDiv + "  " + teamNumber);
+        pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
+        String keyID = teamNumber;
+        pfTeam_DBReference.child(keyID).child("team_OPR").setValue(tmOPR);
+    }
+
+    private void updateRank(String teamNumber) {
+        Log.w(TAG, "  updateRank  " + Pearadox.FRC_ChampDiv + "  " + teamNumber);
+        pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
+        String keyID = teamNumber;
+        pfTeam_DBReference.child(keyID).child("team_rank").setValue(tmRank);
+        pfTeam_DBReference.child(keyID).child("team_rScore").setValue(tmRScore);
+        pfTeam_DBReference.child(keyID).child("team_WLT").setValue(tmWLT);
+    }
+
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     private class event_OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent,
