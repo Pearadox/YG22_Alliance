@@ -5,10 +5,10 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingLeft="5dp"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="5dp"
     tools:context="com.pearadox.yg_alliance.MainActivity">
 
     /* ======================================================*/
@@ -17,9 +17,9 @@
         android:id="@+id/layout_logos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imgView_FIRST"
@@ -72,13 +72,13 @@
         android:textSize="18sp"
         android:textStyle="bold" />
     <!--<LinearLayout-->
-        <!--android:id="@+id/layout_event"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_marginTop="13dp"-->
-        <!--android:layout_below="@+id/layout_logos"-->
-        <!--android:layout_alignParentStart="true">-->
+    <!--android:id="@+id/layout_event"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_marginTop="13dp"-->
+    <!--android:layout_below="@+id/layout_logos"-->
+    <!--android:layout_alignParentStart="true">-->
 
     <Spinner
         android:id="@+id/spinner_Event"
@@ -95,42 +95,42 @@
         android:id="@+id/lbl_Event"
         android:layout_width="50sp"
         android:layout_height="25sp"
-        android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/spinner_Event"
+        android:layout_alignParentStart="true"
         android:text="Event"
         android:textColor="@color/darkgreen"
         android:textSize="18sp"
         tools:ignore="HardcodedText" />
 
-        /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
     <TextView
         android:id="@+id/txt_EvntCod"
         android:layout_width="60sp"
         android:layout_height="25sp"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/lbl_Event"
+        android:layout_alignParentStart="true"
         android:text="TXLU"
         android:textColor="@color/green"
         android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/txt_EvntPlace"
-            android:layout_width="240sp"
-            android:layout_height="25sp"
-            android:layout_weight="1"
-            android:text="Waco, TX , USA"
-            android:textColor="@color/green"
-            android:textSize="16sp"
-            android:layout_below="@+id/txt_EvntCod"
-            android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/txt_EvntPlace"
+        android:layout_width="240sp"
+        android:layout_height="25sp"
+        android:layout_below="@+id/txt_EvntCod"
+        android:layout_alignParentStart="true"
+        android:layout_weight="1"
+        android:text="Waco, TX , USA"
+        android:textColor="@color/green"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/txt_EvntDat"
         android:layout_width="220sp"
         android:layout_height="25sp"
-        android:layout_alignStart="@+id/spinner_Event"
         android:layout_below="@+id/spinner_Event"
+        android:layout_alignStart="@+id/spinner_Event"
         android:text="date that the Event happens"
         android:textColor="@color/green"
         android:textSize="16sp" />
@@ -151,7 +151,7 @@
 
         <Button
             android:id="@+id/btn_Events"
-            android:layout_width="120sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="Events \n List"
             tools:layout_weight="1" />
@@ -159,14 +159,14 @@
 
         <Button
             android:id="@+id/btn_Teams"
-            android:layout_width="120sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="  Team \n   List  "
             tools:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_Match_Sched"
-            android:layout_width="120sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="  Match \n  Sched.  "
             tools:layout_weight="1" />
@@ -186,22 +186,24 @@
 
         <Button
             android:id="@+id/btn_Pit"
-            android:layout_width="120sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:layout_gravity="left|start"
             android:text="Pit \n Coverage" />
 
         <Button
             android:id="@+id/btn_PitScout"
-            android:layout_width="120sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:text="Pit Scout\nAssignment" />
+            android:text="Pit Scout\nAssignment"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btn_Spreadsheet"
-            android:layout_width="120sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:text="Match Data Spreadsheet" />
+            android:text="Match Data Spreadsheet"
+            android:textSize="11sp" />
 
     </LinearLayout>
 
@@ -217,10 +219,10 @@
 
         <Button
             android:id="@+id/btn_Rank"
-            android:layout_width="120sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:text="B.A. \n Rank" />
+            android:text="B.A. \n Rank"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/lbl_LastTim"

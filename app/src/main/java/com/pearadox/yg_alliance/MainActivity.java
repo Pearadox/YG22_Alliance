@@ -1,5 +1,6 @@
 package com.pearadox.yg_alliance;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
@@ -11,6 +12,8 @@ import android.os.StrictMode;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -44,6 +47,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -260,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                         bW.write(" " + "\n");
                         bW.flush();
                         bW.close();
-                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to SD card ***", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to Firebase & SD card ***", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
                     } catch (FileNotFoundException ex) {
@@ -520,129 +524,127 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
-                Match[] matchSched = tba.getMatches("2019" + Pearadox.FRC_ChampDiv);
-//                Match[] matchSched = tba.getMatches("2018code");          // ***DEBUG***
-                Log.w(TAG, " Matches size = " + matchSched.length);
-                pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event);   // Matches data from Firebase D/B
+                try {
+                    Match[] matchSched = tba.getMatches("2019" + Pearadox.FRC_ChampDiv);
+    //                Match[] matchSched = tba.getMatches("2018code");          // ***DEBUG***
+                    Log.w(TAG, " Matches size = " + matchSched.length);
+                    pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event);   // Matches data from Firebase D/B
 
-                //----------------------------------------
-                if (matchSched.length > 0) {
-//                    System.out.println("Match name: " + matchSched[0].getCompLevel() + " Time: " + matchSched[0].getTime() + " Time (long in ms): " + matchSched[0].getActualTime());
-                } else {
-                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_CDMA_EMERGENCY_RINGBACK);
-                    Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-                }
-                //----------------------------------------
-                int qm = 0;
-                String mn, r1, r2, r3, b1, b2, b3;
-                p_Firebase.matchObj MO_inst = new p_Firebase.matchObj();
-                String matchFile = Pearadox.FRC_ChampDiv + "_Match-Sched" + ".json";
-                if (matchSched.length > 0) {
-                    // The comp level variable includes an indentifier for whether it's practice, qualifying, or playoff
-                    try {
-                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + matchFile);
-                        BufferedWriter bW;
-                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                        bW.write("[" + "\n");
-                        for (int i = 0; i < matchSched.length; i++) {
-                            Match m = matchSched[i];//                            Log.w(TAG, " Comp = " + matchSched[i].comp_level);
-                            if (m.getCompLevel().matches("qm")) {
-                                qm++;
-                                MO_inst.setMtype("Qualifying");
-//                                long millis = m.getPredictedTime();
-                                long millis = m.getTime();
-                                Date date = new Date(millis);
-                                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-                                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-                                String formatted = formatter.format(date);      // Pass date object
-                                MO_inst.setTime(formatted);
-                                bW.write(" {\"time\":\"" + formatted + "\", ");
-                                mn = String.valueOf(m.getMatchNumber());
-                                if (mn.length() < 2) {
-                                    mn = "00" + mn;
-                                }      // make it at least 3-digits
-                                if (mn.length() < 3) {
-                                    mn = "0" + mn;
-                                }       // make it at least 3-digits
-                                Log.w(TAG, " match# = " + mn);
-                                MO_inst.setMatch(mn);
-                                bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn + "\", ");
-                                String Red = m.getRed().getTeamKeys()[0];   // R1
-                                r1 = Red.substring(3, Red.length());
-                                if (r1.length() < 4) {
-                                    r1 = " " + r1;
-                                }
-                                Log.w(TAG, " R1 = " + r1);
-                                MO_inst.setR1(r1);
-                                Red = m.getRed().getTeamKeys()[1];          // R2
-                                r2 = Red.substring(3, Red.length());
-                                if (r2.length() < 4) {
-                                    r2 = " " + r2;
-                                }
-                                MO_inst.setR2(r2);
-                                Red = m.getRed().getTeamKeys()[2];          // R3
-                                r3 = Red.substring(3, Red.length());
-                                if (r3.length() < 4) {
-                                    r3 = " " + r3;
-                                }
-                                MO_inst.setR3(r3);
-                                bW.write(" \"r1\":\"" + r1 + "\",  \"r2\": \"" + r2 + "\", \"r3\":\"" + r3 + "\",");
-                                String Blue = m.getBlue().getTeamKeys()[0];  // B1
-                                b1 = Blue.substring(3, Blue.length());
-                                if (b1.length() < 4) {
-                                    b1 = " " + b1;
-                                }
-                                MO_inst.setB1(b1);
-                                Blue = m.getBlue().getTeamKeys()[1];         // B2
-                                b2 = Blue.substring(3, Blue.length());
-                                if (b2.length() < 4) {
-                                    b2 = " " + b2;
-                                }
-                                MO_inst.setB2(b2);
-                                Blue = m.getBlue().getTeamKeys()[2];         // B3
-                                b3 = Blue.substring(3, Blue.length());
-                                if (b3.length() < 4) {
-                                    b3 = " " + b3;
-                                }
-                                MO_inst.setB3(b3);
-                                bW.write(" \"b1\":\"" + b1 + "\",  \"b2\": \"" + b2 + "\", \"b3\":\"" + b3 + "\"");
 
-                                pfMatch_DBReference.child(String.valueOf(qm)).setValue(MO_inst);  // Add to firebase
+                    //----------------------------------------
+                    int qm = 0;
+                    String mn, r1, r2, r3, b1, b2, b3;
+                    p_Firebase.matchObj MO_inst = new p_Firebase.matchObj();
+                    String matchFile = Pearadox.FRC_ChampDiv + "_Match-Sched" + ".json";
+                    if (matchSched.length > 0) {
+                        // The comp level variable includes an indentifier for whether it's practice, qualifying, or playoff
+                        try {
+                            File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + matchFile);
+                            BufferedWriter bW;
+                            bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+                            bW.write("[" + "\n");
+                            for (int i = 0; i < matchSched.length; i++) {
+                                Match m = matchSched[i];//                            Log.w(TAG, " Comp = " + matchSched[i].comp_level);
+                                if (m.getCompLevel().matches("qm")) {
+                                    qm++;
+                                    MO_inst.setMtype("Qualifying");
+    //                                long millis = m.getPredictedTime();
+                                    long millis = m.getTime();
+                                    Date date = new Date(millis);
+                                    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                                    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                                    String formatted = formatter.format(date);      // Pass date object
+                                    MO_inst.setTime(formatted);
+                                    bW.write(" {\"time\":\"" + formatted + "\", ");
+                                    mn = String.valueOf(m.getMatchNumber());
+                                    if (mn.length() < 2) {
+                                        mn = "00" + mn;
+                                    }      // make it at least 3-digits
+                                    if (mn.length() < 3) {
+                                        mn = "0" + mn;
+                                    }       // make it at least 3-digits
+                                    Log.w(TAG, " match# = " + mn);
+                                    MO_inst.setMatch(mn);
+                                    bW.write("  \"mtype\":\"Qualifying\",  \"match\": \"Q" + mn + "\", ");
+                                    String Red = m.getRed().getTeamKeys()[0];   // R1
+                                    r1 = Red.substring(3, Red.length());
+                                    if (r1.length() < 4) {
+                                        r1 = " " + r1;
+                                    }
+                                    Log.w(TAG, " R1 = " + r1);
+                                    MO_inst.setR1(r1);
+                                    Red = m.getRed().getTeamKeys()[1];          // R2
+                                    r2 = Red.substring(3, Red.length());
+                                    if (r2.length() < 4) {
+                                        r2 = " " + r2;
+                                    }
+                                    MO_inst.setR2(r2);
+                                    Red = m.getRed().getTeamKeys()[2];          // R3
+                                    r3 = Red.substring(3, Red.length());
+                                    if (r3.length() < 4) {
+                                        r3 = " " + r3;
+                                    }
+                                    MO_inst.setR3(r3);
+                                    bW.write(" \"r1\":\"" + r1 + "\",  \"r2\": \"" + r2 + "\", \"r3\":\"" + r3 + "\",");
+                                    String Blue = m.getBlue().getTeamKeys()[0];  // B1
+                                    b1 = Blue.substring(3, Blue.length());
+                                    if (b1.length() < 4) {
+                                        b1 = " " + b1;
+                                    }
+                                    MO_inst.setB1(b1);
+                                    Blue = m.getBlue().getTeamKeys()[1];         // B2
+                                    b2 = Blue.substring(3, Blue.length());
+                                    if (b2.length() < 4) {
+                                        b2 = " " + b2;
+                                    }
+                                    MO_inst.setB2(b2);
+                                    Blue = m.getBlue().getTeamKeys()[2];         // B3
+                                    b3 = Blue.substring(3, Blue.length());
+                                    if (b3.length() < 4) {
+                                        b3 = " " + b3;
+                                    }
+                                    MO_inst.setB3(b3);
+                                    bW.write(" \"b1\":\"" + b1 + "\",  \"b2\": \"" + b2 + "\", \"b3\":\"" + b3 + "\"");
 
-                                if (i == matchSched.length - 1) {       // Last one?
-                                    bW.write("} " + "\n");
+                                    pfMatch_DBReference.child(String.valueOf(qm)).setValue(MO_inst);  // Add to firebase
+
+                                    if (i == matchSched.length - 1) {       // Last one?
+                                        bW.write("} " + "\n");
+                                    } else {
+                                        bW.write("}," + "\n");
+                                    }
                                 } else {
-                                    bW.write("}," + "\n");
+                                    Log.e(TAG, "******* NOT 'qm' ********* ");
+    //                                System.out.println(matchSched[i].set_number);
+    //                                System.out.println(matchSched[i].event_key);
+    //                                System.out.println(matchSched[i].time_string);
+    //                                System.out.println(matchSched[i].key);
                                 }
-                            } else {
-                                Log.e(TAG, "******* NOT 'qm' ********* ");
-//                                System.out.println(matchSched[i].set_number);
-//                                System.out.println(matchSched[i].event_key);
-//                                System.out.println(matchSched[i].time_string);
-//                                System.out.println(matchSched[i].key);
-                            }
-                        }  // end For # matchSched
-                        //=====================================================================
+                            }  // end For # matchSched
+                            //=====================================================================
 
-                        bW.write("]" + "\n");
-                        bW.write(" " + "\n");
-                        bW.flush();
-                        bW.close();
-                        Log.w(TAG, qm + " *** '" + Pearadox.FRC_Event + "' Matches written to SD card ***");
-                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Matches file written to SD card *** " + qm, Toast.LENGTH_LONG);
+                            bW.write("]" + "\n");
+                            bW.write(" " + "\n");
+                            bW.flush();
+                            bW.close();
+                            Log.w(TAG, qm + " *** '" + Pearadox.FRC_Event + "' Matches written to SD card ***");
+                            Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Matches file written to Firebase & SD card *** " + qm, Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
+                        } catch (FileNotFoundException ex) {
+                            System.out.println(ex.getMessage() + " not found in the specified directory.");
+                            System.exit(0);
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }  // end Try/Catch
+                    } else {
+                        Toast toast = Toast.makeText(getBaseContext(), "☆☆☆ No Match data exists for this event yet (too early!)  ☆☆☆", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
-                    } catch (FileNotFoundException ex) {
-                        System.out.println(ex.getMessage() + " not found in the specified directory.");
-                        System.exit(0);
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }  // end Try/Catch
-                } else {
-                    Toast toast = Toast.makeText(getBaseContext(), "☆☆☆ No Match data exists for this event yet (too early!)  ☆☆☆", Toast.LENGTH_LONG);
+                    }
+                } catch (DataNotFoundException e) {
+                    Log.e(TAG, " >>>> ERROR <<<<<  " + e);
+                    Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 }
@@ -1282,7 +1284,7 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
             fileReader.close();
             pw = (stringBuffer.toString());
             pw = pw.substring(0,11);    //Remove CR/LF
-//            Log.d(TAG, "Peardox = '" + pw + "'");
+//            Log.d(TAG, "Pearadox = '" + pw + "'");
         } catch (IOException e) {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
@@ -1319,6 +1321,25 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
                 });
     }
 
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 99: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
 
 //###################################################################
 //###################################################################
@@ -1327,6 +1348,15 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
 public void onStart() {
     super.onStart();
     Log.v(TAG, ">>>>  yg_alliance onStart  <<<<");
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+        // Permission is not granted
+        Log.w(TAG, "*** Not authorized for SD card ***");
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                99);
+    }
+    FirebaseApp.initializeApp(this);
     Fb_Auth();      // Authenticate with Firebase
     loadEvents();
 }
