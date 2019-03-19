@@ -476,5 +476,35 @@ public class p_Firebase {
 
 // ==========================================================
 // ==========================================================
+public static class rankObj {
+    private String event;
+    private String last;
+
+    public rankObj() {
+    }
+
+    public rankObj(String event, String last) {
+        this.event = event;
+        this.last = last;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    public String getLast() {
+        return last;
+    }
+
+    public void setLast(String last) {
+        this.last = last;
+    }
+}
+// ==========================================================
+// ==========================================================
 
 }

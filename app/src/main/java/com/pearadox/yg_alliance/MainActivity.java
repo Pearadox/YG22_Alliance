@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,6 +46,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean FB_logon = false;           // indicator for Firebase logon success
     Boolean BA_Data = false;
     Spinner spinner_Device, spinner_Event;
-    TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace;
+    TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace, txt_Time;
     ArrayAdapter<String> adapter_Event;
     Button btn_Events, btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank, btn_Pit,btn_PitScout;
     final String[] URL = {""};
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference pfMatchData_DBReference;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfPitData_DBReference;
+    private DatabaseReference pfRank_DBReference;
     private FirebaseAuth mAuth;
     FirebaseStorage storage;
     StorageReference storageRef;
@@ -126,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
     String tmOPR = "";
     String tmKPa = "";
     String tmTPts = "";
+    public static String timeStamp = " ";
+
     Event BAe;
 
     @Override
@@ -169,9 +174,11 @@ public class MainActivity extends AppCompatActivity {
         txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
         txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
+        txt_Time = (TextView) findViewById(R.id.txt_Time);
         txt_EvntCod.setText("");            // Event Code
         txt_EvntDat.setText("");            // Event Date
         txt_EvntPlace.setText("");          // Event Location
+        txt_Time.setText("");
 
         TBA.setAuthToken(TBA_AuthToken);
         final TBA tba = new TBA();
@@ -278,7 +285,10 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
         Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-        try {
+            timeStamp = new SimpleDateFormat("yyyy.MM.dd   hh:mm:ss a").format(new Date());
+            Log.w(TAG, timeStamp);
+
+            try {
             EventOPR[] opr = tba.getOprs("2019" + Pearadox.FRC_ChampDiv);
 //            EventOPR[] opr = tba.getOprs("2018code");
             Log.w(TAG, " OPR array size = " + opr.length);
@@ -290,6 +300,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "Team='" + teamNumber + "'  OPR='" + tmOPR + "'");
                 updateOPR(teamNumber);
             }  // end For # OPRs
+            txt_Time.setText(timeStamp);
+            pfRank_DBReference.child(Pearadox.FRC_ChampDiv).child("last").setValue(timeStamp);
         } catch (NullPointerException e) {
             Log.e(TAG, " >>>> ERROR <<<<<  " + e);
             Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance OPR data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
@@ -311,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.w(TAG, teamNumber + "  Rank: " + tmRank + "  Score:" + tmRScore + "  WLT: " + tmWLT  );
                     updateRank(teamNumber);
                 }
-            btn_Rank.setEnabled(false);         // Turn off Button
+//           btn_Rank.setEnabled(false);         // Turn off Button
         } catch (DataNotFoundException e) {
             Log.e(TAG, " >>>> ERROR <<<<<  " + e);
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
@@ -994,13 +1006,44 @@ public class MainActivity extends AppCompatActivity {
 
             pfDatabase = FirebaseDatabase.getInstance();
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
-            addMD_VE_Listener(pfMatchData_DBReference.orderByChild("team_num"));        // Load _ALL_ Matches in team order GLF 4/18
+//            addMD_VE_Listener(pfMatchData_DBReference.orderByChild("team_num"));        // Load _ALL_ Matches in team order for spreadsheet  [GLF 4/18]
 
             pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
             addTeam_VE_Listener(pfTeam_DBReference.orderByChild("team_num"));               // Load Teams since we now know event
 
             pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
             addPitData_VE_Listener(pfPitData_DBReference.orderByChild("pit_team"));             // Load Pit Data since we now know event
+
+            pfRank_DBReference = pfDatabase.getReference("rank"); // Rank Timestamp Data
+            String child = "event";
+            String key = Pearadox.FRC_Event;
+            Query query = pfRank_DBReference.orderByChild(child).equalTo(key);
+            query.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    Log.w(TAG, "%%%  ChildAdded");
+                    p_Firebase.rankObj rank = dataSnapshot.getValue(p_Firebase.rankObj.class);
+                    System.out.println(dataSnapshot.getValue());
+                    txt_Time.setText(rank.getLast());
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Log.w(TAG, "%%%  ChildChanged");
+                }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Log.w(TAG, "%%%  ChildRemoved");
+                }
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    Log.w(TAG, "%%%  ChildMoved");
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
 
         }
 
