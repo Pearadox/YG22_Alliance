@@ -304,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "Team='" + teamNumber + "'  OPR='" + tmOPR + "'");
                 updateOPR(teamNumber);
             }  // end For # OPRs
+            // ToDo - add complete child to get Event code
             txt_Time.setText(timeStamp);
             pfRank_DBReference.child(Pearadox.FRC_ChampDiv).child("last").setValue(timeStamp);
         } catch (NullPointerException e) {
@@ -1112,11 +1113,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     btn_Spreadsheet.setEnabled(false);
                 }
-                // ToDo - fix TBA code below
                 // ----------  Blue Alliance  -----------
 //                TBA t = new TBA();
 //                BAe = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);
-                // TODO  is getname right
 //                if (BAe.getName() == null) {
 //                    Log.e(TAG, "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###");
 //                    BA_Data = false;
@@ -1132,7 +1131,6 @@ public class MainActivity extends AppCompatActivity {
 //                    btn_Rank.setEnabled(false);
 //                } else {
 //                    BA_Data = true;
-//                    // TODO
 ////                    BAteams = BAe.teams.clone();
 //                    BAnumTeams = BAteams.length;
 //
