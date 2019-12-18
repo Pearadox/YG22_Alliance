@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     String Pearadox_Version = " ";      // initialize
     Long Pearadox_Date;
     String TBA_AuthToken = "xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg";
-    int BAyear = 2019;  // Current Yesr for B.A. calls
+    int BAyear = 2020;  // Current Yesr for B.A. calls
     Boolean FB_logon = false;           // indicator for Firebase logon success
     Boolean BA_Data = false;
     Spinner spinner_Device, spinner_Event;
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
         }
-        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©2019  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©2020  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
 
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
                 pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
                 p_Firebase.teamsObj new_team = new p_Firebase.teamsObj();
-                Team[] teams = tba.getEventTeams("2019" + Pearadox.FRC_ChampDiv);
+                Team[] teams = tba.getEventTeams("2020" + Pearadox.FRC_ChampDiv);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
                     String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, timeStamp);
 
             try {
-            EventOPR[] opr = tba.getOprs("2019" + Pearadox.FRC_ChampDiv);
+            EventOPR[] opr = tba.getOprs("2020" + Pearadox.FRC_ChampDiv);
 //            EventOPR[] opr = tba.getOprs("2018code");
             Log.w(TAG, " OPR array size = " + opr.length);
 //            for(EventOPR o : opr) System.out.println(o);
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            EventRanking[] rankings = new EventRequest().getEventRankings("2019" + Pearadox.FRC_ChampDiv);
+            EventRanking[] rankings = new EventRequest().getEventRankings("2020" + Pearadox.FRC_ChampDiv);
 //            EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
             Log.w(TAG, " Rank array size = " + rankings.length);
                 for (int i = 0; i < rankings.length; i++) {
@@ -526,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
                 try {
-                    Match[] matchSched = tba.getMatches("2019" + Pearadox.FRC_ChampDiv);
+                    Match[] matchSched = tba.getMatches("2020" + Pearadox.FRC_ChampDiv);
     //                Match[] matchSched = tba.getMatches("2018code");          // ***DEBUG***
                     Log.w(TAG, " Matches size = " + matchSched.length);
                     pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event);   // Matches data from Firebase D/B
@@ -658,7 +658,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Spreadsheet setOnClickListener  ");
                 Log.e(TAG, "***** Matches # = " + Pearadox.Matches_Data.size());   // Done in Event Click Listner
-//        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2019  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
+//        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2020  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
 //        toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //        toast1.show();
                 String new_comm = "";
@@ -910,7 +910,7 @@ public class MainActivity extends AppCompatActivity {
                 }        //directory is created;
             }
             Log.w(TAG, "FRC files created");
-//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2019  *** Files initialied ***" , Toast.LENGTH_LONG);
+//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2020  *** Files initialied ***" , Toast.LENGTH_LONG);
 //        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //        toast.show();
         } else {
@@ -1107,7 +1107,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.w(TAG, "***** Matches Loaded from Firebase. # = " + Pearadox.Matches_Data.size());
                 if (Pearadox.Matches_Data.size() > 0) {
-                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2019  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
+                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2020  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
                     toast1.setGravity(Gravity.BOTTOM, 0, 0);
                     toast1.show();
                 } else {
@@ -1169,7 +1169,7 @@ public class MainActivity extends AppCompatActivity {
             AboutDialog about = new AboutDialog(this);
             about.setTitle("YG_Alliance   Ver " + Pearadox_Version);
             about.show();
-//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2019  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2020  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
 //            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //            toast.show();
             return true;
