@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 String keyID = new_event.getComp_code();
                 pfEvent_DBReference.child(keyID).setValue(new_event);
                 // ToDo Add new directories for each event  (match-data, matches,pit-data, teams)
+                setUp_Rank(keyID);      // Add each new event to B.A. Rank
 
             } // for
             btn_Events.setEnabled(false);         // Turn off Button
@@ -337,7 +338,13 @@ public class MainActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
         }
-    }
+        catch (NullPointerException npe) {
+            Log.e(TAG, " >>>> ERROR <<<<<  " + npe);
+//            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+            Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance Ranking data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();}
+        }
     });
 
 
@@ -966,6 +973,14 @@ public class MainActivity extends AppCompatActivity {
         pfTeam_DBReference.child(keyID).child("team_WLT").setValue(tmWLT);
     }
 
+    private void setUp_Rank(String event) {
+        Log.w(TAG, "  setUp_Rank  " + event);
+        pfRank_DBReference = pfDatabase.getReference("rank");   // B.A. Rank Timestamp Data
+        String keyID = event;
+        pfRank_DBReference.child(keyID).child("event").setValue(event);
+        pfRank_DBReference.child(keyID).child("last").setValue("2020.01.01   00:00:01 AM");
+    }
+
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
@@ -987,6 +1002,7 @@ public class MainActivity extends AppCompatActivity {
                     txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
                     txt_EvntDat.setText(event_inst.getcomp_date());         // Event Date
                     txt_EvntPlace.setText(event_inst.getcomp_place());      // Event Location
+
                 }
             }
             Log.w(TAG, "** Event code '" + Pearadox.FRC_Event + "' " + Pearadox.FRC_ChampDiv + "  \n ");
@@ -1027,7 +1043,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.w(TAG, "%%%  ChildAdded");
                     p_Firebase.rankObj rank = dataSnapshot.getValue(p_Firebase.rankObj.class);
                     System.out.println(dataSnapshot.getValue());
-                    txt_Time.setText(rank.getLast());
+                    txt_Time.setText(rank.getLast());           // Last B.A. Rank execution
 
                 }
 
