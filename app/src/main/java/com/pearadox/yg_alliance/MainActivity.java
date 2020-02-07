@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (the_pits.getPit_team().matches(tnum)) {
                                     pitData_pres = " ✔";
 //                                Ht = String.format("%1$2s", the_pits.getPit_tall());
-                                    DatTim = the_pits.getpit_dateTime();
+                                    DatTim = the_pits.getPit_dateTime();
                                     Stud = the_pits.getPit_scout();
 //                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
                                     String photoStatus = the_pits.getPit_photoURL();

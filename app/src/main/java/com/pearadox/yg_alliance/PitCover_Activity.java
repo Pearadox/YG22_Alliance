@@ -80,7 +80,7 @@ public class PitCover_Activity extends AppCompatActivity {
                         found = true;
                         pitData_pres = " ✔ ";
                         Stud = the_pits.getPit_scout();
-                        DatTim = the_pits.getpit_dateTime();
+                        DatTim = the_pits.getPit_dateTime();
 //                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
                         String photoStatus = the_pits.getPit_photoURL();
                         Log.w(TAG, "%%%%%%%%% Status = " + photoStatus) ;
