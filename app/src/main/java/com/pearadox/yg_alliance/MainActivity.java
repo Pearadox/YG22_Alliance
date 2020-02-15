@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.CalendarContract;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean FB_logon = false;           // indicator for Firebase logon success
     Boolean BA_Data = false;
     Spinner spinner_Device, spinner_Event;
-    TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace, txt_Time;
+    TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace, txt_Time, txt_Counter;
     ArrayAdapter<String> adapter_Event;
     Button btn_Events, btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank, btn_Pit,btn_PitScout;
     final String[] URL = {""};
@@ -99,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
     String teamNumber = "";
     Team[] teams;
     public static int BAnumTeams = 0;                       // # of teams from Blue Alliance
-//    public String[] teamsRed;
+    CountDownTimer countDownTimer;
+
+    //    public String[] teamsRed;
 //    public String[] teamsBlue;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfEvent_DBReference;
@@ -134,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
     String tmKPa = "";
     String tmTPts = "";
     public static String timeStamp = " ";
+    public static String timeCount = " ";
 
     Event BAe;
 
@@ -179,13 +183,17 @@ public class MainActivity extends AppCompatActivity {
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
         txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
         txt_Time = (TextView) findViewById(R.id.txt_Time);
+        txt_Counter = (TextView) findViewById(R.id.txt_Counter);
         txt_EvntCod.setText("");            // Event Code
         txt_EvntDat.setText("");            // Event Date
         txt_EvntPlace.setText("");          // Event Location
         txt_Time.setText("");
+        txt_Counter.setText("");
 
         TBA.setAuthToken(TBA_AuthToken);
         final TBA tba = new TBA();
+
+        usingCountDownTimer();
 
         /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Events.setOnClickListener(new View.OnClickListener() {
@@ -290,10 +298,10 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
         Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
 
-            timeStamp = new SimpleDateFormat("yyyy.MM.dd   hh:mm:ss a").format(new Date());
-            Log.w(TAG, timeStamp);
+        timeStamp = new SimpleDateFormat("yyyy.MM.dd   hh:mm:ss a").format(new Date());
+        Log.w(TAG, timeStamp);
 
-            try {
+        try {
             EventOPR[] opr = tba.getOprs("2020" + Pearadox.FRC_ChampDiv);
 //            EventOPR[] opr = tba.getOprs("2018code");
             Log.w(TAG, " OPR array size = " + opr.length);
@@ -1277,10 +1285,27 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
         }
     });
 
-                                                  }
+  }
 
 
-    //______________________________________
+    public void usingCountDownTimer() {
+//            countDownTimer = new CountDownTimer(Long.MAX_VALUE, 300000) {       // 5 min
+            countDownTimer = new CountDownTimer(Long.MAX_VALUE, 15000) {       // 15 sec
+
+            // This is called after every 10 sec interval.
+            public void onTick(long millisUntilFinished) {
+                txt_Counter = (TextView) findViewById(R.id.txt_Counter);
+                timeCount = new SimpleDateFormat("hh:mm:ss a").format(new Date());
+                txt_Counter.setText(timeCount);
+            }
+
+            public void onFinish() {
+                start();
+            }
+        }.start();
+    }
+
+        //______________________________________
     private void Fb_Auth() {
         Log.w(TAG, "===Fb_Auth===");
         FB_logon = false;
@@ -1382,6 +1407,18 @@ public void onStart() {
         super.onResume();
         Log.v(TAG, "onResume");
      }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.v(TAG, "onPause");
+        try {
+            Log.d(TAG, "*** Stopping Counter ***");
+            countDownTimer.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onStop() {

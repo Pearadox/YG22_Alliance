@@ -243,5 +243,34 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/btn_Row4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="116dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_LCount"
+            android:layout_width="wrap_content"
+            android:layout_height="25sp"
+            android:text="Count: "
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/txt_Counter"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="hh:mm:ss "
+            android:textColor="@color/darkgreen"
+            android:textSize="14sp" />
+    </LinearLayout>
+
 
 </RelativeLayout>
