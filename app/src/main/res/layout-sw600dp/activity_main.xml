@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/imgView_FIRST"
-            android:layout_width="60sp"
-            android:layout_height="60sp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
             android:layout_alignBottom="@+id/imgView_YG_Alliance"
             android:layout_alignParentStart="true"
             android:layout_gravity="left|start"
@@ -36,8 +36,8 @@
 
         <ImageView
             android:id="@+id/imgView_YG_Alliance"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_alignParentTop="true"
             android:layout_gravity="fill_horizontal"
             android:layout_toEndOf="@+id/txt_EvntPlace"
@@ -49,8 +49,8 @@
 
         <ImageView
             android:id="@+id/imgView_BLUE"
-            android:layout_width="60sp"
-            android:layout_height="60sp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
             android:layout_alignBottom="@+id/imgView_YG_Alliance"
             android:layout_alignParentEnd="true"
             android:layout_gravity="right|end"
@@ -116,7 +116,7 @@
 
     <TextView
         android:id="@+id/txt_EvntPlace"
-        android:layout_width="240sp"
+        android:layout_width="wrap_content"
         android:layout_height="25sp"
         android:layout_below="@+id/txt_EvntCod"
         android:layout_alignParentStart="true"
@@ -127,7 +127,7 @@
 
     <TextView
         android:id="@+id/txt_EvntDat"
-        android:layout_width="220sp"
+        android:layout_width="wrap_content"
         android:layout_height="25sp"
         android:layout_below="@+id/spinner_Event"
         android:layout_alignStart="@+id/spinner_Event"
@@ -146,12 +146,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="129dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_Events"
-            android:layout_width="80sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="Events \n List"
             tools:layout_weight="1" />
@@ -159,14 +159,14 @@
 
         <Button
             android:id="@+id/btn_Teams"
-            android:layout_width="80sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="  Team \n   List  "
             tools:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_Match_Sched"
-            android:layout_width="80sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="  Match \n  Sched.  "
             tools:layout_weight="1" />
@@ -181,7 +181,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="70dp"
         android:orientation="horizontal">
 
         <Button
@@ -189,7 +189,6 @@
             android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:layout_gravity="left|start"
-            android:textSize="11sp"
             android:text="Pit \n Coverage" />
 
         <Button
@@ -197,20 +196,9 @@
             android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="Pit Scout\nAssignment"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_Rank"
-        android:layout_width="80sp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="70dp"
-        android:text="B.A. \n Rank"
-        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/btn_Row3"
@@ -218,40 +206,25 @@
         android:layout_height="60sp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="0dp"
         android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_Rank"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:text="B.A. \n Rank"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/lbl_LastTim"
             android:layout_width="wrap_content"
             android:layout_height="25sp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
             android:text="Last: "
             android:textColor="@color/navy"
-            android:textSize="11sp"
+            android:textSize="12sp"
             tools:ignore="HardcodedText" />
-
-        <Switch
-            android:id="@+id/switch_CyclicRank"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:text="Run Cyclically"
-            android:textSize="11sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_Row4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginBottom="65dp"
-        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/txt_Time"
@@ -260,13 +233,30 @@
             android:layout_weight="1"
             android:text="yyyy.MM.dd   hh:mm:ss "
             android:textColor="@color/blue"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
+
+        <Switch
+            android:id="@+id/switch_CyclicRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Run 'Rank' Cyclically" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_Row4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="340dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/lbl_LCount"
             android:layout_width="wrap_content"
             android:layout_height="25sp"
-            android:layout_marginStart="30dp"
             android:text="♻ Cycle: "
             android:textColor="@color/black"
             android:textSize="12sp"
@@ -276,11 +266,10 @@
             android:id="@+id/txt_Counter"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:text="hh:mm:ss "
             android:textColor="@color/darkgreen"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
 

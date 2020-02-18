@@ -1,6 +1,7 @@
 package com.pearadox.yg_alliance;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
@@ -25,7 +26,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,11 +92,12 @@ public class MainActivity extends AppCompatActivity {
     String TBA_AuthToken = "xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg";
     int BAyear = 2020;  // Current Yesr for B.A. calls
     Boolean FB_logon = false;           // indicator for Firebase logon success
-    Boolean BA_Data = false;
-    Spinner spinner_Device, spinner_Event;
+    Spinner spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace, txt_Time, txt_Counter;
     ArrayAdapter<String> adapter_Event;
-    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Spreadsheet, btn_Rank, btn_Pit,btn_PitScout;
+    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Rank, btn_Pit,btn_PitScout;
+    Switch switch_CyclicRank;
+
     final String[] URL = {""};
     final String[] photStat = {""};
     String DatTim = "";
@@ -125,21 +129,17 @@ public class MainActivity extends AppCompatActivity {
     String photo_pres = "   ✔ ";
     String tnum = "";
 
-    int startRow = 3;
-    int lastRow = 0;
     BufferedWriter bW;
-    String teamMumber = "";
-    String tmName = "";
+//    String teamMumber = "";
+//    String tmName = "";
     String tmRank = "";
     String tmRScore = "";
     String tmWLT = "";
     String tmOPR = "";
-    String tmKPa = "";
-    String tmTPts = "";
     public static String timeStamp = " ";
     public static String timeCount = " ";
 
-    Event BAe;
+//    final TBA tba = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,13 +169,11 @@ public class MainActivity extends AppCompatActivity {
         btn_Events = (Button) findViewById(R.id.btn_Events);
         btn_Teams = (Button) findViewById(R.id.btn_Teams);
         btn_Match_Sched = (Button) findViewById(R.id.btn_Match_Sched);
-        btn_Spreadsheet = (Button) findViewById(R.id.btn_Spreadsheet);
         btn_Rank = (Button) findViewById(R.id.btn_Rank);
         btn_Pit = (Button) findViewById(R.id.btn_Pit);
         btn_PitScout = (Button) findViewById(R.id.btn_PitScout);
         btn_Teams.setEnabled(false);
         btn_Match_Sched.setEnabled(false);
-        btn_Spreadsheet.setEnabled(false);
         btn_Rank.setEnabled(false);
         btn_Pit.setEnabled(false);
         btn_PitScout.setEnabled(false);
@@ -183,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
         txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
         txt_Time = (TextView) findViewById(R.id.txt_Time);
+        Switch switch_CyclicRank = (Switch) findViewById(R.id.switch_CyclicRank);
         txt_Counter = (TextView) findViewById(R.id.txt_Counter);
         txt_EvntCod.setText("");            // Event Code
         txt_EvntDat.setText("");            // Event Date
@@ -193,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
         TBA.setAuthToken(TBA_AuthToken);
         final TBA tba = new TBA();
 
-        usingCountDownTimer();
 
         /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Events.setOnClickListener(new View.OnClickListener() {
@@ -296,37 +294,34 @@ public class MainActivity extends AppCompatActivity {
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     btn_Rank.setOnClickListener(new View.OnClickListener() {
         public void onClick(View v) {
-        Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
+            Log.w(TAG, "  btn_Rank setOnClickListener  " + Pearadox.FRC_ChampDiv);
+            timeStamp = new SimpleDateFormat("yyyy.MM.dd   hh:mm:ss a").format(new Date());
+            Log.w(TAG, timeStamp);
 
-        timeStamp = new SimpleDateFormat("yyyy.MM.dd   hh:mm:ss a").format(new Date());
-        Log.w(TAG, timeStamp);
+            try {
+                EventOPR[] opr = tba.getOprs("2020" + Pearadox.FRC_ChampDiv);
+                Log.w(TAG, " OPR array size = " + opr.length);
+                for (int i = 0; i < opr.length; i++) {
+                    String teamKey = opr[i].getTeamKey().substring(3);
+                    teamNumber = ("0000" + teamKey).substring(teamKey.length());  // leading zero(s)
+                    tmOPR = String.format("%8.3f", opr[i].getOpr());
+                    Log.w(TAG, "Team='" + teamNumber + "'  OPR='" + tmOPR + "'");
+                    updateOPR(teamNumber);
+                }  // end For # OPRs
+                // ToDo - add complete child to get Event code
+                txt_Time.setText(timeStamp);
+                pfRank_DBReference.child(Pearadox.FRC_ChampDiv).child("last").setValue(timeStamp);
+            } catch (NullPointerException e) {
+                Log.e(TAG, " >>>> ERROR <<<<<  " + e);
+                Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance OPR data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }
 
-        try {
-            EventOPR[] opr = tba.getOprs("2020" + Pearadox.FRC_ChampDiv);
-//            EventOPR[] opr = tba.getOprs("2018code");
-            Log.w(TAG, " OPR array size = " + opr.length);
-//            for(EventOPR o : opr) System.out.println(o);
-            for (int i = 0; i < opr.length; i++) {
-                String teamKey = opr[i].getTeamKey().substring(3);
-                teamNumber = ("0000" + teamKey).substring(teamKey.length());  // leading zero(s)
-                tmOPR = String.format("%8.3f", opr[i].getOpr());
-                Log.w(TAG, "Team='" + teamNumber + "'  OPR='" + tmOPR + "'");
-                updateOPR(teamNumber);
-            }  // end For # OPRs
-            // ToDo - add complete child to get Event code
-            txt_Time.setText(timeStamp);
-            pfRank_DBReference.child(Pearadox.FRC_ChampDiv).child("last").setValue(timeStamp);
-        } catch (NullPointerException e) {
-            Log.e(TAG, " >>>> ERROR <<<<<  " + e);
-            Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance OPR data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
-        }
-
-        try {
-            EventRanking[] rankings = new EventRequest().getEventRankings("2020" + Pearadox.FRC_ChampDiv);
+            try {
+                EventRanking[] rankings = new EventRequest().getEventRankings("2020" + Pearadox.FRC_ChampDiv);
 //            EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
-            Log.w(TAG, " Rank array size = " + rankings.length);
+                Log.w(TAG, " Rank array size = " + rankings.length);
                 for (int i = 0; i < rankings.length; i++) {
                     String teamKey  = rankings[i].getTeamKey().substring(3);
                     teamNumber = ("0000" + teamKey).substring(teamKey.length());  // leading zero(s)
@@ -338,25 +333,48 @@ public class MainActivity extends AppCompatActivity {
                     updateRank(teamNumber);
                 }
 //           btn_Rank.setEnabled(false);         // Turn off Button
-        } catch (DataNotFoundException e) {
-            Log.e(TAG, " >>>> ERROR <<<<<  " + e);
-            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-            Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance Ranking data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
-        }
-        catch (NullPointerException npe) {
-            Log.e(TAG, " >>>> ERROR <<<<<  " + npe);
+            } catch (DataNotFoundException e) {
+                Log.e(TAG, " >>>> ERROR <<<<<  " + e);
+                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance Ranking data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }
+            catch (NullPointerException npe) {
+                Log.e(TAG, " >>>> ERROR <<<<<  " + npe);
 //            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-            Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance Ranking data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();}
+                Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance Ranking data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }
         }
     });
 
 
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+    switch_CyclicRank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+            Log.w(TAG, "*** switch_CyclicRank - setOnCheckedChangeListener *** ");
+            if (bChecked) {
+                txt_Counter.setText("ON");
+                usingCountDownTimer();
+            } else {
+                txt_Counter.setText("OFF");
+                try {
+                    Log.d(TAG, "*** Stopping Counter ***");
+                    countDownTimer.cancel();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    });
+
+
+        /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Pit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -668,251 +686,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-        btn_Spreadsheet.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.w(TAG, "  btn_Spreadsheet setOnClickListener  ");
-                Log.e(TAG, "***** Matches # = " + Pearadox.Matches_Data.size());   // Done in Event Click Listner
-//        Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2020  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***" , Toast.LENGTH_LONG);
-//        toast1.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-//        toast1.show();
-                String new_comm = "";
+    }   // end OnCreate
 
-                destFile = Pearadox.FRC_Event + "_MatchData" + ".csv";
-                try {
-                    File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
-                    bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                    bW.write(Pearadox.FRC_Event.toUpperCase() + " - " + Pearadox.FRC_EventName + "  \n");
-                    // Write Excel/Spreadsheet Header for each column
-                    bW.write("Team,Match,Carry Cube,Start Pos,_NO_ Auto Mode,Crossed Baseline?,");
-                    bW.write("Cube Switch,Switch Attempted,Switch X-Over,Extra Cube,Cube Scale,Scale Attempted,Scale Extra,Scale X-Over,Wrong Switch,Wrong Scale,");
-                    bW.write("Auto Comment,|,");
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-                    bW.write("Cube Switch,Switch Attempted,Cube Scale,Scale Attempted,Their Switch,Their Attempted,");
-                    bW.write("Exchange,Portal,Power Zone,Our Floor,Their Floor,Random Floor,P/U Cubes,Place,Launch,");
-                    bW.write("On Platform,Climb Success?,Climb Attempt?,Rung,Side,Lift-1,Lift-2,Was Lifted,Tele Comment,|,");
-
-                    bW.write("Lost Parts?,Lost Comms?,Good Def?,Lane?,Blocking?,Switch Block?,");
-                    bW.write("Num Penalties,Date-Time Saved,Final Comment,||,Scout-Last,Scout-First,|,");
-                    bW.write("Team,Rank,W-L-T,OPR,||");
-                    bW.write(",Weighted ALL,Weighted Last-3,Auto Switch ALL,Auto Switch Last-3,Auto Scale ALL,Auto Scale Last-3,Tele Switch ALL,Tele Switch Last-3,Tele Scale ALL,Tele Scale Last-3,");
-                    bW.write("Exchange,Climbs ALL,Climbs Last-3,Side Out,Side In,Middle");
-
-                    bW.write(" " + "\n");
-                    prevTeam = "";
-                    //=====================================================================
-                    for (int i = 0; i < Pearadox.Matches_Data.size(); i++) {
-                        match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
-                        if (!match_inst.getTeam_num().matches(prevTeam)) {      // Same team?
-                            if (i > 0) {
-//                        Log.w(TAG, "Prev: " + prevTeam + "  New: " + match_inst.getTeam_num() + "  Start: " + startRow + "  i=" + i);
-                                wrtHdr();
-                            } else {
-                                prevTeam = match_inst.getTeam_num();
-                            }
-                            lastRow = startRow - 1;
-                        }
-                        bW.write(match_inst.getTeam_num() + "," + match_inst.getMatch() + ",");
-                        //----- Auto -----
-//                        bW.write(match_inst.isPre_cube() + "," + match_inst.getPre_startPos() + "," + match_inst.isAuto_mode() + "," + match_inst.isAuto_baseline() + ",");
-//                        bW.write(match_inst.isAuto_cube_switch() + "," + match_inst.isAuto_cube_switch_att() + "," + match_inst.isAuto_xover_switch() + "," + match_inst.isAuto_switch_extra() + ",");
-//                        bW.write(match_inst.isAuto_cube_scale() + "," + match_inst.isAuto_cube_scale_att() + "," + match_inst.isAuto_scale_extra() + "," + match_inst.isAuto_xover_scale() + "," + match_inst.isAuto_wrong_switch() + "," + match_inst.isAuto_wrong_scale() + ",");
-//                        new_comm = StringEscapeUtils.escapeCsv(match_inst.getAuto_comment());
-                        bW.write(new_comm + "," + "|" + ",");
-                        //----- Tele -----
-//                        bW.write(match_inst.getTele_cube_switch() + "," + match_inst.getTele_switch_attempt() + "," + match_inst.getTele_cube_scale() + "," + match_inst.getTele_scale_attempt() + "," + match_inst.getTele_their_switch() + "," + match_inst.getTele_their_attempt() + ",");
-//                        bW.write(match_inst.getTele_cube_exchange() + "," + match_inst.getTele_cube_portal() + "," + match_inst.getTele_cube_pwrzone() + "," + match_inst.getTele_cube_floor() + "," + match_inst.getTele_their_floor() + "," + match_inst.getTele_random_floor() + "," + match_inst.isTele_cube_pickup() + "," + match_inst.isTele_placed_cube() + "," + match_inst.isTele_launched_cube() + ",");
-//                String y = match_inst.getTele_comment();
-                        new_comm = StringEscapeUtils.escapeCsv(match_inst.getTele_comment());
-//                        bW.write(match_inst.isTele_on_platform() + "," + match_inst.isTele_climb_success() + "," + match_inst.isTele_climb_attempt() + "," + match_inst.isTele_grab_rung() + "," + match_inst.isTele_grab_side() + "," + match_inst.isTele_lift_one() + "," + match_inst.isTele_lift_two() + "," + match_inst.isTele_got_lift() + "," + new_comm + "," + "|" + ",");
-                        //----- Final -----
-//                        bW.write(match_inst.isFinal_lostParts() + "," + match_inst.isFinal_lostComms() + "," + match_inst.isFinal_defense_good() + "," + match_inst.isFinal_def_Lane() + "," + match_inst.isFinal_def_Block() + "," + match_inst.isFinal_def_BlockSwitch() + ",");
-//                String x = match_inst.getFinal_comment();
-                        new_comm = StringEscapeUtils.escapeCsv(match_inst.getFinal_comment());
-                        bW.write(match_inst.getTele_num_Penalties() + "," + match_inst.getFinal_dateTime() + "," + new_comm + "," + "||" + "," + match_inst.getFinal_studID() + ",|,,,,,||");
-                        //-----------------
-                        bW.write(" " + "\n");
-                        lastRow = lastRow + 1;
-//                Log.w(TAG, match_inst.getTeam_num() + "  Last: " + lastRow);
-                        if (i == Pearadox.Matches_Data.size() - 1) {       // Last one?
-                            wrtHdr();
-                        }
-                    } // End For
-
-                    //=====================================================================
-                    bW.write(" " + "\n");
-                    bW.flush();
-                    bW.close();
-                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event.toUpperCase() + "' Match Data Spreadsheet written to SD card ***", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-                    btn_Spreadsheet.setEnabled(false);      // turn off button (done)
-                } catch (FileNotFoundException ex) {
-                    System.out.println(ex.getMessage() + " not found in the specified directory.");
-                    System.exit(0);
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }  // end Try/Catch
-
-            }
-        });
-    }
-
-    private void wrtHdr() {
-//        Log.w(TAG, " wrtHdr  " + prevTeam);
-        try {
-            bW.write(prevTeam + ",'***,");
-            /*  Auto */
-            String esc$E = StringEscapeUtils.escapeCsv("=(COUNTIF($E" + startRow + ":$E" + lastRow + ",TRUE))");
-            String esc$XT = StringEscapeUtils.escapeCsv("=(COUNTIF($F" + startRow + ":$F" + lastRow + ",TRUE))");
-            bW.write(",'Bool% >>," + esc$E + "/" + ((lastRow - startRow) + 1) + "," + esc$XT + "/" + ((lastRow - startRow) + 1));  // crossed ÷ #matches
-            String esc$G = StringEscapeUtils.escapeCsv("=IF((COUNTIF($H" + startRow + ":$H" + lastRow + ",TRUE))>0,COUNTIF($G" + startRow + ":$G" + lastRow + ",TRUE)/COUNTIF($H" + startRow + ":$H" + lastRow + ",TRUE),0)");
-            String esc$H = "";
-            if (lastRow - startRow >= 2) {
-                esc$H = StringEscapeUtils.escapeCsv("=IF((COUNTIF($H" + (lastRow - 2) + ":$H" + lastRow + ",TRUE))>0,COUNTIF($G" + (lastRow - 2) + ":$G" + lastRow + ",TRUE)/COUNTIF($H" + (lastRow - 2) + ":$H" + lastRow + ",TRUE),0)");
-            } else {
-                esc$H = "0";
-            }
-            String esc$I = StringEscapeUtils.escapeCsv("=(COUNTIF($I" + startRow + ":$I" + lastRow + ",TRUE))");    // Switch Cross-over
-            String esc$J = StringEscapeUtils.escapeCsv("=(COUNTIF($J" + startRow + ":$J" + lastRow + ",TRUE))");
-            String esc$K = StringEscapeUtils.escapeCsv("=(COUNTIF($K" + startRow + ":$K" + lastRow + ",TRUE))");
-            String esc$L = StringEscapeUtils.escapeCsv("=(COUNTIF($L" + startRow + ":$L" + lastRow + ",TRUE))");    // Scale Att
-            String esc$M = StringEscapeUtils.escapeCsv("=(COUNTIF($M" + startRow + ":$M" + lastRow + ",TRUE))");    // Scale Extra
-            String esc$N = StringEscapeUtils.escapeCsv("=(COUNTIF($M" + startRow + ":$M" + lastRow + ",TRUE))");
-            bW.write("," + esc$G + "," + esc$H + "," + esc$I + "/" + ((lastRow - startRow) + 1) + "," + esc$J + "/" + ((lastRow - startRow) + 1) + "," + esc$K + "," + esc$L + "," + esc$M + "," + esc$N + "/" + ((lastRow - startRow) + 1));
-            String esc$O = StringEscapeUtils.escapeCsv("=(COUNTIF($N" + startRow + ":$N" + lastRow + ",TRUE))");
-            String esc$P = StringEscapeUtils.escapeCsv("=(COUNTIF($O" + startRow + ":$O" + lastRow + ",TRUE))");
-            bW.write("," + esc$O + "/" + ((lastRow - startRow) + 1) + "," + esc$P + "/" + ((lastRow - startRow) + 1) + ",,|");
-
-            /*  Tele  */
-            String escS = StringEscapeUtils.escapeCsv("=IF(SUM($T" + startRow + ":$T" + lastRow + ")>0,SUM($S" + startRow + ":$S" + lastRow + ")/SUM($T" + startRow + ":$T" + lastRow + "),0)");
-            String escU = StringEscapeUtils.escapeCsv("=IF(SUM($V" + startRow + ":$V" + lastRow + ")>0,SUM($U" + startRow + ":$U" + lastRow + ")/SUM($V" + startRow + ":$V" + lastRow + "),0)");
-            String escW = StringEscapeUtils.escapeCsv("=IF(SUM($X" + startRow + ":$X" + lastRow + ")>0,SUM($W" + startRow + ":$W" + lastRow + ")/SUM($X" + startRow + ":$X" + lastRow + "),0)");
-            String escT = "";
-            String escV = "";
-            String escX = "";
-            if (lastRow - startRow >= 2) {
-                escT = StringEscapeUtils.escapeCsv("=IF(SUM($T" + (lastRow - 2) + ":$T" + lastRow + ")>0,SUM($S" + (lastRow - 2) + ":$S" + lastRow + ")/SUM($T" + (lastRow - 2) + ":$T" + lastRow + "),0)");
-                escV = StringEscapeUtils.escapeCsv("=IF(SUM($V" + (lastRow - 2) + ":$V" + lastRow + ")>0,SUM($U" + (lastRow - 2) + ":$U" + lastRow + ")/SUM($V" + (lastRow - 2) + ":$V" + lastRow + "),0)");
-                escX = StringEscapeUtils.escapeCsv("=IF(SUM($X" + (lastRow - 2) + ":$X" + lastRow + ")>0,SUM($W" + (lastRow - 2) + ":$W" + lastRow + ")/SUM($X" + (lastRow - 2) + ":$X" + lastRow + "),0)");
-            } else {
-                escS = "0";
-                escU = "0";
-                escW = "0";
-            }
-            //            String escL3 = StringEscapeUtils.escapeCsv("=AVERAGE(OFFSET(INDIRECT(\"J\"&ROW()),-3,0,3,1))");
-            bW.write("," + escS + "," + escT + "," + escU + "," + escV + "," + escW + "," + escX);
-            bW.write("," + "=SUM($Y" + startRow + ":$Y" + lastRow + ")/" + ((lastRow - startRow) + 1));     // Exchange
-            bW.write("," + "=SUM($Z" + startRow + ":$Z" + lastRow + ")/" + ((lastRow - startRow) + 1));     // Portal
-            bW.write("," + "=SUM($AA" + startRow + ":$AA" + lastRow + ")/" + ((lastRow - startRow) + 1));   //Pwr Cube Zone
-            bW.write("," + "=SUM($AB" + startRow + ":$AB" + lastRow + ")/" + ((lastRow - startRow) + 1));   // Our Floor
-            bW.write("," + "=SUM($AC" + startRow + ":$AC" + lastRow + ")/" + ((lastRow - startRow) + 1));   // Their Floor
-            bW.write("," + "=SUM($AD" + startRow + ":$AD" + lastRow + ")/" + ((lastRow - startRow) + 1));   // Random Floor
-            String esc$AE = StringEscapeUtils.escapeCsv("=(COUNTIF($AE" + startRow + ":$AE" + lastRow + ",TRUE))");
-            String esc$AF = StringEscapeUtils.escapeCsv("=(COUNTIF($AF" + startRow + ":$AF" + lastRow + ",TRUE))");
-            bW.write("," + esc$AE + "/" + ((lastRow - startRow) + 1) + "," + esc$AF + "/" + ((lastRow - startRow) + 1));
-            String esc$AG = StringEscapeUtils.escapeCsv("=(COUNTIF($AG" + startRow + ":$AG" + lastRow + ",TRUE))");     // On Platform
-            String esc$AH = StringEscapeUtils.escapeCsv("=(COUNTIF($AH" + startRow + ":$AH" + lastRow + ",TRUE))");     // Climb Success
-            bW.write("," + esc$AG + "/" + ((lastRow - startRow) + 1) + "," + esc$AH + "/" + ((lastRow - startRow) + 1));
-            String esc$Climb = StringEscapeUtils.escapeCsv("=IF((COUNTIF($AJ" + startRow + ":$AJ" + lastRow + ",TRUE))>0,COUNTIF($AI" + startRow + ":$AI" + lastRow + ",TRUE)/COUNTIF($AJ" + startRow + ":$AJ" + lastRow + ",TRUE),0)");
-            String escAJ = "";
-            if (lastRow - startRow >= 2) {
-                escAJ = StringEscapeUtils.escapeCsv("=IF((COUNTIF($AJ" + (lastRow - 2) + ":$AJ" + lastRow + ",TRUE))>0,COUNTIF($AH" + (lastRow - 2) + ":$AH" + lastRow + ",TRUE)/COUNTIF($AJ" + (lastRow - 2) + ":$AJ" + lastRow + ",TRUE),0)");
-            } else {
-                escAJ = "0";
-            }
-            bW.write("," + esc$Climb + "," + escAJ);
-            String esc$AK = StringEscapeUtils.escapeCsv("=(COUNTIF($AK" + startRow + ":$AK" + lastRow + ",TRUE))");     // Rung
-            String esc$AL = StringEscapeUtils.escapeCsv("=(COUNTIF($AL" + startRow + ":$AL" + lastRow + ",TRUE))");     // Side
-            bW.write("," + esc$AK + "/" + ((lastRow - startRow) + 1) + "," + esc$AL + "/" + ((lastRow - startRow) + 1));
-            String esc$AM = StringEscapeUtils.escapeCsv("=(COUNTIF($AM" + startRow + ":$AM" + lastRow + ",TRUE))");     // Lift-1
-            String esc$AN = StringEscapeUtils.escapeCsv("=(COUNTIF($AN" + startRow + ":$AN" + lastRow + ",TRUE))");     // Lift-2
-            String esc$AO = StringEscapeUtils.escapeCsv("=(COUNTIF($AO" + startRow + ":$AO" + lastRow + ",TRUE))");     // Was Lifted?
-            bW.write("," + esc$AM + "/" + ((lastRow - startRow) + 1) + "," + esc$AN + "/" + ((lastRow - startRow) + 1) + "," + esc$AO + "/" + ((lastRow - startRow) + 1) + ",,|");
-
-            /*  Final  */
-            String esc$AR = StringEscapeUtils.escapeCsv("=(COUNTIF($AR" + startRow + ":$AR" + lastRow + ",TRUE))");     // Lost Parts
-            String esc$AS = StringEscapeUtils.escapeCsv("=(COUNTIF($AS" + startRow + ":$AS" + lastRow + ",TRUE))");     // Lost Comm
-            String esc$AT = StringEscapeUtils.escapeCsv("=(COUNTIF($AT" + startRow + ":$AT" + lastRow + ",TRUE))");     // Good Defense?
-            bW.write("," + esc$AR + "/" + ((lastRow - startRow) + 1) + "," + esc$AS + "/" + ((lastRow - startRow) + 1) + "," + esc$AT + "/" + ((lastRow - startRow) + 1));
-            String esc$AU = StringEscapeUtils.escapeCsv("=(COUNTIF($AU" + startRow + ":$AU" + lastRow + ",TRUE))");     // Lane Blk
-            String esc$AV = StringEscapeUtils.escapeCsv("=(COUNTIF($AV" + startRow + ":$AV" + lastRow + ",TRUE))");     // Block
-            String esc$AW = StringEscapeUtils.escapeCsv("=(COUNTIF($AW" + startRow + ":$AW" + lastRow + ",TRUE))");     // Switch Blk
-            bW.write("," + esc$AU + "/" + ((lastRow - startRow) + 1) + "," + esc$AV + "/" + ((lastRow - startRow) + 1) + "," + esc$AW + "/" + ((lastRow - startRow) + 1));
-            bW.write(",=SUM($AX" + startRow + ":$AX" + lastRow + ")/" + ((lastRow - startRow) + 1));                          // # Penalties
-            bW.write(",,,||,,,|,");
-            gatherBA(prevTeam);
-            bW.write(tmName + "," + tmRank + ",'" + tmWLT + "," + tmOPR + ",||");
-
-            bW.write(",=($G" + (lastRow + 1) + "+($K" + (lastRow + 1) + "*2) +($S" + (lastRow + 1) + "+($U" + (lastRow + 1) + "*2) + $AH" + (lastRow + 1) + " + $AL" + (lastRow + 1) + " + ($AM" + (lastRow + 1) + "*2)" + ") / 3)");   // Weighted ALL
-            bW.write(",=($H" + (lastRow + 1) + "+($L" + (lastRow + 1) + "*2) +($T" + (lastRow + 1) + "+($V" + (lastRow + 1) + "*2) + $AI" + (lastRow + 1) + " + $AM" + (lastRow + 1) + " + ($AN" + (lastRow + 1) + "*2)" + ") / 3)");   // Weighted Last 3
-            bW.write(",=$G$" + (lastRow + 1) + ",=$H$" + (lastRow + 1) + ",");          // Auto Switch (ALL & Last 3)
-            bW.write("=$K$" + (lastRow + 1) + ",=$L$" + (lastRow + 1) + ",");           // Auto Scale (ALL & Last 3)
-            bW.write("=$S$" + (lastRow + 1) + ",=$T$" + (lastRow + 1) + ",");           // Tele Switch (ALL & Last 3)
-            bW.write("=$U$" + (lastRow + 1) + ",=$V$" + (lastRow + 1) + ",");           // Tele Switch (ALL & Last 3)
-            bW.write("=$Y$" + (lastRow + 1) + ",");                                   // Exchange
-            bW.write("=$AI$" + (lastRow + 1) + ",=$AJ$" + (lastRow + 1) + ",");         // Climbs (ALL & Last 3)
-            String escOut = StringEscapeUtils.escapeCsv("=COUNTIF($D$" + startRow + ":$D$" + (lastRow) + ",\"Side (out)\")");
-            bW.write(escOut + ",");           // Side (OUT)
-            String escIn = StringEscapeUtils.escapeCsv("=COUNTIF($D$" + startRow + ":$D$" + (lastRow) + ",\"Side (in)\")");
-            bW.write(escIn + ",");           // Side (IN)
-            String escMid = StringEscapeUtils.escapeCsv("=COUNTIF($D$" + startRow + ":$D$" + (lastRow) + ",\"Middle\")");
-            bW.write(escMid + ",");           // Middle
-            //=============================
-            bW.write(" " + "\n");   // End-of-Line
-            prevTeam = match_inst.getTeam_num();
-            startRow = (lastRow) + 2;              // Start row for new team
-//            Log.w(TAG,"  Last: " + lastRow);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void gatherBA(String teamNo) {
-        Log.w(TAG, " gatherBA  " + teamNo);
-        if (BA_Data) {
-            for (int i = 0; i < BAnumTeams; i++) {
-//                if (BAe.teams[i].team_number == Long.parseLong(teamNo.trim())) {
-//                    tmName = BAe.teams[i].nickname;
-//                    tmRank = String.valueOf(BAe.teams[i].rank);
-//                    tmWLT = BAe.teams[i].record;
-//                    tmOPR = String.format("%3.3f", ((new TBA().fillOPR(BAe, BAe.teams[i]).opr)));
-//                    Log.w(TAG, "  OPR: " + tmOPR + "  WLT " + tmWLT + "  Rank=" + tmRank + "  " + tmName);
-////                    System.out.println(tmName+" "+tmRank+" "+ tmWLT+" "+tmOPR+" "+tmKPa+" "+tmTPts + " \n");
-//                    break;      // exit For - found team
-//                }
-            } // End For
-        } else {
-            for (int x = 0; x < Pearadox.numTeams; x++) {
-                p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
-                My_inst = Pearadox.team_List.get(x);
-                if (teamNo.matches(My_inst.getTeam_num())) {
-                    tmName = My_inst.getTeam_name();
-                    break;
-                }
-            }
-            tmRank = "00";
-            tmWLT = "*-*-*";
-            tmOPR = "000";
-        }
-    }
-
-    private String removeLine(String comment) {
-        String x = "";
-//        ToDo - Carriage return
-        if (comment.contains(",")) {
-//            Log.w(TAG, " %$^&#!! COMMA  " + match_inst.getMatch() + "," + match_inst.getTeam_num() + "[" + comment + "]");
-//            int Comma = comment.indexOf(",");
-            x = comment.replaceAll(",", ";");
-//            x = comment.substring(0, Comma) +"•"+  comment.substring(Comma + 1);
-//            Log.w(TAG, "X: '" + x + "'");
-        }
-        return x;
-    }
-
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void preReqs() {
         boolean isSdPresent;
         isSdPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
@@ -1014,17 +793,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             Log.w(TAG, "** Event code '" + Pearadox.FRC_Event + "' " + Pearadox.FRC_ChampDiv + "  \n ");
-
-//            Log.w(TAG, "*** TBA Event ***");
-//            Event e = new TBA().getEvent("BAyear" + Pearadox.FRC_Event);
-            // Print general event info
-//            System.out.println(e.name);
-//            System.out.println(e.location);
-//            System.out.println(e.start_date);
-//            System.out.println("\n");
-//        txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
-//        txt_EvntDat.setText(e.start_date);                      // Event Date
-//        txt_EvntPlace.setText(e.location);                      // Event Location
 
             btn_Teams.setEnabled(true);
             btn_Match_Sched.setEnabled(true);
@@ -1135,33 +903,8 @@ public class MainActivity extends AppCompatActivity {
                     toast1.setGravity(Gravity.BOTTOM, 0, 0);
                     toast1.show();
                 } else {
-                    btn_Spreadsheet.setEnabled(false);
+//                    btn_Spreadsheet.setEnabled(false);
                 }
-                // ----------  Blue Alliance  -----------
-//                TBA t = new TBA();
-//                BAe = new TBA().getEvent("BAyear" + Pearadox.FRC_ChampDiv);
-//                if (BAe.getName() == null) {
-//                    Log.e(TAG, "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###");
-//                    BA_Data = false;
-//                    Toast toast2 = Toast.makeText(getBaseContext(), "### Data for: '" + Pearadox.FRC_ChampDiv + "' is _NOT_ available yet  ###", Toast.LENGTH_LONG);
-//                    toast2.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-//                    toast2.show();
-//                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-//                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-//                    btn_Teams.setEnabled(false);
-//                    btn_Match_Sched.setEnabled(false);
-//                    btn_Spreadsheet.setEnabled(true);       // OK for Spreadsheet
-//                    btn_Pit.setEnabled(true);               // OK for Pit
-//                    btn_Rank.setEnabled(false);
-//                } else {
-//                    BA_Data = true;
-////                    BAteams = BAe.teams.clone();
-//                    BAnumTeams = BAteams.length;
-//
-//                    btn_Teams.setEnabled(true);
-//                    btn_Match_Sched.setEnabled(true);
-//                    btn_Spreadsheet.setEnabled(true);
-//                }
             }
 
             @Override
@@ -1289,11 +1032,13 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
 
 
     public void usingCountDownTimer() {
+            countDownTimer = new CountDownTimer(Long.MAX_VALUE, 600000) {       // 10 min
 //            countDownTimer = new CountDownTimer(Long.MAX_VALUE, 300000) {       // 5 min
-            countDownTimer = new CountDownTimer(Long.MAX_VALUE, 15000) {       // 15 sec
+//            countDownTimer = new CountDownTimer(Long.MAX_VALUE, 15000) {       // 15 sec
 
             // This is called after every 10 sec interval.
             public void onTick(long millisUntilFinished) {
+                btn_Rank.performClick();    // run the Rank requests
                 txt_Counter = (TextView) findViewById(R.id.txt_Counter);
                 timeCount = new SimpleDateFormat("hh:mm:ss a").format(new Date());
                 txt_Counter.setText(timeCount);
