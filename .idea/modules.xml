@@ -6,6 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/YG20_Alliance.iml" filepath="$PROJECT_DIR$/YG20_Alliance.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/YG20_Alliance-app.iml" filepath="$PROJECT_DIR$/app/YG20_Alliance-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/github-YG20_Alliance.iml" filepath="$PROJECT_DIR$/github-YG20_Alliance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/github-YG20_Alliance-app.iml" filepath="$PROJECT_DIR$/app/github-YG20_Alliance-app.iml" />
     </modules>
   </component>
 </project>
