@@ -46,7 +46,7 @@ public class matchData implements Serializable {
     private boolean tele_conInnerClose;     // Consistent Inner Goal scored Close?
     private boolean tele_conInnerLine;      // Consistent Inner Goal scored Con Line?
     private boolean tele_conInnerFrontCP;   // Consistent Inner Goal scored in Front of CP?
-    private boolean tele_conInnerBackCP;   // Consistent Inner Goal scored in Back of CP?
+    private boolean tele_conInnerBackCP;    // Consistent Inner Goal scored in Back of CP?
     private boolean tele_CPspin;            // Control Panel Spin
     private boolean tele_CPcolor;           // Control Panel Color
 
@@ -64,9 +64,8 @@ public class matchData implements Serializable {
     // ============= Final  ================
     private boolean final_lostParts;         // Did they lose parts
     private boolean final_lostComms;         // Did they lose communication
-    private boolean final_defLast30;         // Did they play Defense in Last 30 seconds?
     private boolean final_defense_good;      // Was their overall Defense Good (bad=false)
-    private boolean final_def_Block;         // Did they use Blocking Defense
+    private boolean final_def_Block;         // Did they use Blocking Defense on SG
     private boolean final_def_TrenchInt;     // Did they block the Trench
     /*=============================================================================*/
     private String  final_comment;           // Final comment
@@ -78,7 +77,7 @@ public class matchData implements Serializable {
 //  Constructor
 
 
-    public matchData(String match, String team_num, int pre_cells_carried, String pre_startPos, int pre_PlayerSta, boolean auto_mode, boolean auto_leftSectorLine, boolean auto_Dump, boolean auto_CollectFloor, boolean auto_CollectCP, boolean auto_CollectTrench, boolean auto_CollectSGboundary, boolean auto_CollectRobot, int auto_Low, int auto_HighClose, int auto_HighLine, int auto_HighFrontCP, boolean auto_conInnerClose, boolean auto_conInnerLine, boolean auto_conInnerFrontCP, String auto_comment, boolean tele_PowerCell_floor, boolean tele_PowerCell_LoadSta, boolean tele_PowerCell_CP, boolean tele_PowerCell_Trench, boolean tele_PowerCell_Boundary, boolean tele_PowerCell_Robot, int tele_Low, int tele_HighClose, int tele_HighLine, int tele_HighFrontCP, int tele_HighBackCP, boolean tele_conInnerClose, boolean tele_conInnerLine, boolean tele_conInnerFrontCP, boolean tele_conInnerBackCP, boolean tele_CPspin, boolean tele_CPcolor, boolean tele_Climbed, boolean tele_UnderSG, boolean tele_got_lift, boolean tele_lifted, int tele_liftedNum, int tele_Hang_num, boolean tele_Balanced, int tele_num_Penalties, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defLast30, boolean final_defense_good, boolean final_def_Block, boolean final_def_TrenchInt, String final_comment, String final_studID, String final_dateTime) {
+    public matchData(String match, String team_num, int pre_cells_carried, String pre_startPos, int pre_PlayerSta, boolean auto_mode, boolean auto_leftSectorLine, boolean auto_Dump, boolean auto_CollectFloor, boolean auto_CollectCP, boolean auto_CollectTrench, boolean auto_CollectSGboundary, boolean auto_CollectRobot, int auto_Low, int auto_HighClose, int auto_HighLine, int auto_HighFrontCP, boolean auto_conInnerClose, boolean auto_conInnerLine, boolean auto_conInnerFrontCP, String auto_comment, boolean tele_PowerCell_floor, boolean tele_PowerCell_LoadSta, boolean tele_PowerCell_CP, boolean tele_PowerCell_Trench, boolean tele_PowerCell_Boundary, boolean tele_PowerCell_Robot, int tele_Low, int tele_HighClose, int tele_HighLine, int tele_HighFrontCP, int tele_HighBackCP, boolean tele_conInnerClose, boolean tele_conInnerLine, boolean tele_conInnerFrontCP, boolean tele_conInnerBackCP, boolean tele_CPspin, boolean tele_CPcolor, boolean tele_Climbed, boolean tele_UnderSG, boolean tele_got_lift, boolean tele_lifted, int tele_liftedNum, int tele_Hang_num, boolean tele_Balanced, int tele_num_Penalties, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Block, boolean final_def_TrenchInt, String final_comment, String final_studID, String final_dateTime) {
         this.match = match;
         this.team_num = team_num;
         this.pre_cells_carried = pre_cells_carried;
@@ -128,7 +127,6 @@ public class matchData implements Serializable {
         this.tele_comment = tele_comment;
         this.final_lostParts = final_lostParts;
         this.final_lostComms = final_lostComms;
-        this.final_defLast30 = final_defLast30;
         this.final_defense_good = final_defense_good;
         this.final_def_Block = final_def_Block;
         this.final_def_TrenchInt = final_def_TrenchInt;
@@ -543,14 +541,6 @@ public matchData() {
 
     public void setFinal_lostComms(boolean final_lostComms) {
         this.final_lostComms = final_lostComms;
-    }
-
-    public boolean isFinal_defLast30() {
-        return final_defLast30;
-    }
-
-    public void setFinal_defLast30(boolean final_defLast30) {
-        this.final_defLast30 = final_defLast30;
     }
 
     public boolean isFinal_defense_good() {
