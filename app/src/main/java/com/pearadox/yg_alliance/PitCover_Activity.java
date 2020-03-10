@@ -25,6 +25,7 @@ public class PitCover_Activity extends AppCompatActivity {
     String camera = "\uD83D\uDCF7";
     String thumb = "\uD83D\uDC4D";
     String pitData_pres = "";
+    String Wt = "";
     String photo_pres = "   ✔ ";
     String Stud = "";
     String DatTim = "";
@@ -79,6 +80,7 @@ public class PitCover_Activity extends AppCompatActivity {
                     if (the_pits.getPit_team().matches(tnum)) {
                         found = true;
                         pitData_pres = " ✔ ";
+                        Wt = String.format("%1$2s", the_pits.getPit_weight());
                         Stud = the_pits.getPit_scout();
                         DatTim = the_pits.getPit_dateTime();
 //                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
@@ -92,7 +94,7 @@ public class PitCover_Activity extends AppCompatActivity {
                     } // Endif
                 } //End for #pits
                 if (found) {
-                    Mesg = "Pit " + thumb + "    " + camera + photo_pres + "    " + "@ " + DatTim + "    " + "Scout: " + Stud ;
+                    Mesg = "Pit " + thumb + " " + camera + photo_pres + "  Wt=" + Wt + "  @ " + DatTim + "    " + "Scout: " + Stud ;
                 } else {
                     Mesg = "";
                 }

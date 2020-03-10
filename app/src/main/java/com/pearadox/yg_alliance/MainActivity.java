@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     matchData match_inst = new matchData();
     String destFile;
     String prevTeam = "";
-    String Ht = "";
+    String Wt = "";
     String Stud = "";
     String Result = "";
     String pitData_pres = "";
@@ -251,6 +251,11 @@ public class MainActivity extends AppCompatActivity {
                             bW.write("         \"team_loc\":\"" + (teams[i].getCity() + ", " + teams[i].getStateProv() + "  " + teams[i].getPostalCode()) + "\" " + "\n");
                             new_team.setTeam_num(tnum);
                             new_team.setTeam_name(teams[i].getNickname());
+                            if (teams[i].getNickname().length() > 36) {         // for Alliance Picks list
+                                Toast toast = Toast.makeText(getBaseContext(), "\n♦♦♦♦ '" + tnum + "' Team name is too long (" + teams[i].getNickname().length()  + ").  Update in Firebase  ♦♦♦♦\n", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                toast.show();
+                            }
                             new_team.setTeam_loc(teams[i].getCity() + ", " + teams[i].getStateProv() + "  " + teams[i].getPostalCode());
                             String keyID = String.format("%04d", teams[i].getTeamNumber());     // Make it 4 digit (only for KEY)
                             new_team.setTeam_OPR("");
@@ -374,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
-        /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Pit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -395,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < Pearadox.numTeams; i++) {
                             pitData_pres = " -  ";       // Not there
                             photo_pres = "  - ";
-                            Ht = "  ";
+                            Wt = "  ";
                             Stud = "";
                             DatTim = "";
                             My_inst = Pearadox.team_List.get(i);
@@ -409,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (the_pits.getPit_team().matches(tnum)) {
                                     pitData_pres = " ✔";
-//                                Ht = String.format("%1$2s", the_pits.getPit_tall());
+                                    Wt = String.format("%1$2s", the_pits.getPit_weight());
                                     DatTim = the_pits.getPit_dateTime();
                                     Stud = the_pits.getPit_scout();
 //                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
@@ -422,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 } // Endif
                             } //End for #pits
-                            Result = tnum + "    " + pitData_pres + "     " + photo_pres + "        " + DatTim + "   " + Stud;
+                            Result = tnum + "   " + pitData_pres + "    " + photo_pres + "  Wt=" + Wt + "  " + DatTim + "  " + Stud;
 
                             bW.write(Result + "\n");
                         } // end For # teams
@@ -1134,12 +1139,12 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
 public void onStart() {
     super.onStart();
     Log.v(TAG, ">>>>  yg_alliance onStart  <<<<");
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
         // Permission is not granted
         Log.w(TAG, "*** Not authorized for SD card ***");
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 99);
     }
     FirebaseApp.initializeApp(this);
