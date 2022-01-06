@@ -1,5 +1,5 @@
-# YG_Alliance 20
+# YG_Alliance 2022
 
 
-Pearadox Yellow-Green Alliance application for 2020
+Pearadox Yellow-Green Alliance application for 2022
 
