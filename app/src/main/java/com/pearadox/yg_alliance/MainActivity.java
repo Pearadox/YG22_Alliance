@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
             pfDatabase = FirebaseDatabase.getInstance();
             pfEvent_DBReference = pfDatabase.getReference("competitions");
             p_Firebase.eventObj new_event = new p_Firebase.eventObj();
+            Log.w(TAG, " Firebase eventObj ");
             Event[] our_events = tba.getEvents(5414, BAyear);
             Log.w(TAG, " #Events = " + our_events.length);
 
@@ -1121,10 +1122,10 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
                             tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                            Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication failed.", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(getBaseContext(), "Firebase authenticSign-In Authorizationation failed.", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
-                            Log.e(TAG, "*** Firebase SIgn-In Authorization failed *** ");
+                            Log.e(TAG, "*** Firebase Sign-In Authorization failed *** ");
                         }
                     }
                 });

@@ -68,9 +68,10 @@
         android:layout_above="@+id/spinner_Event"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="-24dp"
-        android:text="2020"
+        android:text="2022"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="2022" />
     <!--<LinearLayout-->
     <!--android:id="@+id/layout_event"-->
     <!--android:layout_width="match_parent"-->

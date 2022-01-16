@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout/activity_main.xml" value="0.10643115942028986" />
+        <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.16" />
+        <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout/list_layout.xml" value="0.11770833333333333" />
       </map>
     </option>
   </component>
@@ -56,6 +58,13 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.2" />
+      </ProjectState>
+    </option>
   </component>
   <component name="masterDetails">
     <states>
