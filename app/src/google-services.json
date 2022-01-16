@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "266035664916",
+    "project_id": "yg-alliance",
+    "storage_bucket": "yg-alliance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266035664916:android:3047a5e64f2881b9fcef01",
+        "android_client_info": {
+          "package_name": "com.pearadox.yg_alliance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266035664916-vnu56pq2os667rvd0hgq6q5nc1hs8q93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCEDfQQUutvzrXCz0l0P8ITjI5hnEbat8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266035664916-vnu56pq2os667rvd0hgq6q5nc1hs8q93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

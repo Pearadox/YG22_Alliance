@@ -12,11 +12,17 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.CalendarContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.annotation.NonNull;
+//import android.support.annotation.Nullable;
+//import android.support.v4.app.ActivityCompat;
+//import android.support.v4.content.ContextCompat;
+//import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,15 +41,22 @@ import android.widget.Toast;
 // API-V3
 import com.cpjd.main.TBA;
 import com.cpjd.main.CTBA;
-import com.cpjd.models.other.DistrictRanking;
-import com.cpjd.models.other.EventRanking;
-import com.cpjd.models.other.events.EventOPR;
-import com.cpjd.models.simple.SEvent;
-import com.cpjd.models.simple.SMatch;
-import com.cpjd.models.simple.STeam;
-import com.cpjd.models.standard.Event;
-import com.cpjd.models.standard.Match;
-import com.cpjd.models.standard.Team;
+import com.cpjd.models.districts.District;
+//import com.cpjd.models.other.DistrictRanking;
+//import com.cpjd.models.other.EventRanking;
+//import com.cpjd.models.other.events.EventOPR;
+import com.cpjd.models.events.*;
+// com.cpjd.models.simple.SEvent;
+//import com.cpjd.models.simple.SMatch;
+import com.cpjd.models.matches.SMatch;
+//import com.cpjd.models.simple.STeam;
+import com.cpjd.models.teams.STeam;
+//import com.cpjd.models.standard.Event;
+import com.cpjd.models.events.*;
+//import com.cpjd.models.standard.Match;
+import com.cpjd.models.matches.Match;
+//import com.cpjd.models.standard.Team;
+import com.cpjd.models.teams.Team;
 
 import com.cpjd.requests.EventRequest;
 import com.cpjd.utils.exceptions.DataNotFoundException;
@@ -82,6 +95,7 @@ import java.util.Iterator;
 import java.util.TimeZone;
 
 // === DEBUG  ===
+
 import static android.util.Log.i;
 
 public class MainActivity extends AppCompatActivity {
@@ -90,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     String Pearadox_Version = " ";      // initialize
     Long Pearadox_Date;
     String TBA_AuthToken = "xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg";
-    int BAyear = 2020;  // Current Yesr for B.A. calls
+    int BAyear = 2022;  // Current Yesr for B.A. calls
     Boolean FB_logon = false;           // indicator for Firebase logon success
     Spinner spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace, txt_Time, txt_Counter;
@@ -153,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
         }
-        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©2020  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©2022  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
 
@@ -232,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
                 pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
                 p_Firebase.teamsObj new_team = new p_Firebase.teamsObj();
-                Team[] teams = tba.getEventTeams("2020" + Pearadox.FRC_ChampDiv);
+                Team[] teams = tba.getEventTeams("2022" + Pearadox.FRC_ChampDiv);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
                     String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
@@ -304,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, timeStamp);
 
             try {
-                EventOPR[] opr = tba.getOprs("2020" + Pearadox.FRC_ChampDiv);
+                EventOPR[] opr = tba.getOprs("2022" + Pearadox.FRC_ChampDiv);
                 Log.w(TAG, " OPR array size = " + opr.length);
                 for (int i = 0; i < opr.length; i++) {
                     String teamKey = opr[i].getTeamKey().substring(3);
@@ -324,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             try {
-                EventRanking[] rankings = new EventRequest().getEventRankings("2020" + Pearadox.FRC_ChampDiv);
+                EventRanking[] rankings = new EventRequest().getEventRankings("2022" + Pearadox.FRC_ChampDiv);
 //            EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
                 Log.w(TAG, " Rank array size = " + rankings.length);
                 for (int i = 0; i < rankings.length; i++) {
@@ -564,7 +578,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
                 try {
-                    Match[] matchSched = tba.getMatches("2020" + Pearadox.FRC_ChampDiv);
+                    Match[] matchSched = tba.getMatches("2022" + Pearadox.FRC_ChampDiv);
     //                Match[] matchSched = tba.getMatches("2018code");          // ***DEBUG***
                     Log.w(TAG, " Matches size = " + matchSched.length);
                     pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event);   // Matches data from Firebase D/B
@@ -709,7 +723,7 @@ public class MainActivity extends AppCompatActivity {
                 }        //directory is created;
             }
             Log.w(TAG, "FRC files created");
-//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2020  *** Files initialied ***" , Toast.LENGTH_LONG);
+//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2022  *** Files initialied ***" , Toast.LENGTH_LONG);
 //        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //        toast.show();
         } else {
@@ -770,7 +784,7 @@ public class MainActivity extends AppCompatActivity {
         pfRank_DBReference = pfDatabase.getReference("rank");   // B.A. Rank Timestamp Data
         String keyID = event;
         pfRank_DBReference.child(keyID).child("event").setValue(event);
-        pfRank_DBReference.child(keyID).child("last").setValue("2020.01.01   00:00:01 AM");
+        pfRank_DBReference.child(keyID).child("last").setValue("2022.01.01   00:00:01 AM");
     }
 
 
@@ -818,9 +832,12 @@ public class MainActivity extends AppCompatActivity {
             String child = "event";
             String key = Pearadox.FRC_Event;
             Query query = pfRank_DBReference.orderByChild(child).equalTo(key);
-            query.addChildEventListener(new ChildEventListener() {
+            final ChildEventListener childEventListener = query.addChildEventListener(new ChildEventListener() {
+                private DataSnapshot dataSnapshot;
+
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    this.dataSnapshot = dataSnapshot;
                     Log.w(TAG, "%%%  ChildAdded");
                     p_Firebase.rankObj rank = dataSnapshot.getValue(p_Firebase.rankObj.class);
                     System.out.println(dataSnapshot.getValue());
@@ -832,14 +849,17 @@ public class MainActivity extends AppCompatActivity {
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     Log.w(TAG, "%%%  ChildChanged");
                 }
+
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     Log.w(TAG, "%%%  ChildRemoved");
                 }
+
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                     Log.w(TAG, "%%%  ChildMoved");
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                 }
@@ -904,7 +924,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.w(TAG, "***** Matches Loaded from Firebase. # = " + Pearadox.Matches_Data.size());
                 if (Pearadox.Matches_Data.size() > 0) {
-                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2020  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
+                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2022  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
                     toast1.setGravity(Gravity.BOTTOM, 0, 0);
                     toast1.show();
                 } else {
@@ -941,7 +961,7 @@ public class MainActivity extends AppCompatActivity {
             AboutDialog about = new AboutDialog(this);
             about.setTitle("YG_Alliance   Ver " + Pearadox_Version);
             about.show();
-//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2020  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2022  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
 //            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //            toast.show();
             return true;
@@ -1114,6 +1134,7 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
 
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 99: {
                 // If request is cancelled, the result arrays are empty.
