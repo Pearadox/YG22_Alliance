@@ -1,7 +1,6 @@
 package com.pearadox.yg_alliance;
 
 import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
@@ -11,18 +10,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.CalendarContract;
-//import android.support.annotation.NonNull;
-//import android.support.annotation.Nullable;
-//import android.support.v4.app.ActivityCompat;
-//import android.support.v4.content.ContextCompat;
-//import android.support.v7.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -38,24 +25,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// API-V3
 import com.cpjd.main.TBA;
-import com.cpjd.main.CTBA;
-import com.cpjd.models.districts.District;
-//import com.cpjd.models.other.DistrictRanking;
-//import com.cpjd.models.other.EventRanking;
-//import com.cpjd.models.other.events.EventOPR;
-import com.cpjd.models.events.*;
-// com.cpjd.models.simple.SEvent;
-//import com.cpjd.models.simple.SMatch;
-import com.cpjd.models.matches.SMatch;
-//import com.cpjd.models.simple.STeam;
-import com.cpjd.models.teams.STeam;
-//import com.cpjd.models.standard.Event;
-import com.cpjd.models.events.*;
-//import com.cpjd.models.standard.Match;
+import com.cpjd.models.events.Event;
+import com.cpjd.models.events.EventOPR;
+import com.cpjd.models.events.EventRanking;
 import com.cpjd.models.matches.Match;
-//import com.cpjd.models.standard.Team;
 import com.cpjd.models.teams.Team;
 
 import com.cpjd.requests.EventRequest;
@@ -77,8 +51,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -86,15 +58,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.TimeZone;
 
-// === DEBUG  ===
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import static android.util.Log.i;
 
@@ -1092,9 +1066,10 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
                 stringBuffer.append("\n");
             }
             fileReader.close();
-            pw = (stringBuffer.toString());
+            Log.d(TAG, "stringBuffer = " +stringBuffer.length());
+ //           pw = (stringBuffer.toString());
+            pw = "pear@5414%$";  // **DEBUG** hardcode for now
             pw = pw.substring(0,11);    //Remove CR/LF
-            Log.e(TAG, "Pearadox = '" + pw + "'");
         } catch (IOException e) {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
