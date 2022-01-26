@@ -118,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
     String tnum = "";
 
     BufferedWriter bW;
-//    String teamMumber = "";
-//    String tmName = "";
     String tmRank = "";
     String tmRScore = "";
     String tmWLT = "";
@@ -305,8 +303,14 @@ public class MainActivity extends AppCompatActivity {
                 // ToDo - add complete child to get Event code
                 txt_Time.setText(timeStamp);
                 pfRank_DBReference.child(Pearadox.FRC_ChampDiv).child("last").setValue(timeStamp);
-            } catch (NullPointerException e) {
-                Log.e(TAG, " >>>> ERROR <<<<<  " + e);
+//            } catch (NullPointerException e) {
+//                Log.e(TAG, " >>>> ERROR - NPE  <<<<<  " + e);
+//                Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance OPR data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+//                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//                toast.show();
+//            }
+            } catch (DataNotFoundException dnf) {
+                Log.e(TAG, " >>>> ERROR <<<<<  " + dnf);
                 Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance OPR data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
@@ -329,8 +333,8 @@ public class MainActivity extends AppCompatActivity {
 //           btn_Rank.setEnabled(false);         // Turn off Button
             } catch (DataNotFoundException e) {
                 Log.e(TAG, " >>>> ERROR <<<<<  " + e);
-                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+//                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
                 Toast toast = Toast.makeText(getBaseContext(), "** There is _NO_ Blue Alliance Ranking data for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
@@ -928,17 +932,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
         if (id == R.id.action_about) {
             AboutDialog about = new AboutDialog(this);
             about.setTitle("YG_Alliance   Ver " + Pearadox_Version);
             about.show();
-//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2022  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
-//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-//            toast.show();
+            return true;
+        }
+        if (id == R.id.action_ver) {
+            Toast toast = Toast.makeText(getBaseContext(), "Pearadox YG_Alliance App ©2022  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
             return true;
         }
 
@@ -1094,9 +1097,9 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
 //                        FirebaseUser user = mAuth.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                            Log.w(TAG, "signInWithEmail:failure (" + eMail + ") ", task.getException());
+//                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//                            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
                             Toast toast = Toast.makeText(getBaseContext(), "Firebase authenticSign-In Authorizationation failed." + eMail , Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
