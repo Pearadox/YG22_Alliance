@@ -27,6 +27,7 @@ public class PitCover_Activity extends AppCompatActivity {
     String thumb = "\uD83D\uDC4D";
     String pitData_pres = "";
     String Wt = "";
+    String Ht = "";
     String photo_pres = "   ✔ ";
     String Stud = "";
     String DatTim = "";
@@ -82,20 +83,22 @@ public class PitCover_Activity extends AppCompatActivity {
                         found = true;
                         pitData_pres = " ✔ ";
                         Wt = String.format("%1$2s", the_pits.getPit_weight());
+                        Ht = String.format("%1$2s", the_pits.getPit_height());
                         Stud = the_pits.getPit_scout();
-                        DatTim = the_pits.getPit_dateTime();
-//                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
+                        String LongDateTime = the_pits.getPit_dateTime();
+                        Log.w(TAG, "Long D/T = '" + LongDateTime + "'  >" + LongDateTime.length() );
+                        DatTim =  LongDateTime.substring(5,7) +"/" + LongDateTime.substring(8,11) + LongDateTime.substring(12,17) + LongDateTime.substring(LongDateTime.length()-2,LongDateTime.length()-1) ;
                         String photoStatus = the_pits.getPit_photoURL();
                         Log.w(TAG, "%%%%%%%%% Status = " + photoStatus) ;
                         if (TextUtils.isEmpty(photoStatus)) {
-                            photo_pres = "  ❌ ";
+                            photo_pres = " ❌";
                         } else {
-                            photo_pres = " ✔ ";
+                            photo_pres = " ✔";
                         }
                     } // Endif
                 } //End for #pits
                 if (found) {
-                    Mesg = "Pit " + thumb + " " + camera + photo_pres + "  Wt=" + Wt + "  @ " + DatTim + "    " + "Scout: " + Stud ;
+                    Mesg = "Pit" + thumb + " " + camera + photo_pres + "  Wt=" + Wt + "  Ht=" + Ht + "  @" + DatTim + "    " + "Scout: " + Stud ;
                 } else {
                     Mesg = "";
                 }
