@@ -8,7 +8,7 @@ android {
         applicationId "com.pearadox.yg_alliance"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 154
+        versionCode 15
         versionName "4.15"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -18,9 +18,10 @@ android {
             minifyEnabled false
             project.ext.set("archivesBaseName", "YG_Alliance-" + defaultConfig.versionName);
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
         }
     }
-}
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -45,6 +46,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
     implementation files('libs/TBA-API-V3.jar')
     annotationProcessor files('libs/TBA-API-V3.jar')
+    implementation 'com.google.firebase:firebase-crashlytics-ndk'
+    implementation 'com.google.firebase:firebase-analytics'
 //    implementation files('libs/json-simple-1.1.1.jar')
 //    implementation('com.googlecode.json-simple:json-simple:1.1.1') {
 //        exclude group: 'org.hamcrest', module: 'hamcrest-core'
