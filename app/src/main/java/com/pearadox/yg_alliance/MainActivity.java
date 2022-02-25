@@ -222,20 +222,20 @@ public class MainActivity extends AppCompatActivity {
                 Team[] teams = tba.getEventTeams("2022" + Pearadox.FRC_ChampDiv);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
-                    String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
-                    Log.w(TAG, " filename = " + destFile);
-                    try {
-                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
-                        Log.e(TAG, " path = " + prt);
-                        BufferedWriter bW;
-                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                        bW.write("[" + "\n");
+//                    String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
+//                    Log.w(TAG, " filename = " + destFile);
+//                    try {
+//                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+//                        Log.e(TAG, " path = " + prt);
+//                        BufferedWriter bW;
+//                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+//                        bW.write("[" + "\n");
                         for (int i = 0; i < teams.length; i++) {
                             String tnum = String.format("%1$4s", teams[i].getTeamNumber());
                             Log.w(TAG, " Team = " + tnum);
-                            bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
-                            bW.write("         \"team_name\":\"" + teams[i].getNickname() + "\", " + "\n");
-                            bW.write("         \"team_loc\":\"" + (teams[i].getCity() + ", " + teams[i].getStateProv() + "  " + teams[i].getPostalCode()) + "\" " + "\n");
+//                            bW.write("    {    \"team_num\":\"" + tnum + "\", " + "\n");
+//                            bW.write("         \"team_name\":\"" + teams[i].getNickname() + "\", " + "\n");
+//                            bW.write("         \"team_loc\":\"" + (teams[i].getCity() + ", " + teams[i].getStateProv() + "  " + teams[i].getPostalCode()) + "\" " + "\n");
                             new_team.setTeam_num(tnum);
                             new_team.setTeam_name(teams[i].getNickname());
                             if (teams[i].getNickname().length() > 36) {         // for Alliance Picks list
@@ -251,30 +251,30 @@ public class MainActivity extends AppCompatActivity {
                             new_team.setTeam_WLT("");
                             pfTeam_DBReference.child(keyID).setValue(new_team);  // Add to firebase
 
-                            if (i == teams.length - 1) {       // Last one?
-                                bW.write("    } " + "\n");
-                            } else {
-                                bW.write("    }," + "\n");
-                            }
+//                            if (i == teams.length - 1) {       // Last one?
+//                                bW.write("    } " + "\n");
+//                            } else {
+//                                bW.write("    }," + "\n");
+//                            }
                         } // end For # teams
                         //=====================================================================
 
-                        bW.write("]" + "\n");
-                        bW.write(" " + "\n");
-                        bW.flush();
-                        bW.close();
-                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to Firebase & SD card ***", Toast.LENGTH_LONG);
+//                        bW.write("]" + "\n");
+//                        bW.write(" " + "\n");
+//                        bW.flush();
+//                        bW.close();
+                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Teams file (" + teams.length + " teams) written to Firebase ***", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
-                    } catch (FileNotFoundException ex) {
-                        System.out.println(ex.getMessage() + " not found in the specified directory.");
-                        System.exit(0);
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }
+//                    } catch (FileNotFoundException ex) {
+//                        System.out.println(ex.getMessage() + " not found in the specified directory.");
+//                        System.exit(0);
+//                    } catch (IOException e) {
+//                        System.out.println(e.getMessage());
+//                    }
                 } else {
-                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+//                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
                     Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
@@ -380,71 +380,72 @@ public class MainActivity extends AppCompatActivity {
                 pitData the_pits = new pitData();
                 p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
                 Log.w(TAG, " Team array size = " + Pearadox.numTeams);
-                if (Pearadox.numTeams > 0) {
-                    String destFile = Pearadox.FRC_ChampDiv + "_PitData" + ".txt";
-                    Log.w(TAG, " filename = " + destFile);
-                    try {
-                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
-                        Log.e(TAG, " path = " + prt);
-                        BufferedWriter bW;
-                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
-                        bW.write("TEAM" + "  " + "PIT  PHOTO  _____Date/Time_____       SCOUT" + "\n");
-
-                        for (int i = 0; i < Pearadox.numTeams; i++) {
-                            pitData_pres = " -  ";       // Not there
-                            photo_pres = "  - ";
-                            Wt = "  ";
-                            Stud = "";
-                            DatTim = "";
-                            My_inst = Pearadox.team_List.get(i);
-                            tnum = My_inst.getTeam_num();
-//                        Log.w(TAG, " Team# = '" + tnum + "'  Pit=" + num_Pits) ;
-
-                            // Find Pit Data (if there)
-                            for (int x = 0; x < Pearadox.num_Pits; x++) {
-                                the_pits = Pearadox.Pit_Data.get(x);
-//                            Log.w(TAG, " Team# = '" + tnum + "'  and '" + the_pits.getPit_team() + "'") ;
-
-                                if (the_pits.getPit_team().matches(tnum)) {
-                                    pitData_pres = " ✔";
-                                    Wt = String.format("%1$2s", the_pits.getPit_weight());
-                                    DatTim = the_pits.getPit_dateTime();
-                                    Stud = the_pits.getPit_scout();
-//                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
-                                    String photoStatus = the_pits.getPit_photoURL();
-                                    Log.w(TAG, "%%%%%%%%% Status = " + photoStatus);
-                                    if (TextUtils.isEmpty(photoStatus)) {
-                                        photo_pres = "❌";
-                                    } else {
-                                        photo_pres = " ✔";
-                                    }
-                                } // Endif
-                            } //End for #pits
-                            Result = tnum + "   " + pitData_pres + "    " + photo_pres + "  Wt=" + Wt + "  " + DatTim + "  " + Stud;
-
-                            bW.write(Result + "\n");
-                        } // end For # teams
-                        //=====================================================================
-
-                        bW.write(" " + "\n");
-                        bW.flush();
-                        bW.close();
-                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Pit Data Coverage file (" + Pearadox.numTeams + " teams) written to SD card ***", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.show();
-                    } catch (FileNotFoundException ex) {
-                        System.out.println(ex.getMessage() + " not found in the specified directory.");
-                        System.exit(0);
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }
-                } else {
-                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                    Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-                }
+// #######################  Don't Write file to SD card  #############################
+//                if (Pearadox.numTeams > 0) {
+//                    String destFile = Pearadox.FRC_ChampDiv + "_PitData" + ".txt";
+//                    Log.w(TAG, " filename = " + destFile);
+//                    try {
+//                        File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+//                        Log.e(TAG, " path = " + prt);
+//                        BufferedWriter bW;
+//                        bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+//                        bW.write("TEAM" + "  " + "PIT  PHOTO  _____Date/Time_____       SCOUT" + "\n");
+//
+//                        for (int i = 0; i < Pearadox.numTeams; i++) {
+//                            pitData_pres = " -  ";       // Not there
+//                            photo_pres = "  - ";
+//                            Wt = "  ";
+//                            Stud = "";
+//                            DatTim = "";
+//                            My_inst = Pearadox.team_List.get(i);
+//                            tnum = My_inst.getTeam_num();
+////                        Log.w(TAG, " Team# = '" + tnum + "'  Pit=" + num_Pits) ;
+//
+//                            // Find Pit Data (if there)
+//                            for (int x = 0; x < Pearadox.num_Pits; x++) {
+//                                the_pits = Pearadox.Pit_Data.get(x);
+////                            Log.w(TAG, " Team# = '" + tnum + "'  and '" + the_pits.getPit_team() + "'") ;
+//
+//                                if (the_pits.getPit_team().matches(tnum)) {
+//                                    pitData_pres = " ✔";
+//                                    Wt = String.format("%1$2s", the_pits.getPit_weight());
+//                                    DatTim = the_pits.getPit_dateTime();
+//                                    Stud = the_pits.getPit_scout();
+////                                Log.w(TAG, "Ht=" + Ht + "  Scout=" + Stud);
+//                                    String photoStatus = the_pits.getPit_photoURL();
+//                                    Log.w(TAG, "%%%%%%%%% Status = " + photoStatus);
+//                                    if (TextUtils.isEmpty(photoStatus)) {
+//                                        photo_pres = "❌";
+//                                    } else {
+//                                        photo_pres = " ✔";
+//                                    }
+//                                } // Endif
+//                            } //End for #pits
+//                            Result = tnum + "   " + pitData_pres + "    " + photo_pres + "  Wt=" + Wt + "  " + DatTim + "  " + Stud;
+//
+//                            bW.write(Result + "\n");
+//                        } // end For # teams
+//                        //=====================================================================
+//
+//                        bW.write(" " + "\n");
+//                        bW.flush();
+//                        bW.close();
+//                        Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Pit Data Coverage file (" + Pearadox.numTeams + " teams) written to SD card ***", Toast.LENGTH_LONG);
+//                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//                        toast.show();
+//                    } catch (FileNotFoundException ex) {
+//                        System.out.println(ex.getMessage() + " not found in the specified directory.");
+//                        System.exit(0);
+//                    } catch (IOException e) {
+//                        System.out.println(e.getMessage());
+//                    }
+//                } else {
+////                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+////                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+//                    Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
+//                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//                    toast.show();
+//                }
                 btn_Pit.setEnabled(false);         // Turn off Button
 
                 Intent pit_intent = new Intent(MainActivity.this, PitCover_Activity.class);
@@ -456,7 +457,7 @@ public class MainActivity extends AppCompatActivity {
         /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_PitScout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            Log.w(TAG, "  btn_Pit setOnClickListener  " + Pearadox.FRC_ChampDiv);
+            Log.w(TAG, "  btn_PitScout setOnClickListener  " + Pearadox.FRC_ChampDiv);
                 p_Firebase.teamsObj My_inst = new p_Firebase.teamsObj();
                 String tnumB1=""; String tnumB2=""; String tnumB3=""; String tnumR1=""; String tnumR2=""; String tnumR3="";
                 String tnamB1=""; String tnamB2=""; String tnamB3=""; String tnamR1=""; String tnamR2=""; String tnamR3="";
@@ -531,7 +532,7 @@ public class MainActivity extends AppCompatActivity {
                     bW.write(" " + "\n");
                     bW.flush();
                     bW.close();
-                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Pit Data Assignment file (" + Pearadox.numTeams + " teams) written to SD card ***", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Pit Data Assignment CSV file (" + Pearadox.numTeams + " teams) written to SD card ***", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 } catch (FileNotFoundException ex) {
@@ -541,8 +542,8 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(e.getMessage());
                 }
             } else {
-                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+//                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
                 Toast toast = Toast.makeText(getBaseContext(), "** There are _NO_ teams for '" + Pearadox.FRC_ChampDiv + "' **", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
@@ -869,8 +870,8 @@ public class MainActivity extends AppCompatActivity {
                     Pearadox.numTeams++;
                 }
                 if (Pearadox.numTeams == 0) {
-                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+//                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
                     Toast toast = Toast.makeText(getBaseContext(), "*** There are _NO_ teams loaded for '" + Pearadox.FRC_Event + "' ***", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
@@ -1071,15 +1072,14 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
             fileReader.close();
             Log.d(TAG, "stringBuffer = " +stringBuffer.length());
  //           pw = (stringBuffer.toString());
-            pw = "pear@5414%$";  // **DEBUG** hardcode for now
             pw = pw.substring(0,11);    //Remove CR/LF
+            pw = "pear@5414%$";  // **DEBUG** hardcode for now
         } catch (IOException e) {
-            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
-            Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication - Password required", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
-            e.printStackTrace();
+//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
+//            Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication - Password required", Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
             Log.e(TAG, "*** Firebase Authorization failed - No Password supplied *** ");
 
         }
@@ -1097,12 +1097,12 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
 //                        FirebaseUser user = mAuth.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure (" + eMail + ") ", task.getException());
+                            Log.e(TAG, "signInWithEmail:failure (" + eMail + ") ", task.getException());
 //                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
 //                            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                            Toast toast = Toast.makeText(getBaseContext(), "Firebase authenticSign-In Authorizationation failed." + eMail , Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                            toast.show();
+//                            Toast toast = Toast.makeText(getBaseContext(), "Firebase authenticSign-In Authorizationation failed for:  " + eMail , Toast.LENGTH_LONG);
+//                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//                            toast.show();
                             Log.e(TAG, "*** Firebase Sign-In Authorization failed *** ");
                         }
                     }
@@ -1163,8 +1163,8 @@ public void onStart() {
         super.onPause();
         Log.v(TAG, "onPause");
         try {
-            Log.d(TAG, "*** Stopping Counter ***");
-            countDownTimer.cancel();
+//            Log.d(TAG, "*** Stopping Counter ***");
+//            countDownTimer.cancel();
         } catch (Exception e) {
             e.printStackTrace();
         }
