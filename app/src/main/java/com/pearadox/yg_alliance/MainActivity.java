@@ -1071,8 +1071,8 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
             }
             fileReader.close();
             Log.d(TAG, "stringBuffer = " +stringBuffer.length());
- //           pw = (stringBuffer.toString());
-            pw = pw.substring(0,11);    //Remove CR/LF
+//           pw = (stringBuffer.toString());
+//           pw = pw.substring(0,11);    //Remove CR/LF
             pw = "pear@5414%$";  // **DEBUG** hardcode for now
         } catch (IOException e) {
 //            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);

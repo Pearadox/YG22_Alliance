@@ -46,13 +46,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
     implementation files('libs/TBA-API-V3.jar')
     annotationProcessor files('libs/TBA-API-V3.jar')
-    implementation 'com.google.firebase:firebase-crashlytics-ndk'
-    implementation 'com.google.firebase:firebase-analytics'
 //    implementation files('libs/json-simple-1.1.1.jar')
 //    implementation('com.googlecode.json-simple:json-simple:1.1.1') {
 //        exclude group: 'org.hamcrest', module: 'hamcrest-core'
 //    }
 
     apply plugin: 'com.google.gms.google-services'
-    apply plugin: 'com.google.firebase.crashlytics'
 }
