@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/VisMatch_Activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="11dp"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="11dp"
+    tools:context="com.pearadox.yg_alliance.VisMatch_Activity"
+    tools:ignore="MissingDefaultResource">
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_team"
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Team"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/lbl_Matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-10dp"
+        android:layout_toEndOf="@+id/txt_final_LostComm"
+        android:layout_weight="1"
+        android:text="# Matches"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txt_team"
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_toEndOf="@+id/lbl_team"
+        android:text="1234"
+        android:textColor="@color/orange" />
+
+    <TextView
+        android:id="@+id/txt_teamName"
+        android:layout_width="240sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/txt_team"
+        android:text="Very Long Team Name goes here"
+        android:textColor="@color/orange" />
+
+    <TextView
+        android:id="@+id/txt_NumMatches"
+        android:layout_width="30sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        android:layout_marginStart="6dp"
+        android:layout_toEndOf="@+id/lbl_Matches"
+        android:text="00"
+        android:textColor="@color/orange" />
+
+    <TextView
+        android:id="@+id/txt_Matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_team"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="-2dp"
+        android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 Q011 Q012 Q013 Q014 Q015 Q016"
+        android:textColor="@color/orange"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+
+    <Spinner
+        android:id="@+id/spinner_numMatches"
+        android:layout_width="90sp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/lbl_team"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="top"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/lbl_Autonomous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_team"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:includeFontPadding="true"
+        android:text="______________________________Autonomous_____________________________"
+        android:textColor="@color/red" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/lin_SsStart"
+        android:layout_width="match_parent"
+        android:layout_height="20sp"
+        android:layout_below="@+id/lbl_Autonomous"
+        android:layout_marginTop="5sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_leftTarmac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left Tarmac"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_auto_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/red"
+            tools:text="00" />
+
+        <TextView
+            android:id="@+id/lbl_NoAuton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="No Auton Activity"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_noAuton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/red"
+            tools:text="00" />
+
+        <TextView
+            android:id="@+id/lbl_StartPos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:text="____Start Position____"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/lbl_DriverStation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:text="_Player Station_"
+            android:textColor="@color/white" />
+    </LinearLayout>
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+    // ==============================================================================
+
+    <ImageView
+        android:id="@+id/img_Cargo"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/lin_SsStart"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp"
+        android:contentDescription="Cargo"
+        android:src="@drawable/cargo" />
+
+    <LinearLayout
+        android:id="@+id/lbl_Line2"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@+id/lin_SsStart"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="4sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_Load"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="0dp"
+            android:text="Load:"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_StartingBalls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/red"
+            tools:text="⁰00  ¹00" />
+
+        <TextView
+            android:id="@+id/lbl_Start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="0dp"
+            android:text="  1   2   3    4   5   6   NS"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/lbl_Pos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="0dp"
+            android:text="1    2    3"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    // ==============================================================================
+    //
+
+    <LinearLayout
+        android:id="@+id/lbl_Scores"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_below="@+id/lbl_Line2"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="1sp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_StartPositions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="184dp"
+            android:layout_marginTop="-5dp"
+            android:text="11  22   33   44   55  66  NS"
+            android:textColor="@color/red" />
+
+        <TextView
+            android:id="@+id/txt_Pos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="-5dp"
+            android:text="11  22  33"
+            android:textColor="@color/red" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lbl_Line3"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@+id/lbl_Scores"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_Human"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="Human"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/txt_Auto_Human"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/red"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/txt_Auto_CargoScored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/red"
+            tools:text="⚪00 U00" />
+
+        <TextView
+            android:id="@+id/txt_Auto_CargoMissed"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/red"
+            tools:text="⚪L00 U00" />
+
+        <TextView
+            android:id="@+id/lbl_Auto_LowerPercnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="0dp"
+            android:text="Lower%"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/txt_Auto_LowerPercnt"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/red"
+            tools:text=".000" />
+        <TextView
+            android:id="@+id/lbl_Auto_UpperPercnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="0dp"
+            android:text="Upper%"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/txt_Auto_UpperPercnt"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/red"
+            tools:text=".000" />
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/lin_PickUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_Line3"
+        android:layout_marginTop="1sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_Pickup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="00dp"
+            android:text="P/U From:"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/lbl_AutonFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="⚪F="
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_AutonFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0"
+            android:textColor="@color/red" />
+
+        <TextView
+            android:id="@+id/lbl_AutonTerminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="T="
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_AutonTerminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0"
+            android:textColor="@color/red" />
+
+        <TextView
+            android:id="@+id/lbl_auton_acq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Acquired ⚪"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/txt_AutonAcquired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0"
+            android:textColor="@color/red" />
+
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/lin_ExtraValues"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lin_PickUp"
+        android:layout_marginTop="1sp"
+        android:orientation="horizontal">
+
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/lin_autonLegend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lin_ExtraValues"
+        android:layout_marginTop="0sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_Lower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="█ = Lower"
+            android:textColor="@color/red"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/lbl_Upper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="█ = Upper"
+            android:textColor="@color/brightblue"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_autonGraph"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/lin_autonLegend"
+        android:orientation="horizontal">
+
+        <org.eazegraph.lib.charts.StackedBarChart
+            android:id="@+id/autonBarChart"
+            android:layout_width="500dp"
+            android:layout_height="120dp"
+            android:padding="2dp"
+            app:egBarTextSize="10sp"
+            app:egBarWidth="5dp"
+            app:egEnableScroll="true"
+            app:egFixedBarWidth="false"
+            app:egLegendHeight="36dp"
+            app:egLegendTextSize="9sp"
+            app:egLegendColor="@color/white"
+            app:egShowDecimal="false"
+            app:egShowValues="true" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_AutoComments"
+        android:layout_width="500dp"
+        android:layout_height="45dp"
+        android:layout_below="@id/lin_autonGraph"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="4"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/red"
+        android:textSize="12dp" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_Tele"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_AutoComments"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="4dp"
+        android:text="________________________________TeleOps______________________________"
+        android:textColor="@color/yellow" />
+    // =============================================================================
+
+
+    <LinearLayout
+
+        android:id="@+id/lin_TeleLine1"
+        android:layout_width="match_parent"
+        android:layout_height="30sp"
+        android:layout_below="@+id/lbl_Tele"
+        android:layout_marginTop="4sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_Tele_Cargo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="Switch"
+            android:src="@drawable/cargo" />
+
+        <TextView
+            android:id="@+id/txt_Tele_CargoScored"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/yellow"
+            tools:text="⚪L00  U00 " />
+
+        <TextView
+            android:id="@+id/txt_Tele_CargoMissed"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/yellow"
+            tools:text="⊗L00  U00 " />
+
+        <TextView
+            android:id="@+id/lbl_Tele_LowerPercnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="0dp"
+            android:text="Lower%"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/txt_Tele_LowerPercnt"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/yellow"
+            tools:text=".000" />
+        <TextView
+            android:id="@+id/lbl_Tele_UpperPercnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="0dp"
+            android:text="Upper%"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/txt_Tele_UpperPercnt"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/yellow"
+            tools:text=".000" />
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/lin_TeleLine2"
+        android:layout_width="match_parent"
+        android:layout_height="24sp"
+        android:layout_below="@+id/lin_TeleLine1"
+        android:layout_marginTop="4sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_TeleFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="00dp"
+            android:text="P/U⚪ F="
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_TeleFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_TeleTerminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="T="
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_TeleTerminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_Tele_acq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Acquired ⚪"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_TeleAcquired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+
+    </LinearLayout>
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    // ==============================================================================
+
+    <TextView
+        android:id="@+id/txt_TeleComments"
+        android:layout_width="500dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/lin_Graph2"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="3"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/yellow"
+        android:textSize="12dp" />
+
+    //________________________________________________________
+
+    <LinearLayout
+        android:id="@+id/lin_Climb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lin_TeleLine2"
+        android:layout_marginTop="4sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_TeleClimb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:text="Climb="
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_TeleClimb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/yellow"
+            tools:text=" 00 " />
+
+        <TextView
+            android:id="@+id/lbl_Hang_End"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="End Hang"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_HangLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="⁰00 ¹00 ²00 ³00 ⁴00"
+            android:textColor="@color/yellow" />
+
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/lin_Graph2"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/lin_Climb"
+        android:orientation="horizontal">
+
+        <org.eazegraph.lib.charts.StackedBarChart
+            android:id="@+id/teleBarChart"
+            android:layout_width="500dp"
+            android:layout_height="120dp"
+            android:padding="2dp"
+            app:egBarTextSize="10sp"
+            app:egBarWidth="5dp"
+            app:egEnableScroll="true"
+            app:egFixedBarWidth="false"
+            app:egLegendHeight="36dp"
+            app:egLegendTextSize="9sp"
+            app:egLegendColor="@color/white"
+            app:egShowDecimal="false"
+            app:egShowValues="true" />
+
+
+    </LinearLayout>
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_Final"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_TeleComments"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:text="_________________________________Final________________________________"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:id="@+id/lbl_final_LostComm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lbl_final_NumPen"
+        android:layout_alignEnd="@+id/txt_teamName"
+        android:layout_marginEnd="12dp"
+        android:text="Lost Comms"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txt_final_LostComm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lbl_final_LostComm"
+        android:layout_alignBottom="@+id/lbl_final_LostComm"
+        android:layout_marginStart="22dp"
+        android:layout_toEndOf="@+id/lbl_final_LostComm"
+        android:text="0"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:id="@+id/lbl_final_LostParts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_Final"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"
+        android:text="Lost Parts"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txt_final_LostParts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lbl_final_LostComm"
+        android:layout_alignStart="@+id/txt_final_Defenses"
+        android:layout_alignBottom="@+id/lbl_final_LostComm"
+        android:text="0"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:id="@+id/lbl_final_NumPen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_final_LostParts"
+        android:layout_marginTop="2dp"
+        android:text="# Penalties"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txt_final_NumPen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lbl_final_NumPen"
+        android:layout_alignStart="@+id/txt_final_Defenses"
+        android:layout_alignBottom="@+id/lbl_final_NumPen"
+        android:text="9"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:id="@+id/lbl_final_Tipped"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lbl_final_DefGood"
+        android:layout_alignStart="@+id/lbl_final_LostComm"
+        android:layout_marginEnd="12dp"
+        android:text="Tipped"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txt_final_Tipped"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lbl_final_Tipped"
+        android:layout_alignBottom="@+id/lbl_final_Tipped"
+        android:layout_alignStart="@+id/txt_final_LostComm"
+        android:layout_marginStart="0dp"
+        android:text="0"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:id="@+id/lbl_final_DefGood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_final_NumPen"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="2dp"
+        android:text="Defenses"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txt_final_Defenses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_final_NumPen"
+        android:layout_marginStart="120dp"
+        android:text="5"
+        android:textColor="@color/green" />
+
+
+    //=============================================================
+
+    <TextView
+        android:id="@+id/txt_FinalComments"
+        android:layout_width="500dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/lbl_final_DefGood"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="5"
+        android:scrollbars="vertical"
+        android:text="Comments \n Line 2\n Line 3\n Line 4\n Line 5"
+        android:textColor="@color/green"
+        android:textSize="12dp" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+</RelativeLayout>
+<!-- GLF This is for committing!-->

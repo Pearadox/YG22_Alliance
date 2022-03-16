@@ -8,8 +8,8 @@ android {
         applicationId "com.pearadox.yg_alliance"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 15
-        versionName "4.15"
+        versionCode 16
+        versionName "4.16"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -46,6 +46,12 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
     implementation files('libs/TBA-API-V3.jar')
     annotationProcessor files('libs/TBA-API-V3.jar')
+    implementation 'com.firebaseui:firebase-ui-storage:0.6.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    implementation 'com.github.blackfizz:eazegraph:1.2.2@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
+
 //    implementation files('libs/json-simple-1.1.1.jar')
 //    implementation('com.googlecode.json-simple:json-simple:1.1.1') {
 //        exclude group: 'org.hamcrest', module: 'hamcrest-core'

@@ -2,22 +2,27 @@ package com.pearadox.yg_alliance;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
+
 public class p_Firebase {
+    private static final long serialVersionUID = -54145414541400L;
 
     @IgnoreExtraProperties
 
-    public static class eventObj {
-        private String comp_code;
-        private String comp_name;
-        private String comp_div;
-        private String comp_date;
-        private String comp_city;
-        private String comp_place;
+    public static class eventObj implements Serializable {
+        public String comp_code;
+        public String comp_name;
+        public String comp_div;
+        public String comp_date;
+        public String comp_city;
+        public String comp_place;
 
         // Default constructor required for calls to
         // DataSnapshot.getValue(eventObj.class)
         public eventObj() {
         }
+
+        //  Constructor
 
         public eventObj(String comp_code, String comp_name, String comp_div, String comp_date, String comp_city, String comp_place) {
             this.comp_code = comp_code;
@@ -28,6 +33,11 @@ public class p_Firebase {
             this.comp_place = comp_place;
         }
 
+        // Getters & Setters
+        public static long getSerialVersionUID() {
+            return serialVersionUID;
+        }
+
         public String getComp_code() {
             return comp_code;
         }
@@ -36,60 +46,63 @@ public class p_Firebase {
             this.comp_code = comp_code;
         }
 
-        public String getcomp_name() {
+        public String getComp_name() {
             return comp_name;
         }
 
-        public void setcomp_name(String comp_name) {
+        public void setComp_name(String comp_name) {
             this.comp_name = comp_name;
         }
 
-        public String getcomp_div() {
+        public String getComp_div() {
             return comp_div;
         }
 
-        public void setcomp_div(String comp_div) {
+        public void setComp_div(String comp_div) {
             this.comp_div = comp_div;
         }
 
-        public String getcomp_date() {
+        public String getComp_date() {
             return comp_date;
         }
 
-        public void setcomp_date(String comp_date) {
+        public void setComp_date(String comp_date) {
             this.comp_date = comp_date;
         }
 
-        public String getcomp_city() {
+        public String getComp_city() {
             return comp_city;
         }
 
-        public void setcomp_city(String comp_city) {
+        public void setComp_city(String comp_city) {
             this.comp_city = comp_city;
         }
 
-        public String getcomp_place() {
+        public String getComp_place() {
             return comp_place;
         }
 
-        public void setcomp_place(String comp_place) {
+        public void setComp_place(String comp_place) {
             this.comp_place = comp_place;
         }
     }
 
 // ==========================================================
 // ==========================================================
-    public static class teamsObj {
-    private String team_num;
-    private String team_name;
-    private String team_loc;
-    private String team_OPR;
-    private String team_rank;
-    private String team_rScore;
-    private String team_WLT;
+    public static class teamsObj implements Serializable {
+    public String team_num;
+    public String team_name;
+    public String team_loc;
+    public String team_OPR;
+    public String team_rank;
+    public String team_rScore;
+    public String team_WLT;
 
+    // Default constructor
     public teamsObj() {
     }
+
+    //  Constructor
 
     public teamsObj(String team_num, String team_name, String team_loc, String team_OPR, String team_rank, String team_rScore, String team_WLT) {
         this.team_num = team_num;
@@ -99,6 +112,11 @@ public class p_Firebase {
         this.team_rank = team_rank;
         this.team_rScore = team_rScore;
         this.team_WLT = team_WLT;
+    }
+
+    // Getters & Setters
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public String getTeam_num() {
@@ -157,34 +175,37 @@ public class p_Firebase {
         this.team_WLT = team_WLT;
     }
 }
-
+    // ==========================================================
 // ==========================================================
-// ==========================================================
-    public static class devicesObj {
-        private String dev_name;
-        private String dev_desc;
-        private String dev_id;
-        private String stud_id;
-        private String phase;
-        private String batt_stat;
-        private String btUUID;
+    public static class devicesObj implements Serializable {
+        public String dev_name;
+        public String dev_desc;
+        public String dev_id;
+        public String stud_id;
+        public String phase;
+        public String batt_stat;
+        public String btUUID;
 
         public devicesObj() {
         }
 
-    public devicesObj(String dev_name, String dev_desc, String dev_id, String stud_id, String phase, String batt_stat, String btUUID) {
-        this.dev_name = dev_name;
-        this.dev_desc = dev_desc;
-        this.dev_id = dev_id;
-        this.stud_id = stud_id;
-        this.phase = phase;
-        this.batt_stat = batt_stat;
-        this.btUUID = btUUID;
-    }
-
-    public String getDev_name() {
-            return dev_name;
+        public devicesObj(String dev_name, String dev_desc, String dev_id, String stud_id, String phase, String batt_stat, String btUUID) {
+            this.dev_name = dev_name;
+            this.dev_desc = dev_desc;
+            this.dev_id = dev_id;
+            this.stud_id = stud_id;
+            this.phase = phase;
+            this.batt_stat = batt_stat;
+            this.btUUID = btUUID;
         }
+
+        public static long getSerialVersionUID() {
+            return serialVersionUID;
+        }
+
+        public String getDev_name() {
+                return dev_name;
+            }
 
         public void setDev_name(String dev_name) {
             this.dev_name = dev_name;
@@ -229,62 +250,72 @@ public class p_Firebase {
         public void setBtUUID(String btUUID) {
             this.btUUID = btUUID;
         }
+
         public String getBatt_stat() {
             return batt_stat;
         }
+
         public void setBatt_stat(String batt_stat) {
             this.batt_stat = batt_stat;
         }
     }
 
-    // ==========================================================
 // ==========================================================
-    public static class students {
-        private String name;
-        private String status;
+// ==========================================================
+    public static class students implements Serializable {
+        public String name;
+        public String status;
 
+        // Default constructor required for calls to
+        // DataSnapshot.getValue(students.class)
         public students() {
         }
 
+        //  Constructor
         public students(String name, String status) {
             this.name = name;
             this.status = status;
+        }
+
+        // Getters & Setters
+        public static long getSerialVersionUID() {
+            return serialVersionUID;
         }
 
         public String getName() {
             return name;
         }
 
+        public void setName(String name) {
+            this.name = name;
+        }
+
         public String getStatus() {
             return status;
         }
 
-        public void setName(String sName) {
-            this.name = sName;
-        }
-
-        public void setStatus(String Stat) {
-            this.status = Stat;
+        public void setStatus(String status) {
+            this.status = status;
         }
     }
 
 // ==========================================================
 // ==========================================================
 
-    public static class matchObj {
-        private String date;
-        private String time;
-        private String mtype;
-        private String match;
-        private String r1;
-        private String r2;
-        private String r3;
-        private String b1;
-        private String b2;
-        private String b3;
+    public static class matchObj implements Serializable {
+        public String date;
+        public String time;
+        public String mtype;
+        public String match;
+        public String r1;
+        public String r2;
+        public String r3;
+        public String b1;
+        public String b2;
+        public String b3;
 
         // Default constructor required for calls to
-        // DataSnapshot.getValue(teams.class)
+        // DataSnapshot.getValue(matchObj.class)
         public matchObj() {
         }
 
@@ -299,6 +330,10 @@ public class p_Firebase {
             this.b1 = r1;
             this.b2 = b2;
             this.b3 = b3;
+        }
+
+        public static long getSerialVersionUID() {
+            return serialVersionUID;
         }
 
         public String getDate() {
@@ -383,17 +418,17 @@ public class p_Firebase {
 
     }
 
-    // ==========================================================
 // ==========================================================
-    public static class curMatch {
-        private String cur_match;
-        private String r1;
-        private String r2;
-        private String r3;
-        private String b1;
-        private String b2;
-        private String b3;
-        private String our_matches;
+// ==========================================================
+    public static class curMatch implements Serializable {
+        public String cur_match;
+        public String r1;
+        public String r2;
+        public String r3;
+        public String b1;
+        public String b2;
+        public String b3;
+        public String our_matches;
 
         public curMatch() {
         }
@@ -409,9 +444,13 @@ public class p_Firebase {
             this.our_matches = our_matches;
         }
 
-        public String getCur_match() {
-            return cur_match;
+        public static long getSerialVersionUID() {
+            return serialVersionUID;
         }
+
+        public String getCur_match() {
+                return cur_match;
+            }
 
         public void setCur_match(String cur_match) {
             this.cur_match = cur_match;
@@ -476,35 +515,36 @@ public class p_Firebase {
 
 // ==========================================================
 // ==========================================================
-public static class rankObj {
-    private String event;
-    private String last;
+    public static class rankObj {
+        private String event;
+        private String last;
 
-    public rankObj() {
-    }
+        public rankObj() {
+        }
 
-    public rankObj(String event, String last) {
-        this.event = event;
-        this.last = last;
-    }
+        public rankObj(String event, String last) {
+            this.event = event;
+            this.last = last;
+        }
 
-    public String getEvent() {
-        return event;
-    }
+        public String getEvent() {
+            return event;
+        }
 
-    public void setEvent(String event) {
-        this.event = event;
-    }
+        public void setEvent(String event) {
+            this.event = event;
+        }
 
-    public String getLast() {
-        return last;
-    }
+        public String getLast() {
+            return last;
+        }
 
-    public void setLast(String last) {
-        this.last = last;
+        public void setLast(String last) {
+            this.last = last;
+        }
     }
 }
 // ==========================================================
 // ==========================================================
 
-}
+

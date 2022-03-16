@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/VisPit_Activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.pearadox.yg_alliance.VisPit_Activity"
+    tools:ignore="MissingDefaultResource">
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <TextView
+        android:id="@+id/lbl_team"
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:text="Team" />
+
+    <TextView
+        android:id="@+id/txt_team"
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="1234"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/lbl_team" />
+
+    <TextView
+        android:id="@+id/txt_teamName"
+        android:layout_width="240sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/txt_team"
+        android:text="Very Long Team Name goes here" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <ImageView
+        android:id="@+id/imgView_Robot"
+        android:layout_width="fill_parent"
+        android:layout_height="320dp"
+        android:layout_below="@+id/txt_teamName"
+        android:layout_alignEnd="@+id/txt_Comments"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="Photo of Robot" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/Line_1"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgView_Robot" >
+
+        <CheckBox
+            android:id="@+id/chkBox_EveryBot"
+            android:layout_width="wrap_content"
+            android:layout_height="30sp"
+            android:clickable="false"
+            android:text="EveryBot" />
+
+        <TextView
+            android:id="@+id/lbl_Wt"
+            android:layout_width="wrap_content"
+            android:layout_height="30sp"
+            android:layout_marginStart="30dp"
+            android:text="Weight (lbs)"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txt_Wt"
+        android:layout_width="35sp"
+        android:layout_height="30sp"
+        android:layout_marginStart="8dp"
+        android:text="000"
+        android:textColor="@color/grey"
+        android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/lbl_Ht"
+            android:layout_width="wrap_content"
+            android:layout_height="30sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="0dp"
+            android:text="Height (inches)"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txt_Ht"
+        android:layout_width="35sp"
+        android:layout_height="30sp"
+        android:layout_marginStart="8dp"
+        android:text="000"
+        android:textColor="@color/grey"
+        android:textSize="16sp" />
+    </LinearLayout>
+
+    // ======================================================
+    <LinearLayout
+        android:id="@+id/Wheels"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Line_1" >
+
+    <TextView
+        android:id="@+id/lbl_Wheels"
+        android:layout_width="60sp"
+        android:layout_height="30sp"
+        android:textSize="16sp"
+        android:text="Wheels"
+        android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_TotWheels"
+            android:layout_width="30dp"
+            android:layout_height="30sp"
+            android:text="00"
+            android:textColor="@color/yellow"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/imgView_Traction"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            app:srcCompat="@drawable/wheel_traction" />
+        <TextView
+            android:id="@+id/lbl_Trac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-35dp"
+            android:layout_marginTop="32dp"
+            android:text="Traction"
+            android:textColor="@color/darkgreen"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/txt_NumTrac"
+            android:layout_width="30dp"
+            android:layout_height="30sp"
+            android:layout_marginStart="10dp"
+            android:text="00"
+            android:textColor="@color/green"
+            android:textSize="16dp" />
+
+    <ImageView
+        android:id="@+id/imgView_Omni"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/wheel_omni" />
+        <TextView
+            android:id="@+id/lbl_Omni"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-24dp"
+            android:layout_marginTop="32dp"
+            android:text="Omni"
+            android:textColor="@color/darkgreen"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/txt_NumOmni"
+            android:layout_width="30dp"
+            android:layout_height="30sp"
+            android:layout_marginStart="10dp"
+            android:text="00"
+            android:textColor="@color/green"
+            android:textSize="16dp" />
+
+    <ImageView
+        android:id="@+id/imgView_Mecanum"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/wheel_mecanum" />
+        <TextView
+            android:id="@+id/lbl_Mecanum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-45dp"
+            android:layout_marginTop="32dp"
+            android:text="Mecanum"
+            android:textColor="@color/darkgreen"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/txt_NumMecanum"
+            android:layout_width="30dp"
+            android:layout_height="30sp"
+            android:layout_marginStart="10dp"
+            android:text="00"
+            android:textColor="@color/green"
+            android:textSize="16dp" />
+
+    <ImageView
+        android:id="@+id/imgView_Pneumatic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/wheel_pneumatic" />
+        <TextView
+            android:id="@+id/lbl_Pneumatic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-48dp"
+            android:layout_marginTop="32dp"
+            android:text="Pneumatic"
+            android:textColor="@color/darkgreen"
+            android:textSize="9sp" />
+
+    <TextView
+        android:id="@+id/txt_NumPneumatic"
+        android:layout_width="30dp"
+        android:layout_height="30sp"
+        android:layout_marginStart="10dp"
+        android:text="00"
+        android:textColor="@color/green"
+        android:textSize="16dp" />
+    </LinearLayout>
+
+    // ======================================================
+    <LinearLayout
+        android:id="@+id/Chk_Boxes"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/Wheels" >
+
+        <CheckBox
+            android:id="@+id/chkBox_Pneumatics"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:text="Pneumatics" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Vision"
+        android:layout_width="140sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="false"
+        android:text="Vision Camera" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Climb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:text="Can Climb" />
+
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Chk_Boxes"
+        android:id="@+id/arm_char">
+
+        <TextView
+            android:id="@+id/lbl_PCFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Cargo from:"
+            android:textColor="@color/magenta"
+            android:textSize="16sp"
+            android:textStyle="bold"></TextView>
+
+        <CheckBox
+            android:id="@+id/chkBox_OffFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:clickable="false"
+            android:orientation="horizontal"
+            android:text="Floor"
+            android:textColor="@color/magenta"></CheckBox>
+
+        <CheckBox
+            android:id="@+id/chkBox_Terminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Term"
+            android:clickable= "false"
+            android:textColor="@color/magenta"
+            android:orientation="horizontal">
+        </CheckBox>
+
+
+    </LinearLayout>
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+    android:id="@+id/del_type"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/arm_char"
+    android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_DriveMotor"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Drive Motor"
+            android:textColor="@color/cyan"
+            android:textSize="16sp"
+            android:textStyle="bold">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txt_DriveMotor"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:layout_marginStart= "10sp"
+            android:text="Mini-CIM"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/lbl_ProgLang"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:text="Prog. Language"
+            android:textColor="@color/cyan"
+            android:textSize="16sp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/txt_ProgLang"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:text="JAVA"
+            android:textColor="@color/white"
+            android:textSize="16sp"></TextView>
+
+        <CheckBox
+            android:id="@+id/chkBox_ShootUpper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Can Shoot Upper"
+            android:clickable="false"
+            android:textColor="@color/cyan" />
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/del_type"
+        android:id="@+id/shooting">
+
+        <TextView
+        android:id="@+id/lbl_ShootFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shoot From"
+        android:textColor="@color/blue"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+        <CheckBox
+        android:id="@+id/chkBox_Low"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:text="Lower Hub"
+        android:textColor="@color/brightblue" />
+
+        <CheckBox
+        android:id="@+id/chkBox_LaunchPad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:clickable="false"
+        android:text="Launch Pad"
+        android:textColor="@color/brightblue" />
+
+        <CheckBox
+        android:id="@+id/chkBox_Tarmac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tarmac"
+        android:clickable="false"
+        android:textColor="@color/brightblue" />
+
+        <CheckBox
+            android:id="@+id/chkBox_CargoRing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cargo Ring"
+            android:clickable="false"
+            android:textColor="@color/brightblue" />
+
+        <CheckBox
+        android:id="@+id/chkBox_Anywhere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Anywhere"
+        android:clickable="false"
+        android:textColor="@color/brightblue" />
+    </LinearLayout>
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+        android:id="@+id/robot_char"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/shooting"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_Climb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max Hangar Climb: "
+            android:textColor="@color/grey"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_HangarClimb"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:text="$$$$$$$$$"
+            android:textColor="@color/white"
+            android:textSize="16sp">h</TextView>
+
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+        android:id="@+id/Auto_Data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/robot_char"
+        android:orientation="horizontal">
+
+        <TextView
+        android:id="@+id/lbl_Mode"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="Auto Oper. Mode"
+        android:textColor="@color/orange"
+        android:textSize="16sp"
+        android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/txt_Mode"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:text="Hybrid (P+V)"
+            android:textColor="@color/orange"
+            android:textSize="16sp"></TextView>
+
+    </LinearLayout>
+
+    //*********************************************************************************8
+    <TextView
+        android:id="@+id/lbl_Scout"
+        android:layout_width="50sp"
+        android:layout_height="30sp"
+        android:layout_above="@+id/txt_Comments"
+        android:layout_alignParentStart="true"
+        android:text="Scout"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txt_Scout"
+        android:layout_width="240dp"
+        android:layout_height="30sp"
+        android:layout_alignBaseline="@+id/lbl_Scout"
+        android:layout_alignBottom="@+id/lbl_Scout"
+        android:layout_toEndOf="@+id/lbl_Scout"
+        android:text="Scout, Name"
+        android:textColor="@color/brightblue"
+        android:textSize="14dp" />
+
+    // ======================================================
+
+    <TextView
+        android:id="@+id/txt_Comments"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="3"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/green"
+        android:textSize="14dp" />
+
+
+
+</RelativeLayout>

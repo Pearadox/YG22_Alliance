@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace, txt_Time, txt_Counter;
     ArrayAdapter<String> adapter_Event;
-    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Rank, btn_Pit,btn_PitScout;
+    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Rank, btn_Pit, btn_PitScout, btn_Visualizer;
     Switch switch_CyclicRank;
 
     final String[] URL = {""};
@@ -158,11 +158,13 @@ public class MainActivity extends AppCompatActivity {
         btn_Rank = (Button) findViewById(R.id.btn_Rank);
         btn_Pit = (Button) findViewById(R.id.btn_Pit);
         btn_PitScout = (Button) findViewById(R.id.btn_PitScout);
+        btn_Visualizer = (Button) findViewById(R.id.btn_Visualizer);
         btn_Teams.setEnabled(false);
         btn_Match_Sched.setEnabled(false);
         btn_Rank.setEnabled(false);
         btn_Pit.setEnabled(false);
         btn_PitScout.setEnabled(false);
+        btn_Visualizer.setEnabled(false);
         txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
         txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);
@@ -191,13 +193,13 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, " #Events = " + our_events.length);
 
             for (int i = 0; i < our_events.length; i++) {
-                new_event.setcomp_name(our_events[i].getName());
+                new_event.setComp_name(our_events[i].getName());
                 new_event.setComp_code(our_events[i].getEventCode());
                 // ToDo - How is World's Division set on B.A.??????
-                new_event.setcomp_div(our_events[i].getEventCode());
-                new_event.setcomp_date(our_events[i].getStartDate());
-                new_event.setcomp_place(our_events[i].getLocationName());
-                new_event.setcomp_city(our_events[i].getCity() + ", " + our_events[i].getStateProv());
+                new_event.setComp_div(our_events[i].getEventCode());
+                new_event.setComp_date(our_events[i].getStartDate());
+                new_event.setComp_place(our_events[i].getLocationName());
+                new_event.setComp_city(our_events[i].getCity() + ", " + our_events[i].getStateProv());
                 String keyID = new_event.getComp_code();
                 pfEvent_DBReference.child(keyID).setValue(new_event);
                 // ToDo Add new directories for each event  (match-data, matches,pit-data, teams)
@@ -350,8 +352,22 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
+        /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+        btn_Visualizer.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "  btn_Visualizer setOnClickListener  " + Pearadox.FRC_ChampDiv);
+                Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
+                Bundle VZbundle = new Bundle();
+                VZbundle.putString("dev", "ScoutMaster");               // Pass data
+                VZbundle.putString("stud", "Lead Scout");               //  to activity
+                viz_intent.putExtras(VZbundle);
+                startActivity(viz_intent);                        // Start Visualizer
 
-    switch_CyclicRank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            }
+        });
+
+
+                switch_CyclicRank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
             Log.w(TAG, "*** switch_CyclicRank - setOnCheckedChangeListener *** ");
@@ -782,12 +798,12 @@ public class MainActivity extends AppCompatActivity {
             p_Firebase.eventObj event_inst = new p_Firebase.eventObj();
             for (int i = 0; i < Pearadox.eventList.size(); i++) {
                 event_inst = Pearadox.eventList.get(i);
-                if (event_inst.getcomp_name().equals(ev)) {
+                if (event_inst.getComp_name().equals(ev)) {
                     Pearadox.FRC_Event = event_inst.getComp_code();
-                    Pearadox.FRC_ChampDiv = event_inst.getcomp_div();
+                    Pearadox.FRC_ChampDiv = event_inst.getComp_div();
                     txt_EvntCod.setText(Pearadox.FRC_Event.toUpperCase());  // Event Code
-                    txt_EvntDat.setText(event_inst.getcomp_date());         // Event Date
-                    txt_EvntPlace.setText(event_inst.getcomp_place());      // Event Location
+                    txt_EvntDat.setText(event_inst.getComp_date());         // Event Date
+                    txt_EvntPlace.setText(event_inst.getComp_place());      // Event Location
 
                 }
             }
@@ -797,6 +813,7 @@ public class MainActivity extends AppCompatActivity {
             btn_Match_Sched.setEnabled(true);
             btn_PitScout.setEnabled(true);
             btn_Rank.setEnabled(true);
+            btn_Visualizer.setEnabled(true);
 
             pfDatabase = FirebaseDatabase.getInstance();
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
@@ -971,7 +988,7 @@ public class MainActivity extends AppCompatActivity {
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
                     event_inst = iterator.next().getValue(p_Firebase.eventObj.class);
-                    Log.w(TAG, "      " + event_inst.getcomp_name() + " - " + event_inst.getComp_code());
+                    Log.w(TAG, "      " + event_inst.getComp_name() + " - " + event_inst.getComp_code());
                     Pearadox.eventList.add(event_inst);
                 }
                 Log.w(TAG, "### Events ###  : " + Pearadox.eventList.size());
@@ -981,7 +998,7 @@ public class MainActivity extends AppCompatActivity {
                 Pearadox.comp_List[0] = " ";       // make it so 1st Drop-Down entry is blank
                 for (int i = 0; i < Pearadox.eventList.size(); i++) {
                     event_inst = Pearadox.eventList.get(i);
-                    Pearadox.comp_List[i + 1] = event_inst.getcomp_name();
+                    Pearadox.comp_List[i + 1] = event_inst.getComp_name();
                 }
                 Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
                 adapter_Event = new ArrayAdapter<String>(MainActivity.this, R.layout.list_layout, Pearadox.comp_List);
