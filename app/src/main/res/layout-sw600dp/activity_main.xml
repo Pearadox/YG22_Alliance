@@ -188,21 +188,23 @@
             android:id="@+id/btn_Pit"
             android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|start"
+            android:textSize="11dp"
             android:text="Pit \n Coverage" />
 
         <Button
             android:id="@+id/btn_PitScout"
             android:layout_width="100sp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
             android:text="Pit Scout\nAssignment"
-            android:textSize="12dp"/>
+            android:textSize="11dp"/>
 
         <Button
             android:id="@+id/btn_Visualizer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Visualizer" />
+            android:textSize="11dp"
+            android:text="Visualizer \n " />
 
     </LinearLayout>
 

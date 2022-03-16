@@ -8,8 +8,8 @@ android {
         applicationId "com.pearadox.yg_alliance"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 16
-        versionName "4.16"
+        versionCode 17
+        versionName "4.17"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

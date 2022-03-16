@@ -204,7 +204,8 @@
             android:id="@+id/btn_Visualizer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Visualizer" />
+            android:textSize="11sp"
+            android:text="Visualizer \n " />
 
     </LinearLayout>
 

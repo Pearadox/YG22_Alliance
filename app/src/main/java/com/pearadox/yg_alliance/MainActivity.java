@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         btn_Match_Sched.setEnabled(false);
         btn_Rank.setEnabled(false);
         btn_Pit.setEnabled(false);
+        btn_PitScout.setEnabled(false);
         btn_Visualizer.setEnabled(false);
         txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
@@ -816,7 +817,7 @@ public class MainActivity extends AppCompatActivity {
             if (model.equals("K88")) {
                 btn_Visualizer.setEnabled(true);
             } else {
-                btn_Visualizer.setText("Not on Phone");
+                btn_Visualizer.setText("Viz Not \non Phone");
                 btn_Visualizer.setEnabled(false);
             }
 
