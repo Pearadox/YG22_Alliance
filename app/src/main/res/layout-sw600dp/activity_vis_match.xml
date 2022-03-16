@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Team"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="14sp" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_toEndOf="@+id/txt_final_LostComm"
         android:layout_weight="1"
         android:text="# Matches"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="14sp" />
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_marginStart="3dp"
         android:layout_toEndOf="@+id/lbl_team"
         android:text="1234"
-        android:textColor="@color/orange" />
+        android:textColor="@color/purple" />
 
     <TextView
         android:id="@+id/txt_teamName"
@@ -53,7 +53,7 @@
         android:layout_marginStart="25dp"
         android:layout_toEndOf="@+id/txt_team"
         android:text="Very Long Team Name goes here"
-        android:textColor="@color/orange" />
+        android:textColor="@color/purple" />
 
     <TextView
         android:id="@+id/txt_NumMatches"
@@ -64,7 +64,7 @@
         android:layout_marginStart="6dp"
         android:layout_toEndOf="@+id/lbl_Matches"
         android:text="00"
-        android:textColor="@color/orange" />
+        android:textColor="@color/purple" />
 
     <TextView
         android:id="@+id/txt_Matches"
@@ -75,7 +75,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="-2dp"
         android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 Q011 Q012 Q013 Q014 Q015 Q016"
-        android:textColor="@color/orange"
+        android:textColor="@color/purple"
         android:textSize="14dp"
         android:textStyle="bold" />
 
@@ -87,7 +87,7 @@
         android:layout_alignTop="@+id/lbl_team"
         android:layout_alignParentEnd="true"
         android:layout_gravity="top"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/lbl_Autonomous"
@@ -115,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Left Tarmac"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_auto_left"
@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="No Auton Activity"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_noAuton"
@@ -147,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:text="____Start Position____"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/lbl_DriverStation"
@@ -155,7 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:text="_Player Station_"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
     </LinearLayout>
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -188,7 +188,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginTop="0dp"
             android:text="Load:"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_StartingBalls"
@@ -206,7 +206,7 @@
             android:layout_marginStart="110dp"
             android:layout_marginTop="0dp"
             android:text="  1   2   3    4   5   6   NS"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/lbl_Pos"
@@ -215,7 +215,7 @@
             android:layout_marginStart="65dp"
             android:layout_marginTop="0dp"
             android:text="1    2    3"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
@@ -268,7 +268,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:text="Human"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/txt_Auto_Human"
             android:layout_width="wrap_content"
@@ -303,7 +303,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="0dp"
             android:text="Lower%"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/txt_Auto_LowerPercnt"
             android:layout_width="wrap_content"
@@ -319,7 +319,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="0dp"
             android:text="Upper%"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/txt_Auto_UpperPercnt"
             android:layout_width="wrap_content"
@@ -347,14 +347,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="00dp"
             android:text="P/U From:"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/lbl_AutonFloor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="⚪F="
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_AutonFloor"
@@ -370,7 +370,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="T="
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_AutonTerminal"
@@ -386,7 +386,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="Acquired ⚪"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/txt_AutonAcquired"
             android:layout_width="wrap_content"
@@ -459,7 +459,7 @@
             app:egFixedBarWidth="false"
             app:egLegendHeight="36dp"
             app:egLegendTextSize="9sp"
-            app:egLegendColor="@color/white"
+            app:egLegendColor="@color/black"
             app:egShowDecimal="false"
             app:egShowValues="true" />
 
@@ -490,7 +490,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="4dp"
         android:text="________________________________TeleOps______________________________"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/orange" />
     // =============================================================================
 
 
@@ -515,7 +515,7 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginStart="10dp"
-            android:textColor="@color/yellow"
+            android:textColor="@color/orange"
             tools:text="⚪L00  U00 " />
 
         <TextView
@@ -523,7 +523,7 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginStart="10dp"
-            android:textColor="@color/yellow"
+            android:textColor="@color/orange"
             tools:text="⊗L00  U00 " />
 
         <TextView
@@ -533,14 +533,14 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="0dp"
             android:text="Lower%"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/txt_Tele_LowerPercnt"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="0dp"
-            android:textColor="@color/yellow"
+            android:textColor="@color/orange"
             tools:text=".000" />
         <TextView
             android:id="@+id/lbl_Tele_UpperPercnt"
@@ -549,14 +549,14 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="0dp"
             android:text="Upper%"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/txt_Tele_UpperPercnt"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="0dp"
-            android:textColor="@color/yellow"
+            android:textColor="@color/orange"
             tools:text=".000" />
 
     </LinearLayout>
@@ -577,7 +577,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="00dp"
             android:text="P/U⚪ F="
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_TeleFloor"
@@ -585,7 +585,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="0"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/orange" />
 
         <TextView
             android:id="@+id/lbl_TeleTerminal"
@@ -593,7 +593,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="T="
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_TeleTerminal"
@@ -601,7 +601,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="0"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/orange" />
 
         <TextView
             android:id="@+id/lbl_Tele_acq"
@@ -609,7 +609,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="Acquired ⚪"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_TeleAcquired"
@@ -617,7 +617,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="0"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/orange" />
 
 
     </LinearLayout>
@@ -637,7 +637,7 @@
         android:lines="3"
         android:scrollbars="vertical"
         android:text="Comments"
-        android:textColor="@color/yellow"
+        android:textColor="@color/orange"
         android:textSize="12dp" />
 
     //________________________________________________________
@@ -656,14 +656,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:text="Climb="
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_TeleClimb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:textColor="@color/yellow"
+            android:textColor="@color/orange"
             tools:text=" 00 " />
 
         <TextView
@@ -672,7 +672,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="End Hang"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_HangLevel"
@@ -680,7 +680,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="⁰00 ¹00 ²00 ³00 ⁴00"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/orange" />
 
 
     </LinearLayout>
@@ -709,7 +709,7 @@
             app:egFixedBarWidth="false"
             app:egLegendHeight="36dp"
             app:egLegendTextSize="9sp"
-            app:egLegendColor="@color/white"
+            app:egLegendColor="@color/black"
             app:egShowDecimal="false"
             app:egShowValues="true" />
 
@@ -725,7 +725,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:text="_________________________________Final________________________________"
-        android:textColor="@color/green" />
+        android:textColor="@color/darkgreen" />
 
     <TextView
         android:id="@+id/lbl_final_LostComm"
@@ -735,7 +735,7 @@
         android:layout_alignEnd="@+id/txt_teamName"
         android:layout_marginEnd="12dp"
         android:text="Lost Comms"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/txt_final_LostComm"
@@ -746,7 +746,7 @@
         android:layout_marginStart="22dp"
         android:layout_toEndOf="@+id/lbl_final_LostComm"
         android:text="0"
-        android:textColor="@color/green" />
+        android:textColor="@color/darkgreen" />
 
     <TextView
         android:id="@+id/lbl_final_LostParts"
@@ -756,7 +756,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="4dp"
         android:text="Lost Parts"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/txt_final_LostParts"
@@ -766,7 +766,7 @@
         android:layout_alignStart="@+id/txt_final_Defenses"
         android:layout_alignBottom="@+id/lbl_final_LostComm"
         android:text="0"
-        android:textColor="@color/green" />
+        android:textColor="@color/darkgreen" />
 
     <TextView
         android:id="@+id/lbl_final_NumPen"
@@ -775,7 +775,7 @@
         android:layout_below="@+id/lbl_final_LostParts"
         android:layout_marginTop="2dp"
         android:text="# Penalties"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/txt_final_NumPen"
@@ -785,7 +785,7 @@
         android:layout_alignStart="@+id/txt_final_Defenses"
         android:layout_alignBottom="@+id/lbl_final_NumPen"
         android:text="9"
-        android:textColor="@color/green" />
+        android:textColor="@color/darkgreen" />
 
     <TextView
         android:id="@+id/lbl_final_Tipped"
@@ -795,7 +795,7 @@
         android:layout_alignStart="@+id/lbl_final_LostComm"
         android:layout_marginEnd="12dp"
         android:text="Tipped"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/txt_final_Tipped"
@@ -806,7 +806,7 @@
         android:layout_alignStart="@+id/txt_final_LostComm"
         android:layout_marginStart="0dp"
         android:text="0"
-        android:textColor="@color/green" />
+        android:textColor="@color/darkgreen" />
 
     <TextView
         android:id="@+id/lbl_final_DefGood"
@@ -816,7 +816,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="2dp"
         android:text="Defenses"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/txt_final_Defenses"
@@ -825,7 +825,7 @@
         android:layout_below="@+id/lbl_final_NumPen"
         android:layout_marginStart="120dp"
         android:text="5"
-        android:textColor="@color/green" />
+        android:textColor="@color/darkgreen" />
 
 
     //=============================================================
@@ -842,7 +842,7 @@
         android:lines="5"
         android:scrollbars="vertical"
         android:text="Comments \n Line 2\n Line 3\n Line 4\n Line 5"
-        android:textColor="@color/green"
+        android:textColor="@color/darkgreen"
         android:textSize="12dp" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

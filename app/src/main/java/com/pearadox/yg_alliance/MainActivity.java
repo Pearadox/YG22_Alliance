@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         btn_Rank.setEnabled(false);
         btn_Pit.setEnabled(false);
         btn_PitScout.setEnabled(false);
-        btn_Visualizer.setEnabled(false);
+//        btn_Visualizer.setEnabled(false);
         txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
         txt_EvntPlace = (TextView) findViewById(R.id.txt_EvntPlace);

@@ -29,7 +29,7 @@
         android:layout_below="@+id/txt_Dev"
         android:layout_alignStart="@+id/lbl_Dev"
         android:text="Scout"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="14sp" />
 
     <TextView
@@ -40,7 +40,7 @@
         android:layout_alignStart="@+id/txt_Dev"
         android:layout_alignBottom="@+id/lbl_Student"
         android:text="Student's Name"
-        android:textColor="@color/yellow"
+        android:textColor="@color/orange"
         android:textSize="14sp" />
 
     <TextView
@@ -51,7 +51,7 @@
         android:layout_marginStart="14dp"
         android:layout_toEndOf="@+id/imageView_VZ"
         android:text="Device"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="14sp" />
 
     <TextView
@@ -61,7 +61,7 @@
         android:layout_alignStart="@+id/lbl_Dev"
         android:layout_below="@+id/lbl_Student"
         android:text="Event"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="14sp" />
 
     <TextView
@@ -72,7 +72,7 @@
         android:layout_alignStart="@+id/txt_Dev"
         android:layout_alignBottom="@+id/lbl_Event"
         android:text="A very long Event name ..........."
-        android:textColor="@color/cyan"
+        android:textColor="@color/blue"
         android:textSize="14sp" />
 
 
@@ -95,7 +95,7 @@
         android:layout_toStartOf="@+id/linear_Matches"
         android:layout_weight="1"
         android:text="Matches  ►"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="10sp"
         tools:textAlignment="textEnd" />
 
@@ -308,7 +308,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="0001"
-            android:textColor="@color/cyan"
+            android:textColor="@color/brightblue"
             android:textSize="14sp" />
 
         <TextView
@@ -329,7 +329,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="0002"
-            android:textColor="@color/cyan"
+            android:textColor="@color/brightblue"
             android:textSize="14sp" />
 
         <TextView
@@ -347,7 +347,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="0003"
-            android:textColor="@color/cyan"
+            android:textColor="@color/brightblue"
             android:textSize="14sp" />
         <!--<TextView-->
         <!--android:id="@+id/lbl_fillerB1"-->
@@ -377,7 +377,7 @@
             android:layout_alignParentStart="true"
             android:layout_weight="1"
             android:text="Long Name of Blue Team # 1 :::::::::::"
-            android:textColor="@color/cyan"
+            android:textColor="@color/brightblue"
             android:textSize="14sp" />
 
 
@@ -390,7 +390,7 @@
             android:layout_marginStart="11dp"
             android:layout_weight="1"
             android:text="Long Name of Blue Team # 2 :::::::::::"
-            android:textColor="@color/cyan"
+            android:textColor="@color/brightblue"
             android:textSize="14sp" />
 
         <TextView
@@ -402,7 +402,7 @@
             android:layout_marginStart="75dp"
             android:layout_weight="1"
             android:text="Long Name of Blue Team # 3 :::::::::::"
-            android:textColor="@color/cyan"
+            android:textColor="@color/brightblue"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -528,7 +528,7 @@
                     android:padding="1dip"
                     android:paddingLeft="1dip"
                     android:text="99"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -547,7 +547,7 @@
                     android:padding="1dip"
                     android:paddingLeft="1dip"
                     android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="11sp" />
             </LinearLayout>
         </LinearLayout>
@@ -676,7 +676,7 @@
                     android:layout_weight="0.15"
                     android:padding="1dip"
                     android:text="99"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/teamR2_ba"
@@ -693,7 +693,7 @@
                     android:padding="1dip"
                     android:paddingLeft="1dip"
                     android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="11sp" />
             </LinearLayout>
         </LinearLayout>
@@ -823,7 +823,7 @@
                     android:layout_weight="0.15"
                     android:padding="1dip"
                     android:text="99"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </LinearLayout>
                 <LinearLayout
                     android:id="@+id/teamR3_ba"
@@ -840,7 +840,7 @@
                         android:padding="1dip"
                         android:paddingLeft="1dip"
                         android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -922,7 +922,7 @@
                 android:background="@drawable/border"
                 android:padding="1dip"
                 android:text="1111"
-                android:textColor="@color/cyan" />
+                android:textColor="@color/brightblue" />
 
             <ImageView
                 android:id="@+id/tbl_robotB1"
@@ -972,7 +972,7 @@
                     android:layout_weight="0.15"
                     android:padding="1dip"
                     android:text="99"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </LinearLayout>
                 <LinearLayout
                     android:id="@+id/teamB1_ba"
@@ -989,7 +989,7 @@
                         android:padding="1dip"
                         android:paddingLeft="1dip"
                         android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -1044,7 +1044,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto \nTele"
-                        android:textColor="@color/cyan"
+                        android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
                     <TextView
@@ -1055,7 +1055,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="OPR 000.0   DPR 00.0  \nStatistics from other \ndata"
-                        android:textColor="@color/cyan" />
+                        android:textColor="@color/brightblue" />
                 </LinearLayout>
             </LinearLayout>
         </TableRow>
@@ -1071,7 +1071,7 @@
                 android:background="@drawable/border"
                 android:padding="1dip"
                 android:text="2222"
-                android:textColor="@color/cyan" />
+                android:textColor="@color/brightblue" />
 
             <ImageView
                 android:id="@+id/tbl_robotB2"
@@ -1121,7 +1121,7 @@
                     android:layout_weight="0.15"
                     android:padding="1dip"
                     android:text="99"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </LinearLayout>
                 <LinearLayout
                     android:id="@+id/teamB2_ba"
@@ -1138,7 +1138,7 @@
                         android:padding="1dip"
                         android:paddingLeft="1dip"
                         android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -1193,7 +1193,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto \nTele"
-                        android:textColor="@color/cyan"
+                        android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
                     <TextView
@@ -1204,7 +1204,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="OPR 000.0   DPR 00.0  \nStatistics from other \ndata"
-                        android:textColor="@color/cyan" />
+                        android:textColor="@color/brightblue" />
                 </LinearLayout>
             </LinearLayout>
         </TableRow>
@@ -1220,7 +1220,7 @@
                 android:background="@drawable/border"
                 android:padding="1dip"
                 android:text="3333"
-                android:textColor="@color/cyan" />
+                android:textColor="@color/brightblue" />
 
             <ImageView
                 android:id="@+id/tbl_robotB3"
@@ -1270,7 +1270,7 @@
                     android:layout_weight="0.15"
                     android:padding="1dip"
                     android:text="99"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/black" />
             </LinearLayout>
                 <LinearLayout
                     android:id="@+id/teamB3_ba"
@@ -1287,7 +1287,7 @@
                         android:padding="1dip"
                         android:paddingLeft="1dip"
                         android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -1342,7 +1342,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto \nTele"
-                        android:textColor="@color/cyan"
+                        android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
                     <TextView
@@ -1353,7 +1353,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="OPR 000.0   DPR 00.0  \nStatistics from other \ndata"
-                        android:textColor="@color/cyan" />
+                        android:textColor="@color/brightblue" />
                 </LinearLayout>
             </LinearLayout>
         </TableRow>
@@ -1408,7 +1408,7 @@
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/imgPearadox"
         android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 Q011 Q012 Q013 Q014 Q015"
-        android:textColor="@color/yellow"
+        android:textColor="@color/darkgreen"
         android:textSize="14dp"
         android:textStyle="bold" />
 

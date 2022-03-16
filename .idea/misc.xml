@@ -7,8 +7,11 @@
         <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout-sw600dp/activity_vis_match.xml" value="0.1" />
         <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout-sw600dp/activity_vis_pit.xml" value="0.1" />
         <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout-sw600dp/activity_visualizer.xml" value="0.1" />
+        <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout-sw600dp/match_list_layout.xml" value="0.10078125" />
+        <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout-sw600dp/robonum_list_layout.xml" value="0.10078125" />
         <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout/list_layout.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/bubba/github/YG22_Alliance/app/src/main/res/layout/pit_list_layout.xml" value="0.134375" />
       </map>
     </option>
   </component>
