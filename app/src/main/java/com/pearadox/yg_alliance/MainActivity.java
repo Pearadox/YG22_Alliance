@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter_Event;
     Button btn_Events, btn_Teams, btn_Match_Sched, btn_Rank, btn_Pit, btn_PitScout, btn_Visualizer;
     Switch switch_CyclicRank;
+    String model = Build.MODEL;
 
     final String[] URL = {""};
     final String[] photStat = {""};
@@ -155,15 +157,14 @@ public class MainActivity extends AppCompatActivity {
         btn_Events = (Button) findViewById(R.id.btn_Events);
         btn_Teams = (Button) findViewById(R.id.btn_Teams);
         btn_Match_Sched = (Button) findViewById(R.id.btn_Match_Sched);
+        btn_Visualizer = (Button) findViewById(R.id.btn_Visualizer);
         btn_Rank = (Button) findViewById(R.id.btn_Rank);
         btn_Pit = (Button) findViewById(R.id.btn_Pit);
         btn_PitScout = (Button) findViewById(R.id.btn_PitScout);
-        btn_Visualizer = (Button) findViewById(R.id.btn_Visualizer);
         btn_Teams.setEnabled(false);
         btn_Match_Sched.setEnabled(false);
         btn_Rank.setEnabled(false);
         btn_Pit.setEnabled(false);
-        btn_PitScout.setEnabled(false);
         btn_Visualizer.setEnabled(false);
         txt_EvntCod = (TextView) findViewById(R.id.txt_EvntCod);
         txt_EvntDat = (TextView) findViewById(R.id.txt_EvntDat);
@@ -362,12 +363,11 @@ public class MainActivity extends AppCompatActivity {
                 VZbundle.putString("stud", "Lead Scout");               //  to activity
                 viz_intent.putExtras(VZbundle);
                 startActivity(viz_intent);                        // Start Visualizer
-
             }
         });
 
 
-                switch_CyclicRank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switch_CyclicRank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
             Log.w(TAG, "*** switch_CyclicRank - setOnCheckedChangeListener *** ");
@@ -813,7 +813,12 @@ public class MainActivity extends AppCompatActivity {
             btn_Match_Sched.setEnabled(true);
             btn_PitScout.setEnabled(true);
             btn_Rank.setEnabled(true);
-            btn_Visualizer.setEnabled(true);
+            if (model.equals("K88")) {
+                btn_Visualizer.setEnabled(true);
+            } else {
+                btn_Visualizer.setText("Not on Phone");
+                btn_Visualizer.setEnabled(false);
+            }
 
             pfDatabase = FirebaseDatabase.getInstance();
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data

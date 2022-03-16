@@ -200,6 +200,12 @@
             android:text="Pit Scout\nAssignment"
             android:textSize="11sp" />
 
+        <Button
+            android:id="@+id/btn_Visualizer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Visualizer" />
+
     </LinearLayout>
 
     <Button
