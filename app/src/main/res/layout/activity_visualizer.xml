@@ -109,20 +109,21 @@
     <!--android:layout_below="@+id/spinner_MatchType"-->
     <!--android:layout_alignStart="@+id/lbl_MatchType" />-->
 
-    <Button
-        android:id="@+id/button_View"
-        android:layout_width="wrap_content"
-        android:layout_height="45sp"
-        android:layout_alignStart="@+id/lbl_Student"
-        android:layout_alignBottom="@+id/imageView_VZ"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="-10dp"
-        android:onClick="buttonView_Click"
-        android:text="View" />
-
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     /* Start of Red Alliance */
+
+    <Button
+        android:id="@+id/button_View"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_below="@+id/lbl_Event"
+        android:layout_alignStart="@+id/lbl_Event"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="-5dp"
+        android:onClick="buttonView_Click"
+        android:text="View"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/lbl_RedAlliance"
@@ -130,11 +131,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linear_Matches"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="16dp"
         android:background="@color/red"
         android:gravity="center_horizontal"
         android:text="Red Alliance"
-        android:textColor="@color/darkred" />
+        android:textColor="@color/darkred"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/lbl_spacer1"
@@ -236,7 +238,7 @@
             android:layout_weight="1"
             android:text="Long Name of Red Team # 1 :::::::::::"
             android:textColor="@color/red"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txt_teamR2_Name"
@@ -244,23 +246,23 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/teams_sectR"
             android:layout_alignStart="@+id/spinner_MatchNum"
-            android:layout_marginStart="11dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:text="Long Name of Red Team # 2 :::::::::::"
             android:textColor="@color/red"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txt_teamR3_Name"
             android:layout_width="180sp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/teams_sectB"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="3dp"
             android:layout_toEndOf="@+id/txt_TeamName"
             android:layout_weight="1"
             android:text="Long Name of Red Team # 3 :::::::::::"
             android:textColor="@color/red"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
 
@@ -276,7 +278,8 @@
         android:background="@color/navy"
         android:gravity="center_horizontal"
         android:text="Blue Alliance"
-        android:textColor="@color/brightblue" />
+        android:textColor="@color/brightblue"
+        android:textSize="10sp" />
 
     <LinearLayout
         android:id="@+id/teams_sectB"
@@ -377,7 +380,7 @@
             android:layout_weight="1"
             android:text="Long Name of Blue Team # 1 :::::::::::"
             android:textColor="@color/brightblue"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
 
         <TextView
@@ -390,7 +393,7 @@
             android:layout_weight="1"
             android:text="Long Name of Blue Team # 2 :::::::::::"
             android:textColor="@color/brightblue"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txt_teamB3_Name"
@@ -398,11 +401,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/teams_sectB"
             android:layout_alignStart="@+id/spinner_MatchNum"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="3dp"
             android:layout_weight="1"
             android:text="Long Name of Blue Team # 3 :::::::::::"
             android:textColor="@color/brightblue"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -420,52 +423,52 @@
         android:stretchColumns="*">
 
         /*** HEADER ***/
-        <TableRow>
+<!--        <TableRow>-->
 
-            <TextView
-                android:id="@+id/hdr_team"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.12"
-                android:gravity="left"
-                android:padding="0dip"
-                android:text="TEAM "
-                android:textSize="10sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/hdr_team"-->
+<!--                android:layout_width="0px"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0.12"-->
+<!--                android:gravity="left"-->
+<!--                android:padding="0dip"-->
+<!--                android:text="TEAM "-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
 
-            <TextView
-                android:id="@+id/hdr_robot"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.08"
-                android:gravity="left"
-                android:padding="3dip"
-                android:text="PHOTO"
-                android:textSize="10sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/hdr_robot"-->
+<!--                android:layout_width="0px"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0.08"-->
+<!--                android:gravity="left"-->
+<!--                android:padding="3dip"-->
+<!--                android:text="PHOTO"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
 
-            <TextView
-                android:id="@+id/hdr_buttons"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.05"
-                android:gravity="left"
-                android:padding="1dip"
-                android:text="        "
-                android:textSize="10sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/hdr_buttons"-->
+<!--                android:layout_width="0px"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0.05"-->
+<!--                android:gravity="left"-->
+<!--                android:padding="1dip"-->
+<!--                android:text="        "-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
 
-            <TextView
-                android:id="@+id/hdr_attr"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.66"
-                android:gravity="left"
-                android:padding="1dip"
-                android:text="                                                       ATTRIBUTES"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-        </TableRow>
+<!--            <TextView-->
+<!--                android:id="@+id/hdr_attr"-->
+<!--                android:layout_width="0px"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0.66"-->
+<!--                android:gravity="left"-->
+<!--                android:padding="1dip"-->
+<!--                android:text="                                                       ATTRIBUTES"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
+<!--        </TableRow>-->
         // ==================================================================
         /* Row #1 */
 
@@ -547,7 +550,7 @@
                     android:paddingLeft="1dip"
                     android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
                     android:textColor="@color/black"
-                    android:textSize="11sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -572,6 +575,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/orange"
                         android:textStyle="bold" />
 
@@ -601,6 +605,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/red"
                         android:textStyle="bold" />
 
@@ -693,7 +698,7 @@
                     android:paddingLeft="1dip"
                     android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
                     android:textColor="@color/black"
-                    android:textSize="11sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -718,6 +723,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/orange"
                         android:textStyle="bold" />
 
@@ -747,6 +753,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/red"
                         android:textStyle="bold" />
 
@@ -840,7 +847,7 @@
                         android:paddingLeft="1dip"
                         android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
                         android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -865,6 +872,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/orange"
                         android:textStyle="bold" />
 
@@ -894,6 +902,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/red"
                         android:textStyle="bold" />
 
@@ -989,7 +998,7 @@
                         android:paddingLeft="1dip"
                         android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
                         android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -1014,6 +1023,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
@@ -1043,6 +1053,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
@@ -1138,7 +1149,7 @@
                         android:paddingLeft="1dip"
                         android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
                         android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -1163,6 +1174,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
@@ -1192,6 +1204,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
@@ -1287,7 +1300,7 @@
                         android:paddingLeft="1dip"
                         android:text="Rank=99  Score=00.00  \nWLT=00-00-00   OPR=99.000"
                         android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -1312,6 +1325,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
@@ -1341,6 +1355,7 @@
                         android:gravity="start"
                         android:padding="1dip"
                         android:text="Auto\nTele"
+                        android:textSize="12sp"
                         android:textColor="@color/brightblue"
                         android:textStyle="bold" />
 
@@ -1367,7 +1382,7 @@
     <LinearLayout
         android:id="@+id/linear_Matches"
         android:layout_width="160sp"
-        android:layout_height="130dp"
+        android:layout_height="110dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:choiceMode="singleChoice"
@@ -1379,7 +1394,7 @@
             android:id="@+id/listView_Matches"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:minHeight="80dip"
+            android:minHeight="100dip"
             android:scrollbars="vertical"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -1402,13 +1417,13 @@
     <TextView
         android:id="@+id/txt_NextMatch"
         android:layout_width="500dp"
-        android:layout_height="20dp"
+        android:layout_height="16dp"
         android:layout_below="@+id/linear_Matches"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/imgPearadox"
         android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 Q011 Q012 Q013 Q014 Q015"
         android:textColor="@color/darkgreen"
-        android:textSize="14dp"
+        android:textSize="12dp"
         android:textStyle="bold" />
 
     <ImageView

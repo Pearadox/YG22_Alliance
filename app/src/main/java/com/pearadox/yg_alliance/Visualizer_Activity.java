@@ -110,8 +110,9 @@ public class Visualizer_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.w(TAG, "@@@@  Visualizer_Activity started  @@@@");
+        System.out.println(android.R.id.content);       // *** DEBUG ***
         setContentView(R.layout.activity_visualizer);
-        i(TAG, "@@@@  Visualizer_Activity started  @@@@");
         Bundle bundle = this.getIntent().getExtras();
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
@@ -1004,7 +1005,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     Log.e(TAG, "AutoLow   Score" + A_lowNum  +"  Miss" +A_misslowNum);
                     if ((A_lowNum + A_misslowNum) > 0) {
                         BatAvg = (float)A_lowNum / (A_lowNum + A_misslowNum);  // Made ÷ Attempts
-                        Log.e(TAG, "Low%= " + BatAvg);
+//                        Log.e(TAG, "Low%= " + BatAvg);
                         if (BatAvg == 1.0f) {
                             A_LowPercent = "1.0";
                         } else {
@@ -1035,11 +1036,11 @@ public class Visualizer_Activity extends AppCompatActivity {
                         if (BatAvg == 1.0f) {       // all this to get 3 digits!!
                             T_LowPercent = "1.0";
                         } else {
-                            Log.e(TAG, "TeleLow%= " + BatAvg +" L" + T_lowNum  +"  M" +T_misslowNum);
+//                            Log.e(TAG, "TeleLow%= " + BatAvg +" L" + T_lowNum  +"  M" +T_misslowNum);
                             T_LowPercent = String.format("%.2f", BatAvg);
                         }
                     } else {
-                        Log.e(TAG, "Default TeleLow = .000");
+//                        Log.e(TAG, "Default TeleLow = .000");
                         T_LowPercent = ".00";
                     }
                     if ((T_highNum + T_misshighNum) > 0) {
@@ -1047,7 +1048,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                         if (BatAvg == 1.0f) {
                             T_HiPercent = "1.0";
                         } else {
-                            Log.e(TAG, "TeleHigh%= " + BatAvg+" L" + T_highNum  +"  M" +T_misshighNum);
+//                            Log.e(TAG, "TeleHigh%= " + BatAvg+" L" + T_highNum  +"  M" +T_misshighNum);
                             T_HiPercent = String.format("%.2f", BatAvg);
                         }
                     } else {

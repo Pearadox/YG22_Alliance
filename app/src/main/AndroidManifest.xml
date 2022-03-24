@@ -31,5 +31,5 @@
             android:configChanges="orientation" />
 
     </application>
-
+    tools:remove="android:appComponentFactory"
 </manifest>

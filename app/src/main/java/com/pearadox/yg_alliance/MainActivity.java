@@ -34,6 +34,7 @@ import com.cpjd.models.matches.Match;
 import com.cpjd.models.teams.Team;
 
 import com.cpjd.requests.EventRequest;
+import com.cpjd.sorting.SortingType;
 import com.cpjd.utils.exceptions.DataNotFoundException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -79,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
     String Pearadox_Version = " ";      // initialize
     Long Pearadox_Date;
     String TBA_AuthToken = "xgqQi9cACRSUt4xanOto70jLPxhz4lR2Mf83e2iikyR2vhOmr1Kvg1rDBlAQcOJg";
-    int BAyear = 2022;  // Current Yesr for B.A. calls
+    int BAyear = 2022;  // Current Year for B.A. calls
     Boolean FB_logon = false;           // indicator for Firebase logon success
     Spinner spinner_Event;
     TextView txt_EvntCod, txt_EvntDat, txt_EvntPlace, txt_Time, txt_Counter;
     ArrayAdapter<String> adapter_Event;
-    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Rank, btn_Pit, btn_PitScout, btn_Visualizer;
+    Button btn_Events, btn_Teams, btn_Match_Sched, btn_Rank, btn_Pit, btn_PitScout, btn_Visualizer, btn_Test;
     Switch switch_CyclicRank;
     String model = Build.MODEL;
 
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     String DatTim = "";
     String teamNumber = "";
     Team[] teams;
+    Match[] matches;
     public static int BAnumTeams = 0;                       // # of teams from Blue Alliance
     CountDownTimer countDownTimer;
 
@@ -141,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
         }
-        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©2022  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Yellow-Green Alliance App ©" + BAyear +"  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
 
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         btn_Rank = (Button) findViewById(R.id.btn_Rank);
         btn_Pit = (Button) findViewById(R.id.btn_Pit);
         btn_PitScout = (Button) findViewById(R.id.btn_PitScout);
+//        btn_Test = (Button) findViewById(R.id.btn_Test);
         btn_Teams.setEnabled(false);
         btn_Match_Sched.setEnabled(false);
         btn_Rank.setEnabled(false);
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         final TBA tba = new TBA();
 
 
-        /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Events.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             Log.w(TAG, "  btn_Events setOnClickListener  " );
@@ -223,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "  btn_Teams setOnClickListener  " + Pearadox.FRC_ChampDiv);
                 pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
                 p_Firebase.teamsObj new_team = new p_Firebase.teamsObj();
-                Team[] teams = tba.getEventTeams("2022" + Pearadox.FRC_ChampDiv);
+                Team[] teams = tba.getEventTeams(BAyear + Pearadox.FRC_ChampDiv);
                 Log.w(TAG, " Team array size = " + teams.length);
                 if (teams.length > 0) {
 //                    String destFile = Pearadox.FRC_ChampDiv + "_Teams" + ".json";
@@ -295,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, timeStamp);
 
             try {
-                EventOPR[] opr = tba.getOprs("2022" + Pearadox.FRC_ChampDiv);
+                EventOPR[] opr = tba.getOprs(BAyear + Pearadox.FRC_ChampDiv);
                 Log.w(TAG, " OPR array size = " + opr.length);
                 for (int i = 0; i < opr.length; i++) {
                     String teamKey = opr[i].getTeamKey().substring(3);
@@ -321,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             try {
-                EventRanking[] rankings = new EventRequest().getEventRankings("2022" + Pearadox.FRC_ChampDiv);
+                EventRanking[] rankings = new EventRequest().getEventRankings(BAyear + Pearadox.FRC_ChampDiv);
 //            EventRanking[] rankings = new EventRequest().getEventRankings("2018code");  // Event _MUST_ be lower case!!
                 Log.w(TAG, " Rank array size = " + rankings.length);
                 for (int i = 0; i < rankings.length; i++) {
@@ -575,7 +578,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.w(TAG, "  btn_Match_Sched setOnClickListener  ");
                 try {
-                    Match[] matchSched = tba.getMatches("2022" + Pearadox.FRC_ChampDiv);
+                    Match[] matchSched = tba.getMatches(BAyear + Pearadox.FRC_ChampDiv);
     //                Match[] matchSched = tba.getMatches("2018code");          // ***DEBUG***
                     Log.w(TAG, " Matches size = " + matchSched.length);
                     pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event);   // Matches data from Firebase D/B
@@ -720,9 +723,6 @@ public class MainActivity extends AppCompatActivity {
                 }        //directory is created;
             }
             Log.w(TAG, "FRC files created");
-//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2022  *** Files initialied ***" , Toast.LENGTH_LONG);
-//        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-//        toast.show();
         } else {
             Toast.makeText(getBaseContext(), "There is no SD card available", Toast.LENGTH_LONG).show();
         }
@@ -781,7 +781,7 @@ public class MainActivity extends AppCompatActivity {
         pfRank_DBReference = pfDatabase.getReference("rank");   // B.A. Rank Timestamp Data
         String keyID = event;
         pfRank_DBReference.child(keyID).child("event").setValue(event);
-        pfRank_DBReference.child(keyID).child("last").setValue("2022.01.01   00:00:01 AM");
+        pfRank_DBReference.child(keyID).child("last").setValue(BAyear + ".01.01   00:00:01 AM");
     }
 
 
@@ -814,12 +814,13 @@ public class MainActivity extends AppCompatActivity {
             btn_Match_Sched.setEnabled(true);
             btn_PitScout.setEnabled(true);
             btn_Rank.setEnabled(true);
-            if (model.equals("K88")) {
-                btn_Visualizer.setEnabled(true);
-            } else {
-                btn_Visualizer.setText("Viz Not \non Phone");
-                btn_Visualizer.setEnabled(false);
-            }
+//            if (model.equals("K88")) {
+//                btn_Visualizer.setEnabled(true);
+//            } else {
+//                btn_Visualizer.setText("Viz Not \non Phone");
+//                btn_Visualizer.setEnabled(false);
+//            }
+            btn_Visualizer.setEnabled(true);
 
             pfDatabase = FirebaseDatabase.getInstance();
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
@@ -927,7 +928,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.w(TAG, "***** Matches Loaded from Firebase. # = " + Pearadox.Matches_Data.size());
                 if (Pearadox.Matches_Data.size() > 0) {
-                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©2022  *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
+                    Toast toast1 = Toast.makeText(getBaseContext(), "FRC5414 ©"+ BAyear +" *** Match Data loaded = " + Pearadox.Matches_Data.size() + " ***", Toast.LENGTH_LONG);
                     toast1.setGravity(Gravity.BOTTOM, 0, 0);
                     toast1.show();
                 } else {
@@ -963,7 +964,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_ver) {
-            Toast toast = Toast.makeText(getBaseContext(), "Pearadox YG_Alliance App ©2022  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getBaseContext(), "Pearadox YG_Alliance App ©" + BAyear + "  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
             return true;
@@ -1096,7 +1097,8 @@ private void addPitData_VE_Listener(final Query pfPitData_DBReference) {
             Log.d(TAG, "stringBuffer = " +stringBuffer.length());
 //           pw = (stringBuffer.toString());
 //           pw = pw.substring(0,11);    //Remove CR/LF
-            pw = "pear@5414%$";  // **DEBUG** hardcode for now
+//            pw = "pear@5414%$";   // **DEBUG** hardcode for now
+            pw = "Pear5414#";       // **DEBUG** hardcode for now
         } catch (IOException e) {
 //            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
 //            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
